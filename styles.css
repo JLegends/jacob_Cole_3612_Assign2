@@ -1,0 +1,42 @@
+header {
+    display: flex;
+    border: solid black;
+}
+
+header h2 {
+    justify-content: center;
+}
+
+main {
+    border: solid black;
+    height: 100%;
+    margin-top: 0.5rem;
+}
+
+#container {
+    display: flex;
+    flex-direction: row;    
+}
+
+#content-area {
+    display: flex;
+    flex-direction: column;  
+    margin: 1rem;
+  
+}
+
+#select_szn {
+    display: flex;
+}
+
+select {
+    height: 2rem;
+    padding: 0 1.5rem 0 0.2rem;
+    margin: 0.9rem 0 0 0.5rem;
+}
+
+#car_img {
+    width: 75%;
+    align-items: right;
+}
+
