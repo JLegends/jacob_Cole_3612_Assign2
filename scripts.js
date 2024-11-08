@@ -63,7 +63,7 @@ function showNavButtons(show) {
 // Purpose: generate the innerHTML and grab the season from user selection
 /*------------------------------------------------------------------------------------------------------*/
 function loadHomeView() {
-    container.styles = `border: solid black;`;
+    container.style.border ="solid black";
     container.innerHTML = `        
     <div id = "content-area">
         <p> what this site is about blah blah box lorem upsum more words just to 
@@ -97,7 +97,7 @@ function loadHomeView() {
 // Purpose: it creates the DOM elements for the season races block
 /*------------------------------------------------------------------------------------------------------*/
 function list_season_races(season, racesArray) {
-    container.styles.container = `border: none;`;
+    container.style.border ="none";
 
     const races_container = document.createElement("div");
     races_container.id = "races_container";
@@ -185,12 +185,99 @@ function list_grandprix_results(container, season, racesArray) {
     description = document.createElement("p");
     description.textContent = "Race Name, Round #, year, Circuit Name, Date URL (clean this up later)";
 
+    const race_info_container = document.createElement("div");
+    race_info_container.id = "race_info_container";
+
+    const qualifying = document.createElement("div");
+    qualifying.id = "qualifying";
+    qualifying.textContent = "Qualifying";
+
     const results = document.createElement("div");
     results.id = "results";
+    results.textContent = "Results";
+
 
     results_container.appendChild(resultTitle);
     results_container.appendChild(description);
-    results_container.appendChild(results);
+
+    /*
+    generate_qualify_table(); 
+    generate_results_table();
+*/
+    race_info_container.appendChild(qualifying);
+    race_info_container.appendChild(results);
+
+    results_container.appendChild(race_info_container);
 
     container.appendChild(results_container);
+}
+
+/*--------------------------------------------------------------------------------------------------------
+// Name: generate_qualify_table
+// Purpose: generates the table of qualifying drivers in a grand prix
+/*------------------------------------------------------------------------------------------------------*/
+function generate_qualify_table(qualifying, table, season, racesArray) {
+    for (let race of racesArray) {
+        if (race.year == season) {
+            const row = document.createElement("tr");
+            row.className = "round_rows";
+
+            const round = document.createElement("td");
+            const name = document.createElement("td");
+            /* needed for button later */
+            const results = document.createElement("td");
+            const resultsButton = document.createElement("button");
+            results.class = "";
+
+            round.textContent = race.round;
+            name.textContent = race.name;
+            resultsButton.textContent = "Results";
+
+
+            row.appendChild(round);
+            row.appendChild(name);
+
+            results.appendChild(resultsButton);
+            row.appendChild(results);
+
+            round_container.appendChild(row)
+
+            table.appendChild(round_container);
+        }
+    }
+}
+
+/*--------------------------------------------------------------------------------------------------------
+// Name: generate_results_table
+// Purpose: generates the table of individual results in a grand prix
+/*------------------------------------------------------------------------------------------------------*/
+function generate_results_table(results, table, season, racesArray) {
+    for (let race of racesArray) {
+        if (race.year == season) {
+            const row = document.createElement("tr");
+            row.className = "round_rows";
+
+            const round = document.createElement("td");
+            const name = document.createElement("td");
+            /* needed for button later */
+            const results = document.createElement("td");
+            const resultsButton = document.createElement("button");
+            results.class = "";
+
+            round.textContent = race.round;
+            name.textContent = race.name;
+            resultsButton.textContent = "Results";
+
+
+            row.appendChild(round);
+            row.appendChild(name);
+
+            results.appendChild(resultsButton);
+            row.appendChild(results);
+
+            round_container.appendChild(row)
+
+            table.appendChild(round_container);
+        }
+    }
 }
