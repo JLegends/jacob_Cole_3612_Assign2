@@ -3,12 +3,17 @@ document.addEventListener('DOMContentLoaded', () => init());
 let container, homeView, raceView, roundTitle;
 let roundContainer, raceTable, seasonSelect;
 let resultsContainer, resultTitle, raceInfoContainer, qualifying, results;
+let home, favorites;
 
 function init()
 {
-    container = document.querySelector("#main");
-    homeView = document.querySelector("#home");
-    raceView = document.querySelector("#races_container")
+    home = document.querySelector("#home_button"); 
+    favorites = document.querySelector("#favorites_button");
+
+    
+    container = document.querySelector("#container");
+    homeView = document.querySelector("#home_view");
+    raceView = document.querySelector("#race_view")
     roundTitle = document.querySelector("#round_title")
 
     roundContainer = document.querySelector("#round_container");
@@ -21,17 +26,11 @@ function init()
     results = document.querySelector("#results");
 
     seasonSelect = document.querySelector("#season-select");
-    seasonSelect.addEventListener("change", (e) => {
-        const selectedSeason = e.target.value;
-        if (selectedSeason) {
-            load_view("races", selectedSeason);
-        }
-    });
+    
+    add_event_handlers();
 
     load_view("home");
 }
-
-
 
 function load_view(view, season = null) {
 
@@ -71,12 +70,37 @@ function set_visibility(node, value)
     }
 }
 
+function add_event_handlers()
+{
+    home.onclick = () => load_view("home");
+
+    seasonSelect.addEventListener("change", (e) => {
+        const selectedSeason = e.target.value;
+        if (selectedSeason) {
+            load_view("races", selectedSeason);
+        }
+    });
+}
+
 /*------------------------------------------------------------------------------------------------------*/
 // Name: showNavButtons
 // Purpose: shows and hides the navigation buttons depending on the current view
 /*------------------------------------------------------------------------------------------------------*/
 function show_nav_buttons(show) {
-   
+   if(show)
+   {
+        favorites.classList.add("visibleFlex");
+        favorites.classList.remove("hidden");
+        home.classList.add("visibleFlex");
+        home.classList.remove("hidden");
+    }
+    else
+    {
+        favorites.classList.remove("visibleFlex");
+        favorites.classList.add("hidden");
+        home.classList.remove("visibleFlex");
+        home.classList.add("hidden");
+    }
 }
 
 
@@ -85,8 +109,9 @@ function show_nav_buttons(show) {
 // Purpose: it creates the DOM elements for the season races block
 /*------------------------------------------------------------------------------------------------------*/
 function list_season_races(season, racesArray) {
-    container.style.border ="none";
+    /*container.style.border ="none";*/
     roundTitle.textContent = `${season} Races`;
+    roundContainer.textContent = "";
 
     const headerRow = document.createElement("tr");
 

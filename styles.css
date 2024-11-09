@@ -41,22 +41,26 @@ button:hover {
     background-color: var(--var-button-hover);
 }
 
-#Home {
+#home_button{
     grid-column: 3;
 }
 
-#Favorites {
+#favourites_button{
     grid-column: 4;
 }
 
-#container {
+#home_view{
+    border: solid black;
+}
+
+#container, #home_view, #race_view{
     display: flex;
     flex-direction: row;  
     height: 650px;;
     margin-top: 0.5rem;  
 }
 
-#content-area {
+#content_area {
     display: flex;
     flex-direction: column;  
     margin: 1rem;
@@ -78,7 +82,14 @@ select {
     margin: 0.5rem;
 }
 
-#races_container, #results_container {
+#race_view{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 650px;
+}
+
+#race_container, #results_container {
     border: solid black;
     height: 650px;
     align-items: center;
@@ -86,7 +97,7 @@ select {
 
 }
 
-#races_container {
+#race_container {
     display: flex;
     flex-direction: column;
     margin-right: 1rem;
@@ -159,4 +170,8 @@ h4 {
 
 .visible{
     display: block;
+}
+
+.visibleFlex{
+    display: flex;
 }
