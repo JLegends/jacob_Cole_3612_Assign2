@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => init()); 
 
+const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
 let container, homeView, raceView, roundTitle;
 let roundContainer, raceTable, seasonSelect;
 let resultsContainer, resultTitle, raceInfoContainer, qualifying, results;
@@ -30,6 +31,30 @@ function init()
     add_event_handlers();
 
     load_view("home");
+}
+
+async function fetch_race_data(season) /*ChatGPT helped with this one but we can change it if this doesn't fit what we're doing in class */
+{
+    let request = `${url}/races.php?season=${season}`;
+    const storedData = localStorage.getItem(`races_${season}`);
+
+    if(storedData){   /*Check if data is in local storage before grabbing it*/
+        return JSON.parse(storedData);
+    }
+    else
+    {
+        try {
+            const response = await fetch(request);
+            const data = await response.json();
+
+            // Save data to local storage as a JSON string
+            localStorage.setItem('raceData', JSON.stringify(data));
+
+            return data;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    }
 }
 
 function load_view(view, season = null) {
@@ -128,8 +153,12 @@ function list_season_races(season, racesArray) {
 
     raceTable.appendChild(round_container);
 
-    generate_rounds_table(roundContainer, raceTable, season, racesArray);
+    fetch_race_data(season).then(data => {
+        generate_rounds_table(roundContainer, raceTable, season, data);
+        console.log(data);                               
+    });
 
+    
 }
 
 /*--------------------------------------------------------------------------------------------------------
