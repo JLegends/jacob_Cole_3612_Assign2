@@ -3,11 +3,32 @@ document.addEventListener('DOMContentLoaded', () => init());
 const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
 let container, homeView, raceView, roundTitle;
 let roundContainer, raceTable, seasonSelect;
-let resultsContainer, resultTitle, raceInfoContainer, qualifying, results, resultsImage;
+let resultsContainer, resultTitle, raceInfoContainer, qualifying, results, resultsImage, driverContainer;
+let pdImg1, pdImg2, pdImg3;
 let home, favorites;
+
+/* Known Issues 
+
+    Some of the data grabbed from the API has weird characters will probably have to ask about this.
+
+
+    ==== TO DO =====
+    Make the data tables scrollable so they don't go off the edge of page.
+
+    Qualifying Section
+
+    Need to ask for more clarification about the local storage thing
+
+
+*/
+
+
+
+
 
 function init()
 {
+    /*Getting most query selectors out of the way at the beginning, I'll have to ask if this is a good way to do this*/
     home = document.querySelector("#home_button"); 
     favorites = document.querySelector("#favorites_button");
 
@@ -26,6 +47,11 @@ function init()
     qualifying = document.querySelector("#qualifying");
     results = document.querySelector("#results");
     resultsImage = document.querySelector("#results_image");
+    driverContainer = document.querySelector("#driver_container");
+
+    pdImg1 = document.querySelector("#pd1");
+    pdImg2 = document.querySelector("#pd2");
+    pdImg3 = document.querySelector("#pd3");
 
     seasonSelect = document.querySelector("#season-select");
     
@@ -175,33 +201,33 @@ function list_season_races(season) {
 function generate_rounds_table(round_container, table, season, racesArray) {
     let i = 1;
     for (let race of racesArray) {
-        if (race.year == season) {
-            const row = document.createElement("tr");
-            row.className = "round_rows";
 
-            const round = document.createElement("td");
-            const name = document.createElement("td");
-            /* needed for button later */
-            const results = document.createElement("td");
-            const resultsButton = document.createElement("button");
-            results.class = "";
+        const row = document.createElement("tr");
+        row.className = "round_rows";
 
-            round.textContent = i++;
-            name.textContent = race.name;
-            resultsButton.textContent = "Results";
-            resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
-            resultsButton.addEventListener("click", ()=> {list_grandprix_results(race.id);});
-            
-            row.appendChild(round);
-            row.appendChild(name);
+        const round = document.createElement("td");
+        const name = document.createElement("td");
+        /* needed for button later */
+        const results = document.createElement("td");
+        const resultsButton = document.createElement("button");
+        results.class = "";
 
-            results.appendChild(resultsButton);
-            row.appendChild(results);
+        round.textContent = i++;
+        name.textContent = race.name;
+        resultsButton.textContent = "Results";
+        resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
+        resultsButton.addEventListener("click", () => { list_grandprix_results(race.id); });
 
-            round_container.appendChild(row)
+        row.appendChild(round);
+        row.appendChild(name);
 
-            table.appendChild(round_container);
-        }
+        results.appendChild(resultsButton);
+        row.appendChild(results);
+
+        round_container.appendChild(row)
+
+        table.appendChild(round_container);
+        
     }
 }
 
@@ -211,12 +237,19 @@ function generate_rounds_table(round_container, table, season, racesArray) {
 /*------------------------------------------------------------------------------------------------------*/
 function list_grandprix_results(raceID) {
     /*resultTitle.textContent = `Results for ${season} Italian Grand Prix`;*/
-    
+    driverContainer.textContent = "";
+
+
     set_visibility(resultsContainer, true);
     set_visibility(resultsImage, false);
 
     fetch_race_results(raceID).then(data => {
-        console.log(data);                               
+        console.log(data);
+        generate_results_table(data)                               
+        pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
+        pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
+        pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
+
     });
 
 }
@@ -227,7 +260,7 @@ function list_grandprix_results(raceID) {
 /*------------------------------------------------------------------------------------------------------*/
 function generate_qualify_table(qualifying, table, season, racesArray) {
     for (let race of racesArray) {
-        
+
     }
 }
 
@@ -235,8 +268,31 @@ function generate_qualify_table(qualifying, table, season, racesArray) {
 // Name: generate_results_table
 // Purpose: generates the table of individual results in a grand prix
 /*------------------------------------------------------------------------------------------------------*/
-function generate_results_table(results, table, season, racesArray) {
-    for (let race of racesArray) {
+function generate_results_table(results) {
+    for (let result of results) {
+        const row = document.createElement("tr");
+        
+        const pos = document.createElement("td");
+        pos.textContent = result.position;
+        row.appendChild(pos);
 
+        const name = document.createElement("td");
+        name.textContent = result.driver.forename + " " + result.driver.surname;
+        row.appendChild(name);
+
+        const constructor = document.createElement("td");
+        constructor.textContent = result.constructor.name;
+        row.appendChild(constructor); 
+
+        const laps = document.createElement("td");
+        laps.textContent = result.laps;
+        row.appendChild(laps);
+        
+        const pts = document.createElement("td");
+        pts.textContent = result.points;
+        row.appendChild(pts); 
+
+        driverContainer.appendChild(row);
+    
     }
 }

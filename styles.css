@@ -158,6 +158,7 @@ select {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 
@@ -165,6 +166,16 @@ select {
     max-width: 100%; /* Ensures image scales with the container */
     max-height: 100px; 
     object-fit: cover; /* Keeps image aspect ratio within the given dimensions */
+}
+
+.number_overlay {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: white;
+    font-size: 1.5rem;
+    padding: 2px 5px;
+    font-weight: bold;
 }
 
 .round_rows {
@@ -177,6 +188,10 @@ tr {
     width: 100%;
     padding: 0;
     margin: 0;
+}
+
+table {
+    width: 100%;
 }
 
 td, th {
