@@ -14,6 +14,14 @@ header {
     height: 3rem;
 }
 
+.hidden{
+    visibility: hidden;
+}
+
+.visible{
+    visibility: visible;
+}
+
 header img {
     margin-top: 0.5rem;
 }

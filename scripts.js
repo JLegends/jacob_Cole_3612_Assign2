@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => loadView("home")); 
+const container = document.querySelector("#main");
+const homeView = document.querySelector("#home");
 
 function loadView(view, season = null) {
-    const container = document.querySelector("#container");
-
 
     if (view === "home") {
         showNavButtons(false);
@@ -10,7 +10,7 @@ function loadView(view, season = null) {
     }
 
     if (view === "races") {
-        container.innerHTML = ``; /* This clears the home view */
+        setVisibility(homeView, false);
 
         showNavButtons(true);
 
@@ -25,6 +25,19 @@ function loadView(view, season = null) {
     }
 }
 
+function setVisibility(node, value)
+{
+    if(value)
+    {
+        node.classList.remove("hidden");
+        node.classList.add("visible");
+    }
+    else
+    {
+        node.classList.remove("visible");
+        node.classList.add("hidden");
+    }
+}
 
 /*------------------------------------------------------------------------------------------------------*/
 // Name: showNavButtons
@@ -63,25 +76,8 @@ function showNavButtons(show) {
 // Purpose: generate the innerHTML and grab the season from user selection
 /*------------------------------------------------------------------------------------------------------*/
 function loadHomeView() {
-    container.style.border ="solid black";
-    container.innerHTML = `        
-    <div id = "content-area">
-        <p> what this site is about blah blah box lorem upsum more words just to 
-            have an accurate representation more words more words just as an example
-            paragraph describing what this website does 
-        </p>
-        <div id = "select_szn">
-        <h3> Season </h3>
-        <select id = "season-select" > 
-            <option> Select season </option>
-            <option value=2020> 2020 </option>
-            <option value=2021> 2021 </option>
-            <option value=2022> 2022 </option>
-            <option value=2023> 2023 </option>
-        </select>
-        </div>
-    </div>
-    <img src="data/images/raceCarPhoto.webp" id="car_img"> <!-- Add a race car photo here -->`;
+
+    setVisibility()
 
     const seasonSelect = document.querySelector("#season-select");
     seasonSelect.addEventListener("change", (e) => {
