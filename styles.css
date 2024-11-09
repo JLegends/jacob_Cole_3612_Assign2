@@ -109,7 +109,7 @@ select {
     height: 1rem;
 }
 
-p {
+#results_container p {
     height: 1rem;
 }
 
