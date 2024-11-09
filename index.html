@@ -22,7 +22,7 @@
                 <div id = "select_szn">
                 <h3> Season </h3>
                 <select id = "season-select" > 
-                    <option> Select season </option>
+                    <option>SELECT A SEASON</option>
                     <option value=2020> 2020 </option>
                     <option value=2021> 2021 </option>
                     <option value=2022> 2022 </option>
@@ -40,11 +40,20 @@
                 </div>
             </table>
         </div>
-        <div id="results_container">
-            <h3 class="titles" id="results_title">Results for 2020 Italian Grand Prix</h3><p>Race Name, Round #, year, Circuit Name, Date URL (clean this up later)</p>
+        <div id="results_image" class="visible">
+            <img src="data/images/raceCarPhoto.webp" alt="A F1 car">
+        </div>
+        <div id="results_container" class="hidden">
+            <h3 class="titles" id="results_title"></h3><p>Race Name, Round #, year, Circuit Name, Date URL (clean this up later)</p>
             <div id="race_info_container">
                 <div id="qualifying">Qualifying</div>
-                <div id="results">Results</div>
+                <div id="results">Results
+                    <div id="podium">
+                        <div id="result_1" class="podium_Box"><img #id="pd1" src="data/images/drivers/max_verstappen.avif"></div> <!--Temporary fixed image, eventuallt this will grab the top 3 drivers-->
+                        <div id="result_2" class="podium_Box">2</div>
+                        <div id="result_3" class="podium_Box">3</div>
+                    </div>
+                </div>
             </div>
         </div>
     </article>
