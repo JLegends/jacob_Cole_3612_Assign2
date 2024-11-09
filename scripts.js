@@ -8,7 +8,7 @@ function init()
     container = document.querySelector("#main");
     homeView = document.querySelector("#home");
     raceView = document.querySelector("#races_container")
-    titles = document.querySelector("#titles")
+    titles = document.querySelector(".titles")
     header = document.querySelector("header");
 
     round_container = document.querySelector("#round_container");
