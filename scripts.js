@@ -1,44 +1,50 @@
 document.addEventListener('DOMContentLoaded', () => init()); 
 
-let container, homeView, raceView, titles, header;
-let round_container, race_table, seasonSelect;
+let container, homeView, raceView, roundTitle;
+let roundContainer, raceTable, seasonSelect;
+let resultsContainer, resultTitle, raceInfoContainer, qualifying, results;
 
 function init()
 {
     container = document.querySelector("#main");
     homeView = document.querySelector("#home");
     raceView = document.querySelector("#races_container")
-    titles = document.querySelector(".titles")
-    header = document.querySelector("header");
+    roundTitle = document.querySelector("#round_title")
 
-    round_container = document.querySelector("#round_container");
-    race_table = document.querySelector("#races");
+    roundContainer = document.querySelector("#round_container");
+    raceTable = document.querySelector("#races");
+
+    resultsContainer = document.querySelector("#results_container");
+    resultTitle = document.querySelector("#results_title");
+    raceInfoContainer = document.querySelector("#race_info_container");
+    qualifying = document.querySelector("#qualifying");
+    results = document.querySelector("#results");
 
     seasonSelect = document.querySelector("#season-select");
     seasonSelect.addEventListener("change", (e) => {
         const selectedSeason = e.target.value;
         if (selectedSeason) {
-            loadView("races", selectedSeason);
+            load_view("races", selectedSeason);
         }
     });
 
-    loadView("home");
+    load_view("home");
 }
 
 
 
-function loadView(view, season = null) {
+function load_view(view, season = null) {
 
     if (view === "home") {
-        showNavButtons(false);
-        setVisibility(homeView, true);
-        setVisibility(raceView, false);
+        show_nav_buttons(false);
+        set_visibility(homeView, true);
+        set_visibility(raceView, false);
     }
 
     if (view === "races") {
-        setVisibility(homeView, false);
-        setVisibility(raceView, true);
-        showNavButtons(true);
+        set_visibility(homeView, false);
+        set_visibility(raceView, true);
+        show_nav_buttons(true);
 
         /* Just a testing array to see if things are working properly */
         const racesArray = [{year: 2020, round: 1, name:"Italian Grand Prix"}, 
@@ -51,7 +57,7 @@ function loadView(view, season = null) {
     }
 }
 
-function setVisibility(node, value)
+function set_visibility(node, value)
 {
     if(value)
     {
@@ -69,31 +75,8 @@ function setVisibility(node, value)
 // Name: showNavButtons
 // Purpose: shows and hides the navigation buttons depending on the current view
 /*------------------------------------------------------------------------------------------------------*/
-function showNavButtons(show) {
-    nav_buttons = ["Home", "Favorites"];
-    
-    if (show) {
-        for (let nav_item of nav_buttons) {
-            const button = document.createElement("button");
-
-            button.id = nav_item;
-            button.textContent = nav_item;
-            button.fontWeight = 900;
-            if (nav_item === "Home") {
-                button.onclick = () => loadView('home');
-            }
-            header.appendChild(button);
-        }
-    }
-    else {
-        for (let nav_item of nav_buttons) {
-            const button = document.querySelector(`#${nav_item}`);
-            if (button) {
-                header.removeChild(button);
-
-            }
-        }
-    }
+function show_nav_buttons(show) {
+   
 }
 
 
@@ -103,10 +86,24 @@ function showNavButtons(show) {
 /*------------------------------------------------------------------------------------------------------*/
 function list_season_races(season, racesArray) {
     container.style.border ="none";
+    roundTitle.textContent = `${season} Races`;
 
+    const headerRow = document.createElement("tr");
 
-    titles.textContent = `${season} Races`;
-    generate_rounds_table(round_container, table, season, racesArray);
+    const roundColumn = document.createElement("th");
+    roundColumn.textContent = "Round";
+
+    const nameColumn = document.createElement("th");
+    nameColumn.textContent = "Name";
+
+    headerRow.appendChild(roundColumn);
+    headerRow.appendChild(nameColumn);
+
+    roundContainer.appendChild(headerRow)
+
+    raceTable.appendChild(round_container);
+
+    generate_rounds_table(roundContainer, raceTable, season, racesArray);
 
 }
 
@@ -150,18 +147,7 @@ function generate_rounds_table(round_container, table, season, racesArray) {
 // Purpose: creates the DOM content for the selection grand prix results
 /*------------------------------------------------------------------------------------------------------*/
 function list_grandprix_results(container, season, racesArray) {
-    const results_container = document.createElement("div");
-    results_container.id = "results_container";
-
-    const resultTitle = document.createElement("h3");
-    resultTitle.className = "titles";
     resultTitle.textContent = `Results for ${season} Italian Grand Prix`;
-
-    description = document.createElement("p");
-    description.textContent = "Race Name, Round #, year, Circuit Name, Date URL (clean this up later)";
-
-    const race_info_container = document.createElement("div");
-    race_info_container.id = "race_info_container";
 
     const qualifying = document.createElement("div");
     qualifying.id = "qualifying";
@@ -172,19 +158,11 @@ function list_grandprix_results(container, season, racesArray) {
     results.textContent = "Results";
 
 
-    results_container.appendChild(resultTitle);
-    results_container.appendChild(description);
 
     /*
     generate_qualify_table(); 
     generate_results_table();
 */
-    race_info_container.appendChild(qualifying);
-    race_info_container.appendChild(results);
-
-    results_container.appendChild(race_info_container);
-
-    container.appendChild(results_container);
 }
 
 /*--------------------------------------------------------------------------------------------------------
@@ -215,9 +193,9 @@ function generate_qualify_table(qualifying, table, season, racesArray) {
             results.appendChild(resultsButton);
             row.appendChild(results);
 
-            round_container.appendChild(row)
+            roundContainer.appendChild(row)
 
-            table.appendChild(round_container);
+            table.appendChild(roundContainer);
         }
     }
 }
@@ -250,9 +228,9 @@ function generate_results_table(results, table, season, racesArray) {
             results.appendChild(resultsButton);
             row.appendChild(results);
 
-            round_container.appendChild(row)
+            roundContainer.appendChild(row)
 
-            table.appendChild(round_container);
+            table.appendChild(roundContainer);
         }
     }
 }

@@ -14,14 +14,6 @@ header {
     height: 3rem;
 }
 
-.hidden{
-    display: none;
-}
-
-.visible{
-    display: block;
-}
-
 header img {
     margin-top: 0.5rem;
 }
@@ -159,4 +151,12 @@ td, th {
 
 h4 {
     margin: 0.5rem;
+}
+
+.hidden{
+    display: none !important;
+}
+
+.visible{
+    display: block;
 }
