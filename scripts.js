@@ -1,17 +1,43 @@
-document.addEventListener('DOMContentLoaded', () => loadView("home")); 
-const container = document.querySelector("#main");
-const homeView = document.querySelector("#home");
+document.addEventListener('DOMContentLoaded', () => init()); 
+
+let container, homeView, raceView, titles, header;
+let round_container, race_table, seasonSelect;
+
+function init()
+{
+    container = document.querySelector("#main");
+    homeView = document.querySelector("#home");
+    raceView = document.querySelector("#races_container")
+    titles = document.querySelector("#titles")
+    header = document.querySelector("header");
+
+    round_container = document.querySelector("#round_container");
+    race_table = document.querySelector("#races");
+
+    seasonSelect = document.querySelector("#season-select");
+    seasonSelect.addEventListener("change", (e) => {
+        const selectedSeason = e.target.value;
+        if (selectedSeason) {
+            loadView("races", selectedSeason);
+        }
+    });
+
+    loadView("home");
+}
+
+
 
 function loadView(view, season = null) {
 
     if (view === "home") {
         showNavButtons(false);
-        loadHomeView(container);
+        setVisibility(homeView, true);
+        setVisibility(raceView, false);
     }
 
     if (view === "races") {
         setVisibility(homeView, false);
-
+        setVisibility(raceView, true);
         showNavButtons(true);
 
         /* Just a testing array to see if things are working properly */
@@ -45,7 +71,6 @@ function setVisibility(node, value)
 /*------------------------------------------------------------------------------------------------------*/
 function showNavButtons(show) {
     nav_buttons = ["Home", "Favorites"];
-    const header = document.querySelector("header");
     
     if (show) {
         for (let nav_item of nav_buttons) {
@@ -71,22 +96,6 @@ function showNavButtons(show) {
     }
 }
 
-/*--------------------------------------------------------------------------------------------------------
-// Name: loadHomeView
-// Purpose: generate the innerHTML and grab the season from user selection
-/*------------------------------------------------------------------------------------------------------*/
-function loadHomeView() {
-
-    setVisibility()
-
-    const seasonSelect = document.querySelector("#season-select");
-    seasonSelect.addEventListener("change", (e) => {
-        const selectedSeason = e.target.value;
-        if (selectedSeason) {
-            loadView("races", selectedSeason);
-        }
-    });
-}
 
 /*--------------------------------------------------------------------------------------------------------
 // Name: list_season_races
@@ -95,40 +104,10 @@ function loadHomeView() {
 function list_season_races(season, racesArray) {
     container.style.border ="none";
 
-    const races_container = document.createElement("div");
-    races_container.id = "races_container";
 
-    const titles = document.createElement("h3");
-    titles.className = "titles";
     titles.textContent = `${season} Races`;
-
-    const round_container = document.createElement("div");
-    round_container.id = "round_container";
-
-    const table = document.createElement("table");
-    table.id = "races";
-
-    const headerRow = document.createElement("tr");
-
-    const roundColumn = document.createElement("th");
-    roundColumn.textContent = "Round";
-
-    const nameColumn = document.createElement("th");
-    nameColumn.textContent = "Name";
-
-    headerRow.appendChild(roundColumn);
-    headerRow.appendChild(nameColumn);
-
-    round_container.appendChild(headerRow)
-
-    table.appendChild(round_container);
-
     generate_rounds_table(round_container, table, season, racesArray);
 
-    races_container.appendChild(titles);
-    races_container.appendChild(table);
-
-    container.appendChild(races_container);
 }
 
 /*--------------------------------------------------------------------------------------------------------
