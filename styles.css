@@ -2,6 +2,10 @@
     --var-button: #208adb;
     --var-button-hover: #236090;
     --var-container-back: lightgrey;
+    --var-f1-blue: #111827;
+    --var-f1-red: #e10600;
+    --var-f1-grey: rgb(148, 148, 152);
+    --var-f1-grey2: rgb(103, 103, 109);
 
 }
 
@@ -9,7 +13,8 @@ header {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 5fr 1fr ;
-    border: solid black;
+    background-color: #e10600;
+    color: white;
     padding: 0.5rem;
     height: 3rem;
 }
@@ -50,7 +55,7 @@ button:hover {
 }
 
 #home_view{
-    border: solid black;
+    border: solid 6px var(--var-f1-red);
 }
 
 #container, #home_view, #race_view{
@@ -92,7 +97,6 @@ select {
 #race_container, #results_container, #results_image{
     border: solid black;
     align-items: center;
-    padding: 0 0.5rem 0.5rem 0.5rem;
 
 }
 
@@ -110,6 +114,10 @@ select {
     text-align: center;
     width: 100%;
     height: 1rem;
+    background-color: #e10600;
+    color: white;
+    margin: 0;
+    padding: 20px;
 }
 
 #results_container p {
@@ -117,7 +125,7 @@ select {
 }
 
 #races, #results, #qualifying {
-    background-color: var(--var-container-back);
+    background-color: var(--var-f1-blue);
     height: 100%;
     width: 100%;
     text-align: center;
@@ -213,6 +221,11 @@ td, th {
 th{
     position: sticky;
     z-index: 1;
+    color:var(--var-f1-grey);
+}
+
+td{
+    color:white;
 }
 
 h4 {
