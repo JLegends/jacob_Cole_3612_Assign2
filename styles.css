@@ -1,20 +1,28 @@
 :root{
-    --var-button: #F7EfE7;
+    --var-primary: #FF8000;
+    --var-secondary: #47C7FC;
+
+    --var-button: #000000;
     --var-button-hover: #BFB0A0;
+
+    --var-text-light: #FFFFFF;
+    --var-text-black: #000000;
+
+    
     --var-container-back: lightgrey;
-    --var-f1-blue: #312C38;
-    --var-f1-red: #E73C37;
     --var-f1-grey: rgb(148, 148, 152);
-    --var-f1-grey2: rgb(103, 103, 109);
+    --var-f1-grey2: rgb(84, 84, 89);
 
 }
+
+
 
 header {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 1fr 5fr 1fr 1fr;
-    background-color: var(--var-f1-red);
-    color: white;
+    background-color: var(--var-primary);
+    color: var(--var-button);
     padding: 0.5rem;
     height: 3rem;
 }
@@ -35,6 +43,8 @@ button {
     display: flex;
     justify-content: center;
     background-color: var(--var-button);
+    color: var(--var-text-light);
+    font-weight: 900;
     height: 2rem;
     width: 5rem;
     padding: 0.5rem 0.4rem;
@@ -55,7 +65,7 @@ button:hover {
 }
 
 #home_view{
-    border: solid 6px var(--var-f1-red);
+    border: solid 6px var(--var-primary);
 }
 
 #container, #home_view, #race_view{
@@ -95,7 +105,7 @@ select {
 }
 
 #race_container, #results_container, #results_image{
-    border: solid black;
+    border: solid 6px var(--var-primary);
     align-items: center;
 
 }
@@ -114,8 +124,8 @@ select {
     text-align: center;
     width: 100%;
     height: 1rem;
-    background-color: var(--var-f1-red);
-    color: white;
+    background-color: var(--var-primary);
+    color: var(--var-text-black);
     margin: 0;
     padding: 1rem 0;
 }
@@ -127,7 +137,7 @@ select {
 }
 
 #races, #results, #qualifying {
-    background-color: var(--var-f1-blue);
+    background-color: var(--var-secondary);
     height: 100%;
     width: 100%;
     text-align: center;
@@ -137,8 +147,17 @@ select {
     padding: 0 0.5rem 0 0.5rem;
 }
 
+#text {
+    margin: 0.5rem 0;
+    font-weight: 900;
+}
+
 #qualifying {
     margin-right: 0.25rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 650px;
+    width: 100%;
 }
 
 #results {
@@ -147,6 +166,7 @@ select {
     flex-direction: column;
     align-items: center;
 }
+
 
 /*Scrollable Items */
 #race_container {
@@ -159,6 +179,7 @@ select {
     max-height: 650px;
 }
 
+
 #results_driver_table {
     overflow-y: auto;
     overflow-x: hidden;
@@ -170,7 +191,6 @@ select {
 /*Qualifying table*/
 
 #podium {
-    margin-top: 4%;
     display: flex;
     flex-direction: row;
     gap: 1rem;
@@ -178,7 +198,8 @@ select {
 
 .podium_Box
 {
-    background-color: rgb(135, 2, 2);
+    color: var(--var-text-black);
+    background-color: var(--var-primary);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -225,11 +246,11 @@ td, th {
 th{
     position: sticky;
     z-index: 1;
-    color:var(--var-f1-grey);
+    color:var(--var-f1-grey2);
 }
 
 td{
-    color:white;
+    color: var(--var-text-black);
 }
 
 h4 {

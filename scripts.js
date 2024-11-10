@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => init());
 const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
 let container, homeView, raceView, roundTitle;
 let roundContainer, raceTable, seasonSelect;
-let resultsContainer, resultTitle, raceInfoContainer, qualifying, results, resultsImage, driverContainer;
+let resultsContainer, resultTitle, raceInfoContainer, qualifying, qualifyContainer, results, resultsImage, driverContainer;
 let pdImg1, pdImg2, pdImg3;
 let home, favorites;
 
@@ -41,6 +41,9 @@ function init()
     roundContainer = document.querySelector("#round_container");
     raceTable = document.querySelector("#races");
 
+    qualifying = document.querySelector("#qualifying");
+    qualifyContainer = document.querySelector("#qualify_container");
+
     resultsContainer = document.querySelector("#results_container");
     resultTitle = document.querySelector("#results_title");
     raceInfoContainer = document.querySelector("#race_info_container");
@@ -66,11 +69,19 @@ function fetch_race_season(season)
     return fetch_store_API_data(request); /*Returns a promise object*/
 }
 
+function fetch_race_qualify(raceID)
+{
+    let request = `${url}/qualifying.php?race=${raceID}`;
+    return fetch_store_API_data(request);
+}
+
 function fetch_race_results(raceID)
 {
     let request = `${url}/results.php?race=${raceID}`;
     return fetch_store_API_data(request);
 }
+
+
 
 async function fetch_store_API_data(request) /*ChatGPT helped with this one but we can change it if this doesn't fit what we're doing in class */
 {
@@ -109,7 +120,6 @@ function load_view(view, season = null) {
         set_visibility(homeView, false);
         set_visibility(raceView, true);
         show_nav_buttons(true);
-
         list_season_races(season);
     }
 }
@@ -237,8 +247,15 @@ function generate_rounds_table(round_container, table, season, racesArray) {
 /*------------------------------------------------------------------------------------------------------*/
 function list_grandprix_results(raceID) {
     /*resultTitle.textContent = `Results for ${season} Italian Grand Prix`;*/
+    qualifyContainer.textContent = "";
     driverContainer.textContent = "";
 
+    set_visibility(qualifying, true);
+
+    fetch_race_qualify(raceID).then(data => {
+        console.log(data);
+        generate_qualify_table(data);                             
+    });
 
     set_visibility(resultsContainer, true);
     set_visibility(resultsImage, false);
@@ -258,9 +275,35 @@ function list_grandprix_results(raceID) {
 // Name: generate_qualify_table
 // Purpose: generates the table of qualifying drivers in a grand prix
 /*------------------------------------------------------------------------------------------------------*/
-function generate_qualify_table(qualifying, table, season, racesArray) {
-    for (let race of racesArray) {
+function generate_qualify_table(qualifying) {
+    for (let qualify of qualifying) {
+        const row = document.createElement("tr");
 
+        const pos = document.createElement("td");
+        pos.textContent = qualify.position;
+        row.appendChild(pos);
+
+        const name = document.createElement("td");
+        name.textContent = qualify.driver.forename + " " + qualify.driver.surname;
+        row.appendChild(name);
+
+        const constructor = document.createElement("td");
+        constructor.textContent = qualify.constructor.name;
+        row.appendChild(constructor); 
+
+        const q1 = document.createElement("td");
+        q1.textContent = qualify.q1;
+        row.appendChild(q1);
+
+        const q2 = document.createElement("td");
+        q2.textContent = qualify.q2;
+        row.appendChild(q2);
+
+        const q3 = document.createElement("td");
+        q3.textContent = qualify.q3;
+        row.appendChild(q3);
+    
+        qualifyContainer.appendChild(row);
     }
 }
 
