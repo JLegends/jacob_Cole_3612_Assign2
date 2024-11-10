@@ -1,9 +1,9 @@
 :root{
-    --var-button: #208adb;
-    --var-button-hover: #236090;
+    --var-button: #F7EfE7;
+    --var-button-hover: #BFB0A0;
     --var-container-back: lightgrey;
-    --var-f1-blue: #111827;
-    --var-f1-red: #e10600;
+    --var-f1-blue: #312C38;
+    --var-f1-red: #E73C37;
     --var-f1-grey: rgb(148, 148, 152);
     --var-f1-grey2: rgb(103, 103, 109);
 
@@ -12,8 +12,8 @@
 header {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 1fr 5fr 1fr ;
-    background-color: #e10600;
+    grid-template-columns: 1fr 5fr 1fr 1fr;
+    background-color: var(--var-f1-red);
     color: white;
     padding: 0.5rem;
     height: 3rem;
@@ -107,21 +107,23 @@ select {
 #race_info_container {
     display: flex;
     flex-direction: row;
-    height: 87%;
+    height: 88%;
 }
 
 .titles {
     text-align: center;
     width: 100%;
     height: 1rem;
-    background-color: #e10600;
+    background-color: var(--var-f1-red);
     color: white;
     margin: 0;
-    padding: 20px;
+    padding: 1rem 0;
 }
 
 #results_container p {
     height: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 #races, #results, #qualifying {
@@ -162,7 +164,7 @@ select {
     overflow-x: hidden;
     max-height: 650px;
     width: 100%;
-    margin-top: 3%; 
+    margin: 3% 0; 
 }
 
 /*Qualifying table*/
