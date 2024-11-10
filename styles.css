@@ -1,15 +1,28 @@
 :root{
-    --var-button: #208adb;
-    --var-button-hover: #236090;
+    --var-primary: #FF8000;
+    --var-secondary: #47C7FC;
+
+    --var-button: #000000;
+    --var-button-hover: #BFB0A0;
+
+    --var-text-light: #FFFFFF;
+    --var-text-black: #000000;
+
+    
     --var-container-back: lightgrey;
+    --var-f1-grey: rgb(148, 148, 152);
+    --var-f1-grey2: rgb(84, 84, 89);
 
 }
+
+
 
 header {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 1fr 5fr 1fr ;
-    border: solid black;
+    grid-template-columns: 1fr 5fr 1fr 1fr;
+    background-color: var(--var-primary);
+    color: var(--var-button);
     padding: 0.5rem;
     height: 3rem;
 }
@@ -30,6 +43,8 @@ button {
     display: flex;
     justify-content: center;
     background-color: var(--var-button);
+    color: var(--var-text-light);
+    font-weight: 900;
     height: 2rem;
     width: 5rem;
     padding: 0.5rem 0.4rem;
@@ -50,13 +65,13 @@ button:hover {
 }
 
 #home_view{
-    border: solid black;
+    border: solid 6px var(--var-primary);
 }
 
 #container, #home_view, #race_view{
     display: flex;
     flex-direction: row;  
-    height: 650px;;
+    height: 650px;
     margin-top: 0.5rem;  
 }
 
@@ -90,17 +105,9 @@ select {
 }
 
 #race_container, #results_container, #results_image{
-    border: solid black;
-    height: 650px;
+    border: solid 6px var(--var-primary);
     align-items: center;
-    padding: 0 0.5rem 0.5rem 0.5rem;
-}
 
-#race_container {
-    display: flex;
-    flex-direction: column;
-    margin-right: 1rem;
-    width: 25%;
 }
 
 #results_container, #results_image{
@@ -110,21 +117,27 @@ select {
 #race_info_container {
     display: flex;
     flex-direction: row;
-    height: 87%;
+    height: 88%;
 }
 
 .titles {
     text-align: center;
     width: 100%;
     height: 1rem;
+    background-color: var(--var-primary);
+    color: var(--var-text-black);
+    margin: 0;
+    padding: 1rem 0;
 }
 
 #results_container p {
     height: 1rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.4rem;
 }
 
 #races, #results, #qualifying {
-    background-color: var(--var-container-back);
+    background-color: var(--var-secondary);
     height: 100%;
     width: 100%;
     text-align: center;
@@ -134,8 +147,17 @@ select {
     padding: 0 0.5rem 0 0.5rem;
 }
 
+#text {
+    margin: 0.5rem 0;
+    font-weight: 900;
+}
+
 #qualifying {
     margin-right: 0.25rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 650px;
+    width: 100%;
 }
 
 #results {
@@ -145,8 +167,30 @@ select {
     align-items: center;
 }
 
+
+/*Scrollable Items */
+#race_container {
+    display: flex;
+    flex-direction: column;
+    margin-right: 1rem;
+    width: 25%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 650px;
+}
+
+
+#results_driver_table {
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 650px;
+    width: 100%;
+    margin: 3% 0; 
+}
+
+/*Qualifying table*/
+
 #podium {
-    margin-top: 4%;
     display: flex;
     flex-direction: row;
     gap: 1rem;
@@ -154,7 +198,8 @@ select {
 
 .podium_Box
 {
-    background-color: rgb(135, 2, 2);
+    color: var(--var-text-black);
+    background-color: var(--var-primary);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -196,6 +241,16 @@ table {
 
 td, th {
     text-align: center;
+}
+
+th{
+    position: sticky;
+    z-index: 1;
+    color:var(--var-f1-grey2);
+}
+
+td{
+    color: var(--var-text-black);
 }
 
 h4 {
