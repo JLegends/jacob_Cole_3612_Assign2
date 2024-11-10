@@ -104,14 +104,22 @@ select {
     height: 650px;
 }
 
-#race_container, #results_container, #results_image{
+#race_container, #results_container, #pre_results_message{
     border: solid 6px var(--var-primary);
     align-items: center;
 
 }
 
-#results_container, #results_image{
+#results_container, #pre_results_message{
     width: 75%;
+}
+
+#pre_results_message {
+    display: flex;
+    font-size: 2rem;
+    align-items: center;
+    justify-content: center;
+
 }
 
 #race_info_container {
@@ -267,4 +275,41 @@ h4 {
 
 .visibleFlex{
     display: flex;
+}
+
+#circuit {
+    width: 50rem;
+    height: 25rem;
+    border-radius: 5px;
+}
+
+#circuit h3 {
+    margin: 0.5rem;
+    display: flex;
+    justify-content: center;
+}
+
+h3 {
+    align-items: center;
+}
+
+#circuit_popup {
+    display: flex;
+    flex-direction: row;
+}
+
+#circuit_img_box {
+    width: 20rem;
+    height: 20rem;
+    background-image: url("./data/images/raceCarPhoto.webp");
+
+}
+
+#circuit_info {
+    display: flex;
+    flex-direction: column;
+}  
+
+#add_favorites {
+    width: 8rem;
 }
