@@ -17,7 +17,7 @@
             <div id = content_area>
                 <p> what this site is about blah blah box lorem upsum more words just to 
                     have an accurate representation more words more words just as an example
-                    paragraph describing what this website does 
+                    paragraph describing what this website does testing testing
                 </p>
                 <div id = "select_szn">
                 <h3> Season </h3>
@@ -40,11 +40,11 @@
                 </tbody>
             </table>
         </div>
-        <div id="results_image" class="visible">
-            <img src="data/images/raceCarPhoto.webp" alt="A F1 car">
+        <div id="pre_results_message" class="visible">
+            <h1> SELECT ANY RACE</h1>
         </div>
         <div id="results_container" class="hidden">
-            <h3 class="titles" id="results_title"></h3><p>Race Name, Round #, year, Circuit Name, Date URL (clean this up later)</p>
+            <h3 class="titles" id="results_title">Results for ${this season} ${grandprix} will fix later </h3><p>Race Name, Round #, year, Circuit Name, Date URL (clean this up later)</p>
             <div id="race_info_container">
                 <div id="qualifying">
                     <h4>Qualifying</h4>
@@ -74,8 +74,18 @@
             </div>
         </div>
     </article>
-    <dialog id = "circuit">
-
+    <dialog id = "circuit" close> <!-- Change close/open to make popup disappear/appear-->
+        <h3> Circuit Details </h3>
+        <div id = "circuit_popup">
+            <figure id ="circuit_img_box"></figure>
+            <div id ="circuit_info">
+                <h3> Name, Location, Country, URL (needs to request the circuit data) </h3>
+                <button id="add_favorites">Add Favorites</button>
+                <form method="dialog">
+                    <button id= "close">Close</button>
+                </form>
+            </div>
+        </div>
     </dialog>
     <dialog id = "driver">
 
