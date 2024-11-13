@@ -44,7 +44,12 @@
             <h1> SELECT ANY RACE</h1>
         </div>
         <div id="results_container" class="hidden">
-            <h3 class="titles" id="results_title">Results for ${this season} ${grandprix} will fix later </h3><p>Race Name, Round #, year, Circuit Name, Date URL (clean this up later)</p>
+            <h3 class="titles" id="results_title">Results for ${this season} ${grandprix} will fix later </h3>
+            <span id = "results_subheader">
+                <p>Round #(9) - Year - </p> <!-- leave this for now but it already being programmatically rewritten -->
+                <p id = circuit_name >Circuit Name </p>
+                <p>- Date  - URL</p>
+            </span>
             <div id="race_info_container">
                 <div id="qualifying">
                     <h4>Qualifying</h4>
@@ -100,8 +105,20 @@
             </div>
     </dialog>
     <dialog id = "constructor">
-
+        <h3> Constructor Details </h3>
+        <div id = "constructor_popup">
+            <figure id ="constructor_img_box"></figure>
+            <div id ="cconstructor_info">
+                <h3> Rnd, Name, Driver, Pos (needs to request race data) </h3>
+                <button id="add_favorites">Add Favorites</button> <!-- This might need a class (add_favorits) with an id = favorite_constructor,etc..-->
+                <form method="dialog">
+                    <button id= "close">Close</button>
+                </form>
+            </div>
+        </div>
     </dialog>
+    <dialog id = "favorites">
+
     </dialog>
 </body> 
 </html>

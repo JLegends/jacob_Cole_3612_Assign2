@@ -265,6 +265,10 @@ h4 {
     margin: 0.5rem;
 }
 
+span {
+    display: inline-block;
+}
+
 .hidden{
     display: none !important;
 }
@@ -312,4 +316,8 @@ h3 {
 
 #add_favorites {
     width: 8rem;
+}
+
+span p {
+    display: inline-block;
 }

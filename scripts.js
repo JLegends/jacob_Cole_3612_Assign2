@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', init);
 function init() {
     const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
     const home = document.querySelector("#home_button");
-    const favorites = document.querySelector("#favorites_button");
+    const favorites_button = document.querySelector("#favorites_button");
 
 
     const container = document.querySelector("#container");
@@ -31,8 +31,15 @@ function init() {
     const qualifyContainer = document.querySelector("#qualify_container");
 
     const resultsContainer = document.querySelector("#results_container");
+
+    
     const resultTitle = document.querySelector("#results_title");
-    const raceInfoContainer = document.querySelector("#race_info_container");
+    const resultSubheader = document.querySelector("#results_subheader");
+
+
+
+    const circuit_name = document.querySelector("#circuit_name");
+
     const results = document.querySelector("#results");
     const preResultsMessage = document.querySelector("#pre_results_message");
     const driverContainer = document.querySelector("#driver_container");
@@ -46,6 +53,7 @@ function init() {
     const circuit = document.querySelector("#circuit");
     const driver = document.querySelector("#driver");
     const constructor = document.querySelector("#constructor");
+    const favorites = document.querySelector("#favorites");
 
 
     add_event_handlers();
@@ -56,6 +64,11 @@ function init() {
     function fetch_race_season(season) {
         let request = `${url}/races.php?season=${season}`;
         return fetch_store_API_data(request); /*Returns a promise object*/
+    }
+
+    function fetch_circuit_name(circuitId) {
+        let request = `${url}/circuits.php?id=${circuitId}`;
+        return fetch_store_API_data(request);
     }
 
     function fetch_race_qualify(raceID) {
@@ -131,7 +144,7 @@ function init() {
             }
         });
 
-        favorites.addEventListener("click", () => { /* change this to the right popup later, this was just to test how it worked */
+        favorites_button.addEventListener("click", () => { /* change this to the right popup later, this was just to test how it worked */
             circuit.showModal();
         });
 
@@ -139,6 +152,7 @@ function init() {
         roundContainer.addEventListener("click", load_popup);
         qualifyContainer.addEventListener("click", load_popup);
 
+        circuit_name.addEventListener("click", load_popup);
 
     }
 
@@ -148,14 +162,14 @@ function init() {
     /*------------------------------------------------------------------------------------------------------*/
     function show_nav_buttons(show) {
         if (show) {
-            favorites.classList.add("visibleFlex");
-            favorites.classList.remove("hidden");
+            favorites_button.classList.add("visibleFlex");
+            favorites_button.classList.remove("hidden");
             home.classList.add("visibleFlex");
             home.classList.remove("hidden");
         }
         else {
-            favorites.classList.remove("visibleFlex");
-            favorites.classList.add("hidden");
+            favorites_button.classList.remove("visibleFlex");
+            favorites_button.classList.add("hidden");
             home.classList.remove("visibleFlex");
             home.classList.add("hidden");
         }
@@ -220,7 +234,11 @@ function init() {
 
 
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
-            resultsButton.addEventListener("click", () => { list_grandprix_results(race.id, race.name, season); });
+            resultsButton.addEventListener("click", () => { 
+                list_grandprix_results(race.id, race.name, season); 
+                console.log(race);
+                generate_results_subheader(race.circuit.id, round.textContent, race.year, race.name, race.date, race.url);
+            });
 
             row.appendChild(round);
             row.appendChild(name);
@@ -258,7 +276,7 @@ function init() {
 
         fetch_race_results(raceID).then(data => {
             console.log(data);
-            generate_results_table(data)
+            generate_results_table(data);
             pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
             pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
             pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
@@ -287,6 +305,7 @@ function init() {
 
             const constructor = document.createElement("td");
             constructor.textContent = qualify.constructor.name;
+            add_type_and_id(constructor, "constructor", qualify.constructor.ref);
             row.appendChild(constructor);
 
             const q1 = document.createElement("td");
@@ -320,11 +339,11 @@ function init() {
             const name = document.createElement("td");
             name.textContent = result.driver.forename + " " + result.driver.surname;
             add_type_and_id(name, "driver", result.driver.ref);
-
             row.appendChild(name);
 
             const constructor = document.createElement("td");
             constructor.textContent = result.constructor.name;
+            add_type_and_id(constructor, "constructor", result.constructor.ref);
             row.appendChild(constructor);
 
             const laps = document.createElement("td");
@@ -364,14 +383,25 @@ function init() {
         {
             circuit.showModal();
         }
-
-
+        else if (type == "constructor") {
+            constructor.showModal();
+        }
     }
 
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: generate_results_subheader
+    // Purpose: assigns the variables to the whole results container subheader (will soon also allow for the 
+    circuit name popup on circuit name click)
+    /*------------------------------------------------------------------------------------------------------*/
+    function generate_results_subheader(circuitId, raceRound, raceYear, raceName, raceDate, raceUrl) {
+        console.log(circuitId);
 
-
-
+        fetch_circuit_name(circuitId).then(data => {
+            console.log(data);
+            resultSubheader.textContent = `${raceName} - Round ${raceRound} - ${raceYear} - ${data.name} - ${raceDate} - ${raceUrl}`;
+        });
+    }
 
 }
 
