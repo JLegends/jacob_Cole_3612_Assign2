@@ -95,10 +95,12 @@ async function fetch_store_API_data(request) /*ChatGPT helped with this one but 
         try {
             const response = await fetch(request);
             const data = await response.json();
-
-            // Save data to local storage as a JSON string
-            localStorage.setItem(request, JSON.stringify(data));
-
+            
+            if(request.includes("/races.php?season=") || request.includes("results.php?season=") || request.includes("/qualifying.php?season="))
+            {
+                localStorage.setItem(request, JSON.stringify(data)); // Save data to local storage as a JSON string
+                console.log("Data stored in local storage! request:" + request);
+            }
             return data;
         } catch (error) {
             console.error("Error fetching data:", error);
