@@ -3,9 +3,10 @@ document.addEventListener('DOMContentLoaded', () => init());
 const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
 let container, homeView, raceView, roundTitle;
 let roundContainer, raceTable, seasonSelect;
-let resultsContainer, resultTitle, raceInfoContainer, qualifying, qualifyContainer, results, resultsImage, driverContainer;
+let resultsContainer, resultTitle, raceInfoContainer, qualifying, qualifyContainer, results, preResultsMessage, driverContainer;
 let pdImg1, pdImg2, pdImg3;
 let home, favorites;
+let circuit, constructor, driver /* pop ups */
 
 /* Known Issues 
 
@@ -13,12 +14,11 @@ let home, favorites;
 
 
     ==== TO DO =====
-    Make the data tables scrollable so they don't go off the edge of page.
-
-    Qualifying Section
-
     Need to ask for more clarification about the local storage thing
 
+    sorting by the selected table header
+
+    the dialog popups HTML + the needed js and api requests for that data
 
 */
 
@@ -49,7 +49,7 @@ function init()
     raceInfoContainer = document.querySelector("#race_info_container");
     qualifying = document.querySelector("#qualifying");
     results = document.querySelector("#results");
-    resultsImage = document.querySelector("#results_image");
+    preResultsMessage = document.querySelector("#pre_results_message");
     driverContainer = document.querySelector("#driver_container");
 
     pdImg1 = document.querySelector("#pd1");
@@ -57,6 +57,10 @@ function init()
     pdImg3 = document.querySelector("#pd3");
 
     seasonSelect = document.querySelector("#season-select");
+
+    circuit = document.querySelector("#circuit");
+
+
     
     add_event_handlers();
 
@@ -83,7 +87,7 @@ function fetch_race_results(raceID)
 
 
 
-async function fetch_store_API_data(request) /*ChatGPT helped with this one but we can change it if this doesn't fit what we're doing in class */
+async function fetch_store_API_data(request)
 {
     const storedData = localStorage.getItem(request);
 
@@ -113,7 +117,7 @@ function load_view(view, season = null) {
         set_visibility(homeView, true);
         set_visibility(raceView, false);
         set_visibility(resultsContainer, false);
-        set_visibility(resultsImage, true);
+        set_visibility(preResultsMessage, true);
     }
 
     if (view === "races") {
@@ -148,6 +152,11 @@ function add_event_handlers()
             load_view("races", selectedSeason);
         }
     });
+
+    favorites.addEventListener("click", () => { /* change this to the right popup later, this was just to test how it worked */
+        circuit.showModal();
+    }); 
+    
 }
 
 /*------------------------------------------------------------------------------------------------------*/
@@ -225,8 +234,10 @@ function generate_rounds_table(round_container, table, season, racesArray) {
         round.textContent = i++;
         name.textContent = race.name;
         resultsButton.textContent = "Results";
+
+
         resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
-        resultsButton.addEventListener("click", () => { list_grandprix_results(race.id); });
+        resultsButton.addEventListener("click", () => { list_grandprix_results(race.id, race.name, season); });
 
         row.appendChild(round);
         row.appendChild(name);
@@ -245,10 +256,12 @@ function generate_rounds_table(round_container, table, season, racesArray) {
 // Name: list_grandprix_results
 // Purpose: creates the DOM content for the selection grand prix results
 /*------------------------------------------------------------------------------------------------------*/
-function list_grandprix_results(raceID) {
-    /*resultTitle.textContent = `Results for ${season} Italian Grand Prix`;*/
+function list_grandprix_results(raceID, raceName, season) {
+
     qualifyContainer.textContent = "";
     driverContainer.textContent = "";
+
+    resultTitle.textContent = `Results for ${season}, ${raceName}`;
 
     set_visibility(qualifying, true);
 
@@ -258,7 +271,7 @@ function list_grandprix_results(raceID) {
     });
 
     set_visibility(resultsContainer, true);
-    set_visibility(resultsImage, false);
+    set_visibility(preResultsMessage, false);
 
     fetch_race_results(raceID).then(data => {
         console.log(data);
@@ -339,3 +352,7 @@ function generate_results_table(results) {
     
     }
 }
+
+function load_popup(popup) {
+    document.querySelector("#circuit").showModal();
+}  
