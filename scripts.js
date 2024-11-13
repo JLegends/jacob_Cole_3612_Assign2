@@ -135,6 +135,11 @@ function init() {
             circuit.showModal();
         });
 
+        driverContainer.addEventListener("click", load_popup);
+        roundContainer.addEventListener("click", load_popup);
+        qualifyContainer.addEventListener("click", load_popup);
+
+
     }
 
     /*------------------------------------------------------------------------------------------------------*/
@@ -209,6 +214,8 @@ function init() {
 
             round.textContent = i++;
             name.textContent = race.name;
+            add_type_and_id(name, "circuit", race.id);
+
             resultsButton.textContent = "Results";
 
 
@@ -274,6 +281,8 @@ function init() {
 
             const name = document.createElement("td");
             name.textContent = qualify.driver.forename + " " + qualify.driver.surname;
+            add_type_and_id(name, "driver", qualify.driver.ref);
+
             row.appendChild(name);
 
             const constructor = document.createElement("td");
@@ -327,7 +336,6 @@ function init() {
             row.appendChild(pts);
 
             driverContainer.appendChild(row);
-            driverContainer.addEventListener("click", load_popup);
         }
     }
 
@@ -350,8 +358,13 @@ function init() {
         console.log(e.target);
 
         if (type == "driver") {
-
+            driver.showModal();
         }
+        else if(type == "circuit")
+        {
+            circuit.showModal();
+        }
+
 
     }
 
