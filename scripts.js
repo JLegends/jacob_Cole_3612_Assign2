@@ -1,13 +1,3 @@
-document.addEventListener('DOMContentLoaded', () => init()); 
-
-const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
-let container, homeView, raceView, roundTitle;
-let roundContainer, raceTable, seasonSelect;
-let resultsContainer, resultTitle, raceInfoContainer, qualifying, qualifyContainer, results, preResultsMessage, driverContainer;
-let pdImg1, pdImg2, pdImg3;
-let home, favorites;
-let circuit, constructor, driver /* pop ups */
-
 /* Known Issues 
 
     Some of the data grabbed from the API has weird characters will probably have to ask about this.
@@ -21,51 +11,47 @@ let circuit, constructor, driver /* pop ups */
     the dialog popups HTML + the needed js and api requests for that data
 
 */
-
-
-
-
+document.addEventListener('DOMContentLoaded', init);
 
 function init()
 {
-    /*Getting most query selectors out of the way at the beginning, I'll have to ask if this is a good way to do this*/
-    home = document.querySelector("#home_button"); 
-    favorites = document.querySelector("#favorites_button");
+const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
+const  home = document.querySelector("#home_button"); 
+const  favorites = document.querySelector("#favorites_button");
 
     
-    container = document.querySelector("#container");
-    homeView = document.querySelector("#home_view");
-    raceView = document.querySelector("#race_view")
-    roundTitle = document.querySelector("#round_title")
+const  container = document.querySelector("#container");
+const    homeView = document.querySelector("#home_view");
+const   raceView = document.querySelector("#race_view")
+const    roundTitle = document.querySelector("#round_title")
 
-    roundContainer = document.querySelector("#round_container");
-    raceTable = document.querySelector("#races");
+const    roundContainer = document.querySelector("#round_container");
+const    raceTable = document.querySelector("#races");
 
-    qualifying = document.querySelector("#qualifying");
-    qualifyContainer = document.querySelector("#qualify_container");
+const    qualifying = document.querySelector("#qualifying");
+const    qualifyContainer = document.querySelector("#qualify_container");
 
-    resultsContainer = document.querySelector("#results_container");
-    resultTitle = document.querySelector("#results_title");
-    raceInfoContainer = document.querySelector("#race_info_container");
-    qualifying = document.querySelector("#qualifying");
-    results = document.querySelector("#results");
-    preResultsMessage = document.querySelector("#pre_results_message");
-    driverContainer = document.querySelector("#driver_container");
+const    resultsContainer = document.querySelector("#results_container");
+const    resultTitle = document.querySelector("#results_title");
+const    raceInfoContainer = document.querySelector("#race_info_container");
+const    results = document.querySelector("#results");
+const   preResultsMessage = document.querySelector("#pre_results_message");
+const    driverContainer = document.querySelector("#driver_container");
 
-    pdImg1 = document.querySelector("#pd1");
-    pdImg2 = document.querySelector("#pd2");
-    pdImg3 = document.querySelector("#pd3");
+const    pdImg1 = document.querySelector("#pd1");
+const    pdImg2 = document.querySelector("#pd2");
+const    pdImg3 = document.querySelector("#pd3");
 
-    seasonSelect = document.querySelector("#season-select");
+const    seasonSelect = document.querySelector("#season-select");
 
-    circuit = document.querySelector("#circuit");
+const    circuit = document.querySelector("#circuit");
 
 
     
     add_event_handlers();
 
     load_view("home");
-}
+
 
 function fetch_race_season(season)
 {
@@ -336,6 +322,8 @@ function generate_results_table(results) {
 
         const name = document.createElement("td");
         name.textContent = result.driver.forename + " " + result.driver.surname;
+        add_type_and_id(name, "driver", result.driver.ref);
+
         row.appendChild(name);
 
         const constructor = document.createElement("td");
@@ -351,10 +339,32 @@ function generate_results_table(results) {
         row.appendChild(pts); 
 
         driverContainer.appendChild(row);
-    
+        driverContainer.addEventListener("click", load_popup);
     }
 }
 
-function load_popup(popup) {
-    document.querySelector("#circuit").showModal();
+
+/*--------------------------------------------------------------------------------------------------------
+// Name: add_type_and_ref
+// Purpose: assigns a type and an id for a specified node, this is used so that information
+can be looked up for a specific node when clicked. For example within generate_results_table: 
+add_type_and_id(name, "driver", result.driver.id)
+/*------------------------------------------------------------------------------------------------------*/
+function add_type_and_id(node, type, ref)
+{
+    node.setAttribute("type", type);
+    node.setAttribute("ref", ref);
+}
+
+function load_popup(e){
+    console.log(e.target);
+    
+    if(e.target.type == "driver")
+    {
+        console.log("YAYYAYAY");
+    }
+
 }  
+}
+
+
