@@ -107,6 +107,7 @@ select {
 #race_container, #results_container, #pre_results_message{
     border: solid 6px var(--var-primary);
     align-items: center;
+    background-color: var(--var-primary);
 
 }
 
@@ -187,6 +188,10 @@ select {
     max-height: 650px;
 }
 
+
+#results_subheader #text{
+    background-color: var(--var-primary);
+}
 
 #results_driver_table {
     overflow-y: auto;

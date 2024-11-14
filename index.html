@@ -46,9 +46,9 @@
         <div id="results_container" class="hidden">
             <h3 class="titles" id="results_title">Results for ${this season} ${grandprix} will fix later </h3>
             <span id = "results_subheader">
-                <p>Round #(9) - Year - </p> <!-- leave this for now but it already being programmatically rewritten -->
-                <p id = circuit_name >Circuit Name </p>
-                <p>- Date  - URL</p>
+                <p id = "race_info1">Round #(9) - Year - </p> <!-- leave this for now but it already being programmatically rewritten -->
+                <p id = "circuit_name" >Circuit Name </p>
+                <p id = "race_info2">- Date  - URL</p>
             </span>
             <div id="race_info_container">
                 <div id="qualifying">
@@ -118,7 +118,17 @@
         </div>
     </dialog>
     <dialog id = "favorites">
-
+        <h3> Favorites </h3>
+        <div id = "constructor_popup">
+            <figure id ="constructor_img_box"></figure>
+            <div id ="cconstructor_info">
+                <h3> Combines favorites from all 3 of the popups </h3>
+                <button id="add_favorites">Add Favorites</button> <!-- This might need a class (add_favorits) with an id = favorite_constructor,etc..-->
+                <form method="dialog">
+                    <button id= "close">Close</button>
+                </form>
+            </div>
+        </div>
     </dialog>
 </body> 
 </html>
