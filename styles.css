@@ -13,3 +13,13 @@
 .visibleFlex{
     display: flex;
 }
+
+.clip-diagonal-left {
+    clip-path: polygon(30% 0, 100% 0, 100% 100%, 0 100%);
+}
+
+.clip-diagonal-right {
+    clip-path: polygon(0 0, 100% 0, 70% 100%, 0% 100%);
+    filter: drop-shadow(10px 10px 15px rgba(0, 0, 0, 0.5));
+}
+

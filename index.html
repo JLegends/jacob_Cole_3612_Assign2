@@ -5,8 +5,8 @@
     <script src = "scripts.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
-<body>
-    <nav class="bg-gray-900">
+<body class="bg-gray-100">
+    <nav class="bg-gray-900 fixed top-0 w-full z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-4 lg:px-6 py-8 sm:py-4 lg:py-6 flex items-center justify-between">
             <!--Logo-->
             <a href="index.html" class="flex items-center space-x-3 rtl:space-x-reverse"> 
@@ -18,18 +18,18 @@
                 <button id="favorites_button" class=" bg-red-700 text-white px-4 py-2 rounded-md">Favorites</button>
             </div> 
         </div>
+        <div class= "py-1 bg-red-600"></div> <!--A red line-->
     </nav>
-    <div class= "py-1 bg-red-600"></div>
-    <main id="container">
-        <article id ="home_view" class ="visible">
-            <div id = content_area class="flex items-center">
+    <main id="container" class="py-40">
+        <article id ="home_view" class =" visible relative h-screen bg-gray-100 overflow-hidden flex">
+            <div class="absolute top-0 left-0 h-full w-60% bg-gray-200 text-black clip-diagonal-right z-10">
                 <p> what this site is about blah blah box lorem upsum more words just to 
                     have an accurate representation more words more words just as an example
                     paragraph describing what this website does testing testing
                 </p>
                 <div id = "select_szn">
                 <h3> Season </h3>
-                <select id = "season-select" > 
+                <select id = "season-select" class="bg-gray-800 text-white p-2 rounded-md" > 
                     <option>SELECT A SEASON</option>
                     <option value=2020> 2020 </option>
                     <option value=2021> 2021 </option>
@@ -37,10 +37,16 @@
                     <option value=2023> 2023 </option>
                 </select>
                 </div>
-                <div class="rounded-lg border">
-                    <img src="data/images/raceCarPhoto.webp" id="car_img"> <!-- Add a race car photo here -->
-                </div>
             </div> 
+            <!--A diagonal shape-->
+            <div id = content_area class="absolute top-0 right-0 h-full w-1/2 bg-gray-900 text-white clip-diagonal-left z-20 flex items-center justify-center shadow-lg">
+
+                <div class="absolute top-0 left-0 h-full w-full bg-cover bg-center z-10">
+                    <img src="data/images/raceCarPhoto.webp" class="h-full w-full object-cover">
+                </div>
+
+            </div>
+
         </article>
     <article id="race_view" class="hidden">
         <div id="race_container">
