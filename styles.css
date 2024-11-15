@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "doto";
+    src: url('data/fonts/Doto/Doto-VariableFont_ROND,wght.ttf');   
+}
+
+
 .hidden{
     display: none !important;
 }

@@ -886,16 +886,16 @@ video {
   border-width: 4px;
 }
 
+.border-b-8 {
+  border-bottom-width: 8px;
+}
+
 .border-r-0 {
   border-right-width: 0px;
 }
 
 .border-t-8 {
   border-top-width: 8px;
-}
-
-.border-b-8 {
-  border-bottom-width: 8px;
 }
 
 .border-gray-700 {
@@ -908,14 +908,14 @@ video {
   border-color: rgb(239 68 68 / var(--tw-border-opacity));
 }
 
-.border-red-700 {
-  --tw-border-opacity: 1;
-  border-color: rgb(185 28 28 / var(--tw-border-opacity));
-}
-
 .border-red-600 {
   --tw-border-opacity: 1;
   border-color: rgb(220 38 38 / var(--tw-border-opacity));
+}
+
+.border-red-700 {
+  --tw-border-opacity: 1;
+  border-color: rgb(185 28 28 / var(--tw-border-opacity));
 }
 
 .bg-gray-100 {
@@ -1093,6 +1093,10 @@ video {
   padding-bottom: 2rem;
 }
 
+.font-doto {
+  font-family: doto, sans-serif;
+}
+
 .text-lg {
   font-size: 1.125rem;
   line-height: 1.75rem;
@@ -1100,6 +1104,10 @@ video {
 
 .font-semibold {
   font-weight: 600;
+}
+
+.font-bold {
+  font-weight: 700;
 }
 
 .text-black {
@@ -1133,6 +1141,12 @@ video {
 
 .filter {
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+
+@font-face {
+  font-family: "doto";
+
+  src: url('data/fonts/Doto/Doto-VariableFont_ROND,wght.ttf');
 }
 
 .hidden{
