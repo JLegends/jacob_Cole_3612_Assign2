@@ -20,6 +20,8 @@ const favorited =
     circuits: ["Populate Dynamically", "another", "testing"],
 };
 
+let season = null; /* I need this globally accessible for the load_popup function */
+
 document.addEventListener('DOMContentLoaded', init);
 
 function init() { 
@@ -74,6 +76,7 @@ function init() {
     const addFavoriteConst = document.querySelector("#add_favorite_const");
     const addFavoriteCirc = document.querySelector("#add_favorite_circ");
 
+    
 
     add_event_handlers();
 
@@ -100,7 +103,10 @@ function init() {
         return fetch_store_API_data(request);
     }
 
-
+    function fetch_constructor_results(constructorRef, season) {
+        let request = `${url}/constructorResults.php?constructor=${constructorRef}&season=${season}`;
+        return fetch_store_API_data(request);
+    }
 
     async function fetch_store_API_data(request) {
         const storedData = localStorage.getItem(request);
@@ -160,6 +166,7 @@ function init() {
             const selectedSeason = e.target.value;
             if (selectedSeason && selectedSeason != "SELECT A SEASON") {
                 load_view("races", selectedSeason);
+                season = selectedSeason;
             }
         });
 
@@ -172,6 +179,8 @@ function init() {
         roundContainer.addEventListener("click", load_popup);
         qualifyContainer.addEventListener("click", load_popup);
         circuitName.addEventListener("click", load_popup);
+
+        /* these should go in a seperate funcion eventually*/
 
         addFavoriteDriver.addEventListener("click", () => {
             favorited.drivers.unshift("added driver");
@@ -300,16 +309,14 @@ function init() {
         set_visibility(qualifying, true);
 
         fetch_race_qualify(raceID).then(data => {
-            console.log(data);
-            generate_qualify_table(data);
+            generate_qualify_table(data, season);
         });
 
         set_visibility(resultsContainer, true);
         set_visibility(preResultsMessage, false);
 
         fetch_race_results(raceID).then(data => {
-            console.log(data);
-            generate_results_table(data);
+            generate_results_table(data, season);
             pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
             pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
             pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
@@ -322,7 +329,7 @@ function init() {
     // Name: generate_qualify_table
     // Purpose: generates the table of qualifying drivers in a grand prix
     /*------------------------------------------------------------------------------------------------------*/
-    function generate_qualify_table(qualifying) {
+    function generate_qualify_table(qualifying, season) {
         for (let qualify of qualifying) {
             const row = document.createElement("tr");
 
@@ -363,7 +370,7 @@ function init() {
     // Name: generate_results_table
     // Purpose: generates the table of individual results in a grand prix
     /*------------------------------------------------------------------------------------------------------*/
-    function generate_results_table(results) {
+    function generate_results_table(results, season) {
         for (let result of results) {
             const row = document.createElement("tr");
 
@@ -420,6 +427,11 @@ function init() {
         }
         else if (type == "constructor") {
             constructor.showModal();
+
+            fetch_constructor_results(ref, season).then(data => {
+                console.log(data);
+                
+            });
         }
     }
 
@@ -430,8 +442,6 @@ function init() {
     circuit name popup on circuit name click)
     /*------------------------------------------------------------------------------------------------------*/
     function generate_results_subheader(raceId, circuitId, raceRound, raceYear, raceName, raceDate, raceUrl) {
-        console.log(circuitId);
-
         fetch_circuit_name(circuitId).then(data => {
             raceInfo1.textContent = `${raceName} - Round ${raceRound} - ${raceYear} - ` + " ";
             circuitName.textContent = data.name;
@@ -444,6 +454,11 @@ function init() {
         });
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: generate_favorite_tables
+    // Purpose: rebuilds each of the favorite tables every time the popup is generated, to accomodate for new
+    additions or removals in the lists
+    /*------------------------------------------------------------------------------------------------------*/
     function generate_favorite_tables() {
 
         favDrivers.innerHTML = "";
