@@ -133,7 +133,7 @@ function init() {
     function load_view(view, season = null) {
 
         if (view === "home") {
-            show_nav_buttons(false);
+            show_nav_buttons(true);
             set_visibility(homeView, true);
             set_visibility(raceView, false);
             set_visibility(resultsContainer, false);
