@@ -34,6 +34,7 @@ function init() {
     const raceView = document.querySelector("#race_view")
     const roundTitle = document.querySelector("#round_title")
 
+    const raceButtonContainer = document.querySelector("#race_button_container")
     const roundContainer = document.querySelector("#round_container");
     const raceTable = document.querySelector("#races");
 
@@ -162,6 +163,12 @@ function init() {
                 load_view("races", selectedSeason);
             }
         });
+        raceButtonContainer.addEventListener("click", (e) => {
+            const selectedSeason = e.target.value;
+            if (selectedSeason) {
+                load_view("races", selectedSeason);
+            }
+        })
 
         favorites_button.addEventListener("click", () => {
             favorites.showModal();
@@ -217,6 +224,9 @@ function init() {
     /*------------------------------------------------------------------------------------------------------*/
     function list_season_races(season) {
         /*container.style.border ="none";*/
+        set_visibility(qualifying, false)
+        set_visibility(resultsContainer, false);
+        set_visibility(preResultsMessage, true);
         roundTitle.textContent = `${season} Races`;
         roundContainer.textContent = "";
 
@@ -266,7 +276,7 @@ function init() {
             add_type_and_id(name, "circuit", race.id);
 
             resultsButton.textContent = "Results";
-
+            resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-md";
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
                 list_grandprix_results(race.id, race.name, season); 

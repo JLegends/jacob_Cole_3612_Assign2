@@ -40,7 +40,6 @@
             </div> 
             <!--A diagonal shape-->
             <div id = content_area class="absolute top-0 right-0 h-full w-1/2 bg-gray-900 text-white clip-diagonal-left z-20 flex items-center justify-center shadow-lg">
-
                 <div class="absolute top-0 left-0 h-full w-full bg-cover bg-center z-10">
                     <img src="data/images/raceCarPhoto.webp" class="h-full w-full object-cover">
                 </div>
@@ -48,9 +47,16 @@
             </div>
 
         </article>
-    <article id="race_view" class="hidden">
-        <div id="race_container">
-            <h3 class="titles" id="round_title"></h3><table id="races">
+    <article id="race_view" class="flex flex-row w-100%">
+        <div id="race_container" class="w-1/3 h-full">
+            <div id="race_button_container">
+                <button value="2020" class=" bg-red-700 text-white px-4 py-2 rounded-t-lg ">2020</button>
+                <button value="2021" class=" bg-red-700 text-white px-4 py-2 rounded-t-lg ">2021</button>
+                <button value="2022" class=" bg-red-700 text-white px-4 py-2 rounded-t-lg ">2022</button>
+                <button value="2023" class=" bg-red-700 text-white px-4 py-2 rounded-t-lg ">2023</button>
+
+            </div>
+            <h3 class="bg-red-700 text-white text-center p-5" id="round_title"></h3><table id="races">
                 <tbody id="round_container">
                     <!--Data Generated Programatically Here-->
                 </tbody>
