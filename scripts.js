@@ -2,18 +2,28 @@
 
     Some of the data grabbed from the API has weird characters will probably have to ask about this.
 
-
     ==== TO DO =====
     Need to ask for more clarification about the local storage thing
 
     sorting by the selected table header
 
+
     the dialog popups HTML + the needed js and api requests for that data
+    -then they need to send the right name to the favorites tab
 
 */
+
+const favorited =
+{
+    drivers: ["Max Verstappen", "Test", "123"], 
+    constructors: ["456", "789"], 
+    circuits: ["Populate Dynamically", "another", "testing"],
+};
+
 document.addEventListener('DOMContentLoaded', init);
 
-function init() {
+function init() { 
+
     const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
     const home = document.querySelector("#home_button");
     const favorites_button = document.querySelector("#favorites_button");
@@ -55,6 +65,14 @@ function init() {
     const driver = document.querySelector("#driver");
     const constructor = document.querySelector("#constructor");
     const favorites = document.querySelector("#favorites");
+
+    const favDrivers = document.querySelector("#fav_drivers");
+    const favConstructors = document.querySelector("#fav_constructors");
+    const favCircuits = document.querySelector("#fav_circuits");
+
+    const addFavoriteDriver = document.querySelector("#add_favorite_driver");
+    const addFavoriteConst = document.querySelector("#add_favorite_const");
+    const addFavoriteCirc = document.querySelector("#add_favorite_circ");
 
 
     add_event_handlers();
@@ -147,13 +165,28 @@ function init() {
 
         favorites_button.addEventListener("click", () => {
             favorites.showModal();
+            generate_favorite_tables();
         });
-        
-        driverContainer.addEventListener("click", load_popup);
 
+        driverContainer.addEventListener("click", load_popup);
         roundContainer.addEventListener("click", load_popup);
         qualifyContainer.addEventListener("click", load_popup);
         circuitName.addEventListener("click", load_popup);
+
+        addFavoriteDriver.addEventListener("click", () => {
+            favorited.drivers.unshift("added driver");
+            console.log(`favorited ${favorited.drivers}`);
+        });
+
+        addFavoriteConst.addEventListener("click", () => {
+            favorited.constructors.unshift("added constructor");
+            console.log(`favorited ${favorited.constructors}`);
+        });
+
+        addFavoriteCirc.addEventListener("click", () => {
+            favorited.circuits.unshift("added circuit");
+            console.log(`favorited ${favorited.circuits}`);
+        });
 
     }
 
@@ -204,7 +237,6 @@ function init() {
 
         fetch_race_season(season).then(data => {
             generate_rounds_table(roundContainer, raceTable, season, data);
-            console.log(data);
         });
 
 
@@ -230,10 +262,10 @@ function init() {
 
             round.textContent = i++;
             name.textContent = race.name;
+            name.className = "clickable";
             add_type_and_id(name, "circuit", race.id);
 
             resultsButton.textContent = "Results";
-
 
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
@@ -299,12 +331,14 @@ function init() {
             row.appendChild(pos);
 
             const name = document.createElement("td");
+            name.className = "clickable";
             name.textContent = qualify.driver.forename + " " + qualify.driver.surname;
             add_type_and_id(name, "driver", qualify.driver.ref);
 
             row.appendChild(name);
 
             const constructor = document.createElement("td");
+            constructor.className = "clickable";
             constructor.textContent = qualify.constructor.name;
             add_type_and_id(constructor, "constructor", qualify.constructor.ref);
             row.appendChild(constructor);
@@ -338,11 +372,13 @@ function init() {
             row.appendChild(pos);
 
             const name = document.createElement("td");
+            name.className = "clickable";
             name.textContent = result.driver.forename + " " + result.driver.surname;
             add_type_and_id(name, "driver", result.driver.ref);
             row.appendChild(name);
 
             const constructor = document.createElement("td");
+            constructor.className = "clickable";
             constructor.textContent = result.constructor.name;
             add_type_and_id(constructor, "constructor", result.constructor.ref);
             row.appendChild(constructor);
@@ -375,8 +411,6 @@ function init() {
         const type = e.target.getAttribute("type");
         const ref = e.target.getAttribute("ref");
 
-        console.log(e.target);
-
         if (type == "driver") {
             driver.showModal();
         }
@@ -386,9 +420,6 @@ function init() {
         }
         else if (type == "constructor") {
             constructor.showModal();
-        }
-        else if (type == "favorites") {
-            favorites.showModal();
         }
     }
 
@@ -402,11 +433,10 @@ function init() {
         console.log(circuitId);
 
         fetch_circuit_name(circuitId).then(data => {
-            console.log(data);
-            raceInfo1.textContent = `${raceName} - Round ${raceRound} - ${raceYear} - `;
+            raceInfo1.textContent = `${raceName} - Round ${raceRound} - ${raceYear} - ` + " ";
             circuitName.textContent = data.name;
             add_type_and_id(circuitName, "circuit", raceId);
-            raceInfo2.textContent = ` - ${raceDate} - ${raceUrl}`;
+            raceInfo2.textContent = " " + `- ${raceDate} - ${raceUrl}`;
 
             resultSubheader.appendChild(raceInfo1);
             resultSubheader.appendChild(circuitName);
@@ -414,6 +444,39 @@ function init() {
         });
     }
 
+    function generate_favorite_tables() {
+
+        favDrivers.innerHTML = "";
+        favConstructors.innerHTML = "";
+        favCircuits.innerHTML = "";
+
+
+        for (let driver of favorited.drivers) {
+            const row = document.createElement("tr");
+            const element = document.createElement("td");
+            element.textContent = driver;
+            row.appendChild(element);
+            favDrivers.appendChild(row);
+        }
+
+        for (let constructor of favorited.constructors) {
+            const row = document.createElement("tr");
+            const element = document.createElement("td");
+            element.textContent = constructor;
+            row.appendChild(element);
+            favConstructors.appendChild(row);
+        }
+
+        for (let circuit of favorited.circuits) {
+            const row = document.createElement("tr");
+            const element = document.createElement("td");
+            element.textContent = circuit;
+            row.appendChild(element);
+            favCircuits.appendChild(row);
+        }
+    }
 }
+
+
 
 

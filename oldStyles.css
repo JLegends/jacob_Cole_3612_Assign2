@@ -16,7 +16,6 @@
 }
 
 
-
 header {
     display: grid;
     grid-template-rows: 1fr;
@@ -139,12 +138,6 @@ select {
     padding: 1rem 0;
 }
 
-#results_container p {
-    height: 1rem;
-    margin-top: 0.5rem;
-    margin-bottom: 0.4rem;
-}
-
 #races, #results, #qualifying {
     background-color: var(--var-secondary);
     height: 100%;
@@ -188,9 +181,15 @@ select {
     max-height: 650px;
 }
 
+#circuit_name {
+    background-color: var(--var-secondary);
+    padding: 0.1rem;
+    border-radius: 0.5rem;
+    align-items: center;
+}
 
-#results_subheader #text{
-    background-color: var(--var-primary);
+#circuit_name:hover {
+    color: var(--var-text-light);
 }
 
 #results_driver_table {
@@ -202,6 +201,9 @@ select {
 }
 
 /*Qualifying table*/
+.clickable:hover {
+    color: var(--var-text-light);
+}
 
 #podium {
     display: flex;
@@ -271,7 +273,10 @@ h4 {
 }
 
 span {
-    display: inline-block;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 .hidden{
@@ -319,10 +324,23 @@ h3 {
     flex-direction: column;
 }  
 
-#add_favorites {
+#fav_table_container {
+    display: flex;
+    width: 100%;
+}
+
+.fav_tables {
+    height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#add_favorite_driver, #add_favorite_const, #add_favorite_circ, #added_favorites {
     width: 8rem;
 }
 
 span p {
     display: inline-block;
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
 }

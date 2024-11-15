@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="oldStyles.css">
     <script src = "scripts.js"></script>
 </head>
 <body>
@@ -46,9 +46,9 @@
         <div id="results_container" class="hidden">
             <h3 class="titles" id="results_title">Results for ${this season} ${grandprix} will fix later </h3>
             <span id = "results_subheader">
-                <p id = "race_info1">Round #(9) - Year - </p> <!-- leave this for now but it already being programmatically rewritten -->
-                <p id = "circuit_name" >Circuit Name </p>
-                <p id = "race_info2">- Date  - URL</p>
+                <p id = "race_info1"></p> <!-- leave this for now but it already being programmatically rewritten -->
+                <p id = "circuit_name" ></p>
+                <p id = "race_info2"></p>
             </span>
             <div id="race_info_container">
                 <div id="qualifying">
@@ -85,7 +85,7 @@
             <figure id ="circuit_img_box"></figure>
             <div id ="circuit_info">
                 <h3> Name, Location, Country, URL (needs to request the circuit data) </h3>
-                <button id="add_favorites">Add Favorites</button>
+                <button id="add_favorite_circ">Add Favorites</button>
                 <form method="dialog">
                     <button id= "close">Close</button>
                 </form>
@@ -98,7 +98,7 @@
             <figure id ="driver_img_box"></figure>
             <div id ="driver_info">
                 <h3> Name, DOB, nationality, URL (needs to request the driver data)</h3>
-                <button id="add_favorites">Add Favorites</button>
+                <button id="add_favorite_driver">Add Favorites</button>
                 <form method="dialog">
                     <button id= "close">Close</button>
                 </form>
@@ -110,7 +110,7 @@
             <figure id ="constructor_img_box"></figure>
             <div id ="cconstructor_info">
                 <h3> Rnd, Name, Driver, Pos (needs to request race data) </h3>
-                <button id="add_favorites">Add Favorites</button> <!-- This might need a class (add_favorits) with an id = favorite_constructor,etc..-->
+                <button id="add_favorite_const">Add Favorites</button> <!-- This might need a class (add_favorits) with an id = favorite_constructor,etc..-->
                 <form method="dialog">
                     <button id= "close">Close</button>
                 </form>
@@ -121,12 +121,32 @@
         <h3> Favorites </h3>
         <div id = "constructor_popup">
             <figure id ="constructor_img_box"></figure>
-            <div id ="cconstructor_info">
+            <div id ="constructor_info">
                 <h3> Combines favorites from all 3 of the popups </h3>
-                <button id="add_favorites">Add Favorites</button> <!-- This might need a class (add_favorits) with an id = favorite_constructor,etc..-->
+                <button id="added_favorites">Empty Favorites</button> <!-- This might need a class (add_favorits) with an id = favorite_constructor,etc..-->
                 <form method="dialog">
                     <button id= "close">Close</button>
                 </form>
+                <div id = "fav_table_container">
+                    <table class="favorite_tables">
+                        <tr><th>Drivers</th></tr>
+                        <tbody id = "fav_drivers">
+                            <!--Data Generated Programatically-->
+                        </tbody>
+                    </table>
+                    <table class="favorite_tables">
+                        <tr><th>Constructors</th></tr>
+                        <tbody id = "fav_constructors">
+                            <!--Data Generated Programatically-->
+                        </tbody>
+                    </table>
+                    <table class="favorite_tables">
+                        <tr><th>Circuits</th></tr>
+                        <tbody id ="fav_circuits">
+                            <!--Data Generated Programatically-->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </dialog>
