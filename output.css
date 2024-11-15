@@ -554,267 +554,241 @@ video {
   display: none;
 }
 
-:root{
-  --var-primary: #FF8000;
-  --var-secondary: #47C7FC;
-  --var-button: #000000;
-  --var-button-hover: #BFB0A0;
-  --var-text-light: #FFFFFF;
-  --var-text-black: #000000;
-  --var-container-back: lightgrey;
-  --var-f1-grey: rgb(148, 148, 152);
-  --var-f1-grey2: rgb(84, 84, 89);
-}
-
-header {
-  display: grid;
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr 5fr 1fr 1fr;
-  background-color: var(--var-primary);
-  color: var(--var-button);
-  padding: 0.5rem;
-  height: 3rem;
-}
-
-header img {
-  margin-top: 0.5rem;
-}
-
-header h2 {
-  display: flex;
-  margin: 0.5rem 0 0 0;
-  grid-column: 2;
-  align-content: center;
-  justify-content: center;
-}
-
-button {
-  display: flex;
-  justify-content: center;
-  background-color: var(--var-button);
-  color: var(--var-text-light);
-  font-weight: 900;
-  height: 2rem;
-  width: 5rem;
-  padding: 0.5rem 0.4rem;
-  margin: auto;
-  border-radius: 0.75rem;
-}
-
-button:hover {
-  background-color: var(--var-button-hover);
-}
-
-#home_button{
-  grid-column: 3;
-}
-
-#favourites_button{
-  grid-column: 4;
-}
-
-#home_view{
-  border: solid 6px var(--var-primary);
-}
-
-#container, #home_view, #race_view{
-  display: flex;
-  flex-direction: row;
-  height: 650px;
-  margin-top: 0.5rem;
-}
-
-#content_area {
-  display: flex;
-  flex-direction: column;
-  margin: 1rem;
-}
-
-#select_szn {
-  display: flex;
-}
-
-select {
-  height: 2rem;
-  padding: 0 1.5rem 0 0.2rem;
-  margin: 0.9rem 0 0 0.5rem;
-}
-
-#car_img {
-  width: 75%;
-  align-items: right;
-  margin: 0.5rem;
-}
-
-#race_view{
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  height: 650px;
-}
-
-#race_container, #results_container, #pre_results_message{
-  border: solid 6px var(--var-primary);
-  align-items: center;
-}
-
-#results_container, #pre_results_message{
-  width: 75%;
-}
-
-#pre_results_message {
-  display: flex;
-  font-size: 2rem;
-  align-items: center;
-  justify-content: center;
-}
-
-#race_info_container {
-  display: flex;
-  flex-direction: row;
-  height: 88%;
-}
-
-.titles {
-  text-align: center;
-  width: 100%;
-  height: 1rem;
-  background-color: var(--var-primary);
-  color: var(--var-text-black);
-  margin: 0;
-  padding: 1rem 0;
-}
-
-#results_container p {
-  height: 1rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0.4rem;
-}
-
-#races, #results, #qualifying {
-  background-color: var(--var-secondary);
-  height: 100%;
-  width: 100%;
-  text-align: center;
-}
-
-#results, #qualifying {
-  padding: 0 0.5rem 0 0.5rem;
-}
-
-#text {
-  margin: 0.5rem 0;
-  font-weight: 900;
-}
-
-#qualifying {
-  margin-right: 0.25rem;
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 650px;
+.container {
   width: 100%;
 }
 
-#results {
-  margin-left: 0.25rem;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+@media (min-width: 640px) {
+  .container {
+    max-width: 640px;
+  }
 }
 
-/*Scrollable Items */
-
-#race_container {
-  display: flex;
-  flex-direction: column;
-  margin-right: 1rem;
-  width: 25%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 650px;
+@media (min-width: 768px) {
+  .container {
+    max-width: 768px;
+  }
 }
 
-#results_driver_table {
-  overflow-y: auto;
-  overflow-x: hidden;
-  max-height: 650px;
-  width: 100%;
-  margin: 3% 0;
+@media (min-width: 1024px) {
+  .container {
+    max-width: 1024px;
+  }
 }
 
-/*Qualifying table*/
-
-#podium {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
+@media (min-width: 1280px) {
+  .container {
+    max-width: 1280px;
+  }
 }
 
-.podium_Box
-{
-  color: var(--var-text-black);
-  background-color: var(--var-primary);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
+}
+
+.visible {
+  visibility: visible;
+}
+
+.collapse {
+  visibility: collapse;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.relative {
   position: relative;
 }
 
-.podium_Box img {
-  max-width: 100%;
-  /* Ensures image scales with the container */
-  max-height: 100px;
-  -o-object-fit: cover;
-     object-fit: cover;
-  /* Keeps image aspect ratio within the given dimensions */
-}
-
-.number_overlay {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  color: white;
-  font-size: 1.5rem;
-  padding: 2px 5px;
-  font-weight: bold;
-}
-
-.round_rows {
-  height: 3rem;
-  width: 100%;
-}
-
-tr {
-  height: 1rem;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-}
-
-table {
-  width: 100%;
-}
-
-td, th {
-  text-align: center;
-}
-
-th{
+.sticky {
   position: sticky;
-  z-index: 1;
-  color:var(--var-f1-grey2);
 }
 
-td{
-  color: var(--var-text-black);
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
 }
 
-h4 {
-  margin: 0.5rem;
+.block {
+  display: block;
 }
 
-span {
-  display: inline-block;
+.flex {
+  display: flex;
+}
+
+.table {
+  display: table;
+}
+
+.grid {
+  display: grid;
+}
+
+.contents {
+  display: contents;
+}
+
+.hidden {
+  display: none;
+}
+
+.h-10 {
+  height: 2.5rem;
+}
+
+.h-5 {
+  height: 1.25rem;
+}
+
+.h-8 {
+  height: 2rem;
+}
+
+.w-5 {
+  width: 1.25rem;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+}
+
+.border-collapse {
+  border-collapse: collapse;
+}
+
+.transform {
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.resize {
+  resize: both;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.items-start {
+  align-items: flex-start;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.space-x-3 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.space-x-4 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1rem * var(--tw-space-x-reverse));
+  margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.rounded-md {
+  border-radius: 0.375rem;
+}
+
+.border {
+  border-width: 1px;
+}
+
+.bg-gray-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+}
+
+.bg-gray-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+}
+
+.bg-red-700 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+
+.bg-red-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+}
+
+.px-4 {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.px-8 {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+.py-2 {
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+.py-8 {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.py-4 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.py-6 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.text-lg {
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+.underline {
+  text-decoration-line: underline;
+}
+
+.outline {
+  outline-style: solid;
 }
 
 .hidden{
@@ -829,42 +803,40 @@ span {
   display: flex;
 }
 
-#circuit {
-  width: 50rem;
-  height: 25rem;
-  border-radius: 5px;
+@media (min-width: 640px) {
+  .sm\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+
+  .sm\:py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .sm\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
-#circuit h3 {
-  margin: 0.5rem;
-  display: flex;
-  justify-content: center;
+@media (min-width: 1024px) {
+  .lg\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .lg\:py-6 {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .lg\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
-h3 {
-  align-items: center;
-}
-
-#circuit_popup {
-  display: flex;
-  flex-direction: row;
-}
-
-#circuit_img_box {
-  width: 20rem;
-  height: 20rem;
-  background-image: url("./data/images/raceCarPhoto.webp");
-}
-
-#circuit_info {
-  display: flex;
-  flex-direction: column;
-}
-
-#add_favorites {
-  width: 8rem;
-}
-
-span p {
-  display: inline-block;
+.rtl\:space-x-reverse:where([dir="rtl"], [dir="rtl"] *) > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-x-reverse: 1;
 }

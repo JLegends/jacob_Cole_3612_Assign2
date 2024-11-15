@@ -1,20 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="oldStyles.css">
+    <link rel="stylesheet" href="output.css">
     <script src = "scripts.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-    <header>
-        <!-- One pager so change the link to whatever brings back to home view -->
-        <a href="index.html"> <img src = "data/images/raceCarLogo.png"> </a> 
-        <h2> F1 Dashboard Project </h2>
-        <button id="home_button" class="hidden">Home</button>
-        <button id="favorites_button" class="hidden">Favorites</button>
-    </header>
+    <nav class="bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-4 lg:px-6 py-8 sm:py-4 lg:py-6 flex items-center justify-between">
+            <!--Logo-->
+            <a href="index.html" class="flex items-center space-x-3 rtl:space-x-reverse"> 
+                <img class="h-8" src = "data/images/f1_logo.png"></a> 
+            <h2 class="text-white text-lg font-semibold"> F1 Dashboard Project </h2>
+            <!--Buttons-->
+           <div class="space-x-4 flex items-start justify-between">
+                <button id="home_button" class=" bg-gray-700 text-white px-4 py-2 rounded-md">Home</button>
+                <button id="favorites_button" class=" bg-red-700 text-white px-4 py-2 rounded-md">Favorites</button>
+            </div> 
+        </div>
+    </nav>
+    <div class= "py-1 bg-red-600"></div>
     <main id="container">
         <article id ="home_view" class ="visible">
-            <div id = content_area>
+            <div id = content_area class="flex items-center">
                 <p> what this site is about blah blah box lorem upsum more words just to 
                     have an accurate representation more words more words just as an example
                     paragraph describing what this website does testing testing
@@ -29,8 +37,10 @@
                     <option value=2023> 2023 </option>
                 </select>
                 </div>
-            </div>
-            <img src="data/images/raceCarPhoto.webp" id="car_img"> <!-- Add a race car photo here -->
+                <div class="rounded-lg border">
+                    <img src="data/images/raceCarPhoto.webp" id="car_img"> <!-- Add a race car photo here -->
+                </div>
+            </div> 
         </article>
     <article id="race_view" class="hidden">
         <div id="race_container">
