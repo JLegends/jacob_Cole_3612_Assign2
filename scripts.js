@@ -40,12 +40,12 @@ function init() {
     const roundContainer = document.querySelector("#round_container");
     const raceTable = document.querySelector("#races");
 
-    const qualifying = document.querySelector("#qualifying");
-    const qualifyContainer = document.querySelector("#qualify_container");
-
     const resultsContainer = document.querySelector("#results_container");
 
-    
+    const qualifying = document.querySelector("#qualifying");
+    const qualifyContainer = document.querySelector("#qualify_container");
+    const results = document.querySelector("#results");
+
     const resultTitle = document.querySelector("#results_title");
     const resultSubheader = document.querySelector("#results_subheader");
 
@@ -54,9 +54,8 @@ function init() {
     const raceInfo2 = document.querySelector("#race_info2");
 
 
-    const resultsButton = document.querySelector("#results_button");
-    const qualifyButton = document.querySelector("#qualify_button");
-    const results = document.querySelector("#results");
+    const resultsTab = document.querySelector("#results_button");
+    const qualifyTab = document.querySelector("#qualifying_button");
     const preResultsMessage = document.querySelector("#pre_results_message");
     const driverContainer = document.querySelector("#driver_container");
 
@@ -277,6 +276,12 @@ function init() {
             resultsButton.addEventListener("click", () => { 
                 list_grandprix_results(race.id, race.name, season, "result"); 
                 generate_results_subheader(race.id, race.circuit.id, round.textContent, race.year, race.name, race.date, race.url);
+                resultsTab.addEventListener("click", ()=>{
+                    list_grandprix_results(race.id, race.name, season, "result"); 
+                })
+                qualifyTab.addEventListener("click", ()=>{
+                    list_grandprix_results(race.id, race.name, season, "qualifying"); 
+                })
             });
 
             row.appendChild(round);
@@ -299,12 +304,15 @@ function init() {
         qualifyContainer.textContent = "";
         driverContainer.textContent = "";
 
-        resultTitle.textContent = `Results for ${season}, ${raceName}`;
         set_visibility(preResultsMessage, false);
+        set_visibility(resultsContainer, true);
+
 
         if(resultType == "qualifying")
         {
+            resultTitle.textContent = `Qualifying for ${season}, ${raceName}`;
             set_visibility(qualifying, true);
+            set_visibility(results, false);
 
             fetch_race_qualify(raceID).then(data => {
                 generate_qualify_table(data);
@@ -316,7 +324,9 @@ function init() {
         }
         else if(resultType == "result")
         {
-            set_visibility(resultsContainer, true);
+            resultTitle.textContent = `Results for ${season}, ${raceName}`;
+            set_visibility(results, true);
+            set_visibility(qualifying, false);
 
             fetch_race_results(raceID).then(data => {
                 generate_results_table(data);
@@ -334,7 +344,7 @@ function init() {
     function generate_qualify_table(qualifying) {
         for (let qualify of qualifying) {
             const row = document.createElement("tr");
-
+            row.className = "odd: bg-stone-50 even:bg-stone-300"
             const pos = document.createElement("td");
             pos.textContent = qualify.position;
             row.appendChild(pos);

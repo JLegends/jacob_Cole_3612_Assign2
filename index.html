@@ -21,7 +21,7 @@
         <div class= "py-1 bg-red-600"></div> <!--A red line-->
     </nav>
     <main id="container" class="mt-28">
-        <article id ="home_view" class =" visible relative h-screen repeating-lines-background overflow-hidden flex border-t-8 border-b-8 border-red-600">
+        <article id ="home_view" class =" visible relative h-screen repeating-lines-background overflow-hidden flex border-t-8 border-b-8 border-red-600 max-h-[650px]">
             <div class="absolute top-0 left-0 h-full w-1/2 bg-gray-200 text-black clip-diagonal-right z-10 p-3">
                 <p> what this site is about blah blah box lorem upsum more words just to 
                     have an accurate representation more words more words just as an example
@@ -67,7 +67,7 @@
         <div id="pre_results_message" class="flex items-center justify-center h-full w-[100%]">
             <h1> SELECT ANY RACE</h1>
         </div>
-        <div id="results_container" class="flex flex-col p-4 bg-gray-100 w-100%">
+        <div id="results_container" class="flex flex-col p-4 bg-gray-100 w-[100%]">
             <div class="flex items-center justify-center h-full w-[100%]">
                 <div id="qualifying_results_button_container" class="inline-flex rounded-md shadow-sm">
                     <!--From: https://flowbite.com/docs/components/button-group/-->
@@ -75,30 +75,28 @@
                     <button value="qualifying" id="qualifying_button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">Qualifying</button>
                 </div>
             </div>
-            <div class="w-100% bg-red-600 p-2 transform skew-x-20 rounded-bl-2xl rounded-tr-2xl ring-4 ring-offset-8 ring-gray-900 mt-4"><h3 id="results_title" class="transform -skew-x-20 text-white">for ${this season} ${grandprix} will fix later</h3></div>
+            <div class="w-100% bg-red-600 p-2 transform skew-x-20 rounded-bl-2xl rounded-tr-2xl ring-4 ring-offset-8 ring-gray-900 mt-4 mb-4 text-center"><h3 id="results_title" class="transform -skew-x-20 text-white">for ${this season} ${grandprix} will fix later</h3></div>
             <span id = "results_subheader" class="block text-center text-sm text-gray-600 mb-4">
                 <p id = "race_info1"></p> <!-- leave this for now but it already being programmatically rewritten -->
                 <p id = "circuit_name" ></p>
                 <p id = "race_info2"></p>
             </span>
-            <div id="race_info_container" class="">
-                <div id="qualifying" class="hidden">
-                    <h4>Qualifying</h4>
-                    <table>
+            <div id="race_info_container" class="h-[650px]">
+                <div id="podium" class="flex flex-row ">
+                    <div id="result_1" class="podium_Box"><img id="pd1" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">1</div></div> 
+                    <div id="result_2" class="podium_Box"><img id="pd2" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">2</div></div>
+                    <div id="result_3" class="podium_Box"><img id="pd3" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">3</div></div>
+                </div>
+                <div id="qualifying" class="overflow-y-scroll h-[500px] p-4">
+                    <table class="w-full text-left rtl:text-right text-black">
                         <tr><th>Position</th><th>Name</th><th>Constructor</th><th>Q1</th><th>Q2</th><th>Q3</th></tr>
                         <tbody id="qualify_container">
                             <!--Data Generated Programatically-->
                         </tbody>
                     </table>
                 </div>
-                <div id="results">
-                    <h4>Results</h4>
-                    <div id="podium" class="flex flex-row ">
-                        <div id="result_1" class="podium_Box"><img id="pd1" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">1</div></div> 
-                        <div id="result_2" class="podium_Box"><img id="pd2" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">2</div></div>
-                        <div id="result_3" class="podium_Box"><img id="pd3" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">3</div></div>
-                    </div>
-                    <div id=results_driver_table class="">   
+                <div id="results" class="overflow-y-scroll h-[500px] p-4 w-[100%]">
+                    <div id=results_driver_table class="w-[100%]">   
                         <table class="w-full text-left rtl:text-right text-black">
                             <tr><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>pts</th></tr>
                             <tbody id="driver_container">
