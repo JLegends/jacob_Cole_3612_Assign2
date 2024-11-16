@@ -134,7 +134,6 @@ function init() {
     function load_view(view, season = null) {
 
         if (view === "home") {
-            show_nav_buttons(true);
             set_visibility(homeView, true);
             set_visibility(raceView, false);
             set_visibility(resultsContainer, false);
@@ -144,7 +143,6 @@ function init() {
         if (view === "races") {
             set_visibility(homeView, false);
             set_visibility(raceView, true);
-            show_nav_buttons(true);
             list_season_races(season);
         }
     }
@@ -206,27 +204,6 @@ function init() {
 
     }
 
-    /*------------------------------------------------------------------------------------------------------*/
-    // Name: showNavButtons
-    // Purpose: shows and hides the navigation buttons depending on the current view
-    /*------------------------------------------------------------------------------------------------------*/
-    function show_nav_buttons(show) {
-        if (show) {
-            favorites_button.classList.add("visibleFlex");
-            favorites_button.classList.remove("hidden");
-            
-            home.classList.add("visibleFlex");
-            home.classList.remove("hidden");
-        }
-        else {
-            favorites_button.classList.remove("visibleFlex");
-            favorites_button.classList.add("hidden");
-            home.classList.remove("visibleFlex");
-            home.classList.add("hidden");
-        }
-    }
-
-
     /*--------------------------------------------------------------------------------------------------------
     // Name: list_season_races
     // Purpose: it creates the DOM elements for the season races block
@@ -240,12 +217,13 @@ function init() {
         roundContainer.textContent = "";
 
         const headerRow = document.createElement("tr");
-
+        headerRow.className = "text-l text-left text-stone-950 uppercase"
         const roundColumn = document.createElement("th");
         roundColumn.textContent = "Round";
 
         const nameColumn = document.createElement("th");
         nameColumn.textContent = "Name";
+
 
         headerRow.appendChild(roundColumn);
         headerRow.appendChild(nameColumn);
@@ -288,7 +266,7 @@ function init() {
             resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-md";
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
-                list_grandprix_results(race.id, race.name, season); 
+                list_grandprix_results(race.id, race.name, season, "result"); 
                 generate_results_subheader(race.id, race.circuit.id, round.textContent, race.year, race.name, race.date, race.url);
             });
 
@@ -309,30 +287,37 @@ function init() {
     // Name: list_grandprix_results
     // Purpose: creates the DOM content for the selection grand prix results
     /*------------------------------------------------------------------------------------------------------*/
-    function list_grandprix_results(raceID, raceName, season) {
+    function list_grandprix_results(raceID, raceName, season, resultType) {
 
         qualifyContainer.textContent = "";
         driverContainer.textContent = "";
 
         resultTitle.textContent = `Results for ${season}, ${raceName}`;
-
-        set_visibility(qualifying, true);
-
-        fetch_race_qualify(raceID).then(data => {
-            generate_qualify_table(data, season);
-        });
-
-        set_visibility(resultsContainer, true);
         set_visibility(preResultsMessage, false);
 
-        fetch_race_results(raceID).then(data => {
-            generate_results_table(data, season);
-            pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
-            pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
-            pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
+        if(resultType == "qualifying")
+        {
+            set_visibility(qualifying, true);
 
-        });
+            fetch_race_qualify(raceID).then(data => {
+                generate_qualify_table(data, season);
+                pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
+                pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
+                pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
+            });
+            
+        }
+        else if(resultType == "result")
+        {
+            set_visibility(resultsContainer, true);
 
+            fetch_race_results(raceID).then(data => {
+                generate_results_table(data, season);
+                pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
+                pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
+                pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
+            });
+        }
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -439,7 +424,7 @@ function init() {
             constructor.showModal();
 
             fetch_constructor_results(ref, season).then(data => {
-                console.log(data);
+                //console.log(data);
                 
             });
         }

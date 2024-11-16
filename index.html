@@ -48,32 +48,40 @@
 
         </article>
     <article id="race_view" class="flex flex-row w-100%">
-        <div id="race_container" class="w-1/3 h-full">
+        <div id="race_container" class="w-1/2 h-[650px]">
             <div id="race_button_container">
-                <button value="2020" class=" bg-red-700 text-white px-4 py-2 rounded-t-lg ">2020</button>
-                <button value="2021" class=" bg-red-700 text-white px-4 py-2 rounded-t-lg ">2021</button>
-                <button value="2022" class=" bg-red-700 text-white px-4 py-2 rounded-t-lg ">2022</button>
-                <button value="2023" class=" bg-red-700 text-white px-4 py-2 rounded-t-lg ">2023</button>
+                <button value="2020" class=" bg-red-700 text-white px-6 py-2 rounded-t-lg ">2020</button>
+                <button value="2021" class=" bg-red-700 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2021</button>
+                <button value="2022" class=" bg-red-700 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2022</button>
+                <button value="2023" class=" bg-red-700 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2023</button>
 
             </div>
-            <h3 class="bg-red-700 text-white text-center p-5" id="round_title"></h3><table id="races">
-                <tbody id="round_container">
-                    <!--Data Generated Programatically Here-->
-                </tbody>
-            </table>
+            <h3 class="bg-red-700 text-white text-center p-5" id="round_title"></h3>
+            <div class="overflow-y-scroll h-[500px] p-4">
+                <table id="races" class="w-full border-collapse">
+                    <tbody id="round_container" >
+                        <!--Data Generated Programatically Here-->
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div id="pre_results_message" class="visible">
             <h1> SELECT ANY RACE</h1>
         </div>
-        <div id="results_container" class="hidden">
-            <h3 class="titles" id="results_title">Results for ${this season} ${grandprix} will fix later </h3>
-            <span id = "results_subheader">
+        <div id="qualifying_results_button_container">
+
+
+        </div>
+
+        <div id="results_container" class="flex flex-col p-4 bg-gray-100 w-100%">
+            <h3 class="titles w-100%" id="results_title">Results for ${this season} ${grandprix} will fix later </h3>
+            <span id = "results_subheader" class="block text-center text-sm text-gray-600 mb-4">
                 <p id = "race_info1"></p> <!-- leave this for now but it already being programmatically rewritten -->
                 <p id = "circuit_name" ></p>
                 <p id = "race_info2"></p>
             </span>
-            <div id="race_info_container">
-                <div id="qualifying">
+            <div id="race_info_container" class="">
+                <div id="qualifying" class="hidden">
                     <h4>Qualifying</h4>
                     <table>
                         <tr><th>Position</th><th>Name</th><th>Constructor</th><th>Q1</th><th>Q2</th><th>Q3</th></tr>
@@ -84,13 +92,13 @@
                 </div>
                 <div id="results">
                     <h4>Results</h4>
-                    <div id="podium">
-                        <div id="result_1" class="podium_Box"><img id="pd1" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">1</div></div> <!--Temporary fixed image, eventuallt this will grab the top 3 drivers-->
+                    <div id="podium" class="flex flex-row ">
+                        <div id="result_1" class="podium_Box"><img id="pd1" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">1</div></div> 
                         <div id="result_2" class="podium_Box"><img id="pd2" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">2</div></div>
                         <div id="result_3" class="podium_Box"><img id="pd3" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">3</div></div>
                     </div>
                     <div id=results_driver_table>   
-                        <table>
+                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <tr><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>pts</th></tr>
                             <tbody id="driver_container">
                                 <!--Data Generated Programatically-->
