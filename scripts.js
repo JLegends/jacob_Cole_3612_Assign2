@@ -54,6 +54,8 @@ function init() {
     const raceInfo2 = document.querySelector("#race_info2");
 
 
+    const resultsButton = document.querySelector("#results_button");
+    const qualifyButton = document.querySelector("#qualify_button");
     const results = document.querySelector("#results");
     const preResultsMessage = document.querySelector("#pre_results_message");
     const driverContainer = document.querySelector("#driver_container");
@@ -76,8 +78,6 @@ function init() {
     const addFavoriteDriver = document.querySelector("#add_favorite_driver");
     const addFavoriteConst = document.querySelector("#add_favorite_const");
     const addFavoriteCirc = document.querySelector("#add_favorite_circ");
-
-    
 
     add_event_handlers();
 
@@ -202,6 +202,7 @@ function init() {
             console.log(`favorited ${favorited.circuits}`);
         });
 
+
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -217,23 +218,22 @@ function init() {
         roundContainer.textContent = "";
 
         const headerRow = document.createElement("tr");
-        headerRow.className = "text-l text-left text-stone-950 uppercase"
+        headerRow.className = "text-l text-left text-stone-950 uppercase";
         const roundColumn = document.createElement("th");
         roundColumn.textContent = "Round";
 
         const nameColumn = document.createElement("th");
         nameColumn.textContent = "Name";
-
+        nameColumn.scope = "col";
 
         headerRow.appendChild(roundColumn);
         headerRow.appendChild(nameColumn);
 
         roundContainer.appendChild(headerRow)
 
-        raceTable.appendChild(round_container);
 
         fetch_race_season(season).then(data => {
-            generate_rounds_table(roundContainer, raceTable, season, data);
+            generate_rounds_table(roundContainer, season, data);
         });
 
 
@@ -243,19 +243,28 @@ function init() {
     // Name: generate_rounds_table
     // Purpose: generates the table of rounds that took place in a season
     /*------------------------------------------------------------------------------------------------------*/
-    function generate_rounds_table(round_container, table, season, racesArray) {
+    function generate_rounds_table(round_container, season, racesArray) {
         let i = 1;
         for (let race of racesArray) {
 
             const row = document.createElement("tr");
-            row.className = "round_rows";
-
+            if(i % 2 == 0)
+            {
+                row.className = "bg-stone-50 border-b-red-700 border-b-4";
+            }
+            else
+            {
+                row.className = "bg-stone-300 border-b-red-700 border-b-4";
+            }
             const round = document.createElement("td");
             const name = document.createElement("td");
             /* needed for button later */
             const results = document.createElement("td");
             const resultsButton = document.createElement("button");
-            results.class = "";
+            const lineDiv = document.createElement("div");
+            lineDiv.className = "h-4 w-[100%] bg-red-700 clip-diagonal-right"
+
+            results.className = "";
 
             round.textContent = i++;
             name.textContent = race.name;
@@ -263,7 +272,7 @@ function init() {
             add_type_and_id(name, "circuit", race.id);
 
             resultsButton.textContent = "Results";
-            resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-md";
+            resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg";
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
                 list_grandprix_results(race.id, race.name, season, "result"); 
@@ -277,9 +286,7 @@ function init() {
             row.appendChild(results);
 
             round_container.appendChild(row)
-
-            table.appendChild(round_container);
-
+            round_container.appendChild(lineDiv);
         }
     }
 

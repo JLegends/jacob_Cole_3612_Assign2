@@ -29,6 +29,10 @@
     filter: drop-shadow(10px 10px 15px rgba(0, 0, 0, 0.5));
 }
 
+.clip-diagonal-large {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%);
+}
+
 .repeating-lines-background {
     /* Adjust as needed */ 
     /*From https://css-tricks.com/snippets/css/css-repeating-gradients/ */

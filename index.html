@@ -20,7 +20,7 @@
         </div>
         <div class= "py-1 bg-red-600"></div> <!--A red line-->
     </nav>
-    <main id="container" class="py-40">
+    <main id="container" class="mt-28">
         <article id ="home_view" class =" visible relative h-screen repeating-lines-background overflow-hidden flex border-t-8 border-b-8 border-red-600">
             <div class="absolute top-0 left-0 h-full w-1/2 bg-gray-200 text-black clip-diagonal-right z-10 p-3">
                 <p> what this site is about blah blah box lorem upsum more words just to 
@@ -47,34 +47,35 @@
             </div>
 
         </article>
-    <article id="race_view" class="flex flex-row w-100%">
-        <div id="race_container" class="w-1/2 h-[650px]">
+    <article id="race_view" class="flex flex-row w-100% h-[650px]">
+        <div id="race_container" class="w-1/3">
             <div id="race_button_container">
-                <button value="2020" class=" bg-red-700 text-white px-6 py-2 rounded-t-lg ">2020</button>
-                <button value="2021" class=" bg-red-700 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2021</button>
-                <button value="2022" class=" bg-red-700 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2022</button>
-                <button value="2023" class=" bg-red-700 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2023</button>
+                <button value="2021" class=" bg-gray-800 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2021</button>
+                <button value="2022" class=" bg-gray-800 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2022</button>
+                <button value="2023" class=" bg-gray-800 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2023</button>
 
             </div>
-            <h3 class="bg-red-700 text-white text-center p-5" id="round_title"></h3>
+            <h3 class="bg-gray-900 text-white text-center p-5 border-b-8 border-b-red-700" id="round_title"></h3>
             <div class="overflow-y-scroll h-[500px] p-4">
                 <table id="races" class="w-full border-collapse">
-                    <tbody id="round_container" >
+                    <tbody id="round_container" class="" >
                         <!--Data Generated Programatically Here-->
                     </tbody>
                 </table>
             </div>
         </div>
-        <div id="pre_results_message" class="visible">
+        <div id="pre_results_message" class="flex items-center justify-center h-full w-[100%]">
             <h1> SELECT ANY RACE</h1>
         </div>
-        <div id="qualifying_results_button_container">
-
-
-        </div>
-
         <div id="results_container" class="flex flex-col p-4 bg-gray-100 w-100%">
-            <h3 class="titles w-100%" id="results_title">Results for ${this season} ${grandprix} will fix later </h3>
+            <div class="flex items-center justify-center h-full w-[100%]">
+                <div id="qualifying_results_button_container" class="inline-flex rounded-md shadow-sm">
+                    <!--From: https://flowbite.com/docs/components/button-group/-->
+                    <button value="results" id="results_button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-s-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">Results</button>
+                    <button value="qualifying" id="qualifying_button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">Qualifying</button>
+                </div>
+            </div>
+            <h3 class="w-100% bg-gray-900" id="results_title">Results for ${this season} ${grandprix} will fix later </h3>
             <span id = "results_subheader" class="block text-center text-sm text-gray-600 mb-4">
                 <p id = "race_info1"></p> <!-- leave this for now but it already being programmatically rewritten -->
                 <p id = "circuit_name" ></p>
