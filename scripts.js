@@ -3,10 +3,7 @@
     Some of the data grabbed from the API has weird characters will probably have to ask about this.
 
     ==== TO DO =====
-    Need to ask for more clarification about the local storage thing
-
     sorting by the selected table header
-
 
     the dialog popups HTML + the needed js and api requests for that data
     -then they need to send the right name to the favorites tab
@@ -217,13 +214,12 @@ function init() {
         roundContainer.textContent = "";
 
         const headerRow = document.createElement("tr");
-        headerRow.className = "text-l text-left text-stone-950 uppercase";
+        headerRow.className = "text-l text-stone-950 uppercase";
         const roundColumn = document.createElement("th");
         roundColumn.textContent = "Round";
 
         const nameColumn = document.createElement("th");
         nameColumn.textContent = "Name";
-        nameColumn.scope = "col";
 
         headerRow.appendChild(roundColumn);
         headerRow.appendChild(nameColumn);
