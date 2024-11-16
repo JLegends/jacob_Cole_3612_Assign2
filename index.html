@@ -47,15 +47,15 @@
             </div>
 
         </article>
-    <article id="race_view" class="flex flex-row w-100% h-[650px]">
-        <div id="race_container" class="w-1/3">
+    <article id="race_view" class="flex flex-col md:flex-row w-[100%] h-[650px]">
+        <div id="race_container" class="w-[100%] md:w-1/3">
             <div id="race_button_container">
-                <button value="2021" class=" bg-gray-800 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2021</button>
-                <button value="2022" class=" bg-gray-800 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2022</button>
-                <button value="2023" class=" bg-gray-800 text-white px-6 py-2 sm:px-2 rounded-t-lg ">2023</button>
-
+                <button value="2020" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800">2020</button>
+                <button value="2021" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800">2021</button>
+                <button value="2022" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800">2022</button>
+                <button value="2023" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800">2023</button>
             </div>
-            <h3 class="bg-gray-900 text-white text-center p-5 border-b-8 border-b-red-700" id="round_title"></h3>
+            <h3 class="bg-gray-900 text-white text-center p-5 border-b-8 border-b-red-600" id="round_title"></h3>
             <div class="overflow-y-scroll h-[500px] p-4">
                 <table id="races" class="w-full border-collapse">
                     <tbody id="round_container" class="" >
@@ -75,7 +75,7 @@
                     <button value="qualifying" id="qualifying_button" class="px-4 py-2 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-e-lg hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-2 focus:ring-blue-700 focus:text-blue-700 dark:bg-gray-800 dark:border-gray-700 dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:ring-blue-500 dark:focus:text-white">Qualifying</button>
                 </div>
             </div>
-            <h3 class="w-100% bg-gray-900" id="results_title">Results for ${this season} ${grandprix} will fix later </h3>
+            <div class="w-100% bg-red-600 p-2 transform skew-x-20 rounded-bl-2xl rounded-tr-2xl ring-4 ring-offset-8 ring-gray-900 mt-4"><h3 id="results_title" class="transform -skew-x-20 text-white">for ${this season} ${grandprix} will fix later</h3></div>
             <span id = "results_subheader" class="block text-center text-sm text-gray-600 mb-4">
                 <p id = "race_info1"></p> <!-- leave this for now but it already being programmatically rewritten -->
                 <p id = "circuit_name" ></p>
@@ -98,8 +98,8 @@
                         <div id="result_2" class="podium_Box"><img id="pd2" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">2</div></div>
                         <div id="result_3" class="podium_Box"><img id="pd3" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">3</div></div>
                     </div>
-                    <div id=results_driver_table>   
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <div id=results_driver_table class="">   
+                        <table class="w-full text-left rtl:text-right text-black">
                             <tr><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>pts</th></tr>
                             <tbody id="driver_container">
                                 <!--Data Generated Programatically-->

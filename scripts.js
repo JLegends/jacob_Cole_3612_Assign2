@@ -307,7 +307,7 @@ function init() {
             set_visibility(qualifying, true);
 
             fetch_race_qualify(raceID).then(data => {
-                generate_qualify_table(data, season);
+                generate_qualify_table(data);
                 pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
                 pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
                 pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
@@ -319,7 +319,7 @@ function init() {
             set_visibility(resultsContainer, true);
 
             fetch_race_results(raceID).then(data => {
-                generate_results_table(data, season);
+                generate_results_table(data);
                 pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
                 pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
                 pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
@@ -331,7 +331,7 @@ function init() {
     // Name: generate_qualify_table
     // Purpose: generates the table of qualifying drivers in a grand prix
     /*------------------------------------------------------------------------------------------------------*/
-    function generate_qualify_table(qualifying, season) {
+    function generate_qualify_table(qualifying) {
         for (let qualify of qualifying) {
             const row = document.createElement("tr");
 
@@ -372,10 +372,10 @@ function init() {
     // Name: generate_results_table
     // Purpose: generates the table of individual results in a grand prix
     /*------------------------------------------------------------------------------------------------------*/
-    function generate_results_table(results, season) {
+    function generate_results_table(results) {
         for (let result of results) {
             const row = document.createElement("tr");
-
+            row.className = "odd: bg-stone-50 even:bg-stone-300"
             const pos = document.createElement("td");
             pos.textContent = result.position;
             row.appendChild(pos);

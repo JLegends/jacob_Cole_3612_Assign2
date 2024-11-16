@@ -5,7 +5,11 @@ module.exports = {
     extend: {
       fontFamily: {
         doto:["doto", "sans-serif"]
+      },
+      skew: {
+        '20':'20deg'
       }
+    
     },
   },
   plugins: [],
