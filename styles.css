@@ -8,12 +8,83 @@
 }
 
 
+@font-face{
+    font-family: "Titillium Web", sans-serif;
+    src: url('data/fonts/Titillium_Web/TitilliumWeb-ExtraLight.ttf');
+    font-weight: 200;
+    font-style: normal;
+  }
+  
+@font-face {
+    font-family: "Titillium Web", sans-serif;
+    src: url('data/fonts/Titillium_Web/TitilliumWeb-Light.ttf');
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+@font-face {
+    font-family: "Titillium Web", sans-serif;
+    src: url('data/fonts/Titillium_Web/TitilliumWeb-Regular.ttf');
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .titillium-web-semibold {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 600;
+    font-style: normal;
+  }
+  
+  .titillium-web-bold {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 700;
+    font-style: normal;
+  }
+  
+  .titillium-web-black {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+  }
+  
+  .titillium-web-extralight-italic {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 200;
+    font-style: italic;
+  }
+  
+  .titillium-web-light-italic {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 300;
+    font-style: italic;
+  }
+  
+  .titillium-web-regular-italic {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .titillium-web-semibold-italic {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 600;
+    font-style: italic;
+  }
+  
+  .titillium-web-bold-italic {
+    font-family: "Titillium Web", sans-serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+  
+
+
 .hidden{
     display: none !important;
 }
 
 .visible{
-    display: block;
+    display: flex !important;
 }
 
 .visibleFlex{
@@ -29,21 +100,51 @@
     filter: drop-shadow(10px 10px 15px rgba(0, 0, 0, 0.5));
 }
 
+.clip-diagonal-large {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%);
+}
+
 .repeating-lines-background {
     /* Adjust as needed */ 
     /*From https://css-tricks.com/snippets/css/css-repeating-gradients/ */
     background-image: repeating-linear-gradient( 
-        -100deg,               /* Angle of the lines */
-        rgb(168, 168, 168),                 /* Line color */
-        rgb(168, 168, 168) 4px,             /* Line thickness */
-        transparent 4px,     /* Gap starts here */
-        transparent 8px     /* Gap ends here */
+        -40deg,               /* Angle of the lines */
+        rgb(174, 174, 174),                 /* Line color */
+        rgb(174, 174, 174) 2px,             /* Line thickness */
+        transparent 2px,     /* Gap starts here */
+        transparent 10px     /* Gap ends here */
     );
 }
 
 .repeating-x-background {
-
-    background-image: url('data/images/x_icon.jpeg');
-    background-size: 20px 20px;
-    background-position: 10px 10px;
+    background-image: url('data/images/x_icon.svg');
+    background-size: 40px 40px;
 }
+
+.podium_Box
+{
+    color: var(--var-text-black);
+    background-color: var(--var-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+
+.podium_Box img {
+    max-width: 100%; /* Ensures image scales with the container */
+    max-height: 100px; 
+    object-fit: cover; /* Keeps image aspect ratio within the given dimensions */
+}
+
+.number_overlay {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: white;
+    font-size: 1.5rem;
+    padding: 2px 5px;
+    font-weight: bold;
+}
+

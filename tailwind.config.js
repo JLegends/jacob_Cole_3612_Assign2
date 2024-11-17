@@ -4,8 +4,13 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        doto:["doto", "sans-serif"]
+        doto:["doto", "sans-serif"],
+        titillium:["Titillium Web", "sans-serif"]
+      },
+      skew: {
+        '20':'20deg'
       }
+    
     },
   },
   plugins: [],

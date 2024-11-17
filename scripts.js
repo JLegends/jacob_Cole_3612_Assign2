@@ -3,10 +3,7 @@
     Some of the data grabbed from the API has weird characters will probably have to ask about this.
 
     ==== TO DO =====
-    Need to ask for more clarification about the local storage thing
-
     sorting by the selected table header
-
 
     the dialog popups HTML + the needed js and api requests for that data
     -then they need to send the right name to the favorites tab
@@ -36,15 +33,16 @@ function init() {
     const raceView = document.querySelector("#race_view")
     const roundTitle = document.querySelector("#round_title")
 
+    const raceButtonContainer = document.querySelector("#race_button_container")
     const roundContainer = document.querySelector("#round_container");
     const raceTable = document.querySelector("#races");
 
-    const qualifying = document.querySelector("#qualifying");
-    const qualifyContainer = document.querySelector("#qualify_container");
-
     const resultsContainer = document.querySelector("#results_container");
 
-    
+    const qualifying = document.querySelector("#qualifying");
+    const qualifyContainer = document.querySelector("#qualify_container");
+    const results = document.querySelector("#results");
+
     const resultTitle = document.querySelector("#results_title");
     const resultSubheader = document.querySelector("#results_subheader");
 
@@ -53,7 +51,8 @@ function init() {
     const raceInfo2 = document.querySelector("#race_info2");
 
 
-    const results = document.querySelector("#results");
+    const resultsTab = document.querySelector("#results_button");
+    const qualifyTab = document.querySelector("#qualifying_button");
     const preResultsMessage = document.querySelector("#pre_results_message");
     const driverContainer = document.querySelector("#driver_container");
 
@@ -140,7 +139,6 @@ function init() {
     function load_view(view, season = null) {
 
         if (view === "home") {
-            show_nav_buttons(true);
             set_visibility(homeView, true);
             set_visibility(raceView, false);
             set_visibility(resultsContainer, false);
@@ -150,7 +148,6 @@ function init() {
         if (view === "races") {
             set_visibility(homeView, false);
             set_visibility(raceView, true);
-            show_nav_buttons(true);
             list_season_races(season);
         }
     }
@@ -176,6 +173,12 @@ function init() {
                 season = selectedSeason;
             }
         });
+        raceButtonContainer.addEventListener("click", (e) => {
+            const selectedSeason = e.target.value;
+            if (selectedSeason) {
+                load_view("races", selectedSeason);
+            }
+        })
 
         favorites_button.addEventListener("click", () => {
             favorites.showModal();
@@ -203,28 +206,8 @@ function init() {
             favorited.circuits.unshift("added circuit");
             console.log(`favorited ${favorited.circuits}`);
         });
-    }
 
-    /*------------------------------------------------------------------------------------------------------*/
-    // Name: showNavButtons
-    // Purpose: shows and hides the navigation buttons depending on the current view
-    /*------------------------------------------------------------------------------------------------------*/
-    function show_nav_buttons(show) {
-        if (show) {
-            favorites_button.classList.add("visibleFlex");
-            favorites_button.classList.remove("hidden");
-            
-            home.classList.add("visibleFlex");
-            home.classList.remove("hidden");
-        }
-        else {
-            favorites_button.classList.remove("visibleFlex");
-            favorites_button.classList.add("hidden");
-            home.classList.remove("visibleFlex");
-            home.classList.add("hidden");
-        }
     }
-
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: list_season_races
@@ -232,11 +215,14 @@ function init() {
     /*------------------------------------------------------------------------------------------------------*/
     function list_season_races(season) {
         /*container.style.border ="none";*/
+        set_visibility(qualifying, false)
+        set_visibility(resultsContainer, false);
+        set_visibility(preResultsMessage, true);
         roundTitle.textContent = `${season} Races`;
         roundContainer.textContent = "";
 
         const headerRow = document.createElement("tr");
-
+        headerRow.className = "text-l text-stone-950 uppercase";
         const roundColumn = document.createElement("th");
         roundColumn.textContent = "Round";
 
@@ -248,10 +234,9 @@ function init() {
 
         roundContainer.appendChild(headerRow)
 
-        raceTable.appendChild(round_container);
 
         fetch_race_season(season).then(data => {
-            generate_rounds_table(roundContainer, raceTable, season, data);
+            generate_rounds_table(roundContainer, season, data);
         });
 
 
@@ -261,19 +246,28 @@ function init() {
     // Name: generate_rounds_table
     // Purpose: generates the table of rounds that took place in a season
     /*------------------------------------------------------------------------------------------------------*/
-    function generate_rounds_table(round_container, table, season, racesArray) {
+    function generate_rounds_table(round_container, season, racesArray) {
         let i = 1;
         for (let race of racesArray) {
 
             const row = document.createElement("tr");
-            row.className = "round_rows";
-
+            if(i % 2 == 0)
+            {
+                row.className = "bg-stone-50 border-b-red-700 border-b-4";
+            }
+            else
+            {
+                row.className = "bg-stone-300 border-b-red-700 border-b-4";
+            }
             const round = document.createElement("td");
             const name = document.createElement("td");
             /* needed for button later */
             const results = document.createElement("td");
             const resultsButton = document.createElement("button");
-            results.class = "";
+            const lineDiv = document.createElement("div");
+            lineDiv.className = "h-4 w-[100%] bg-red-700 clip-diagonal-right"
+
+            results.className = "";
 
             round.textContent = i++;
             name.textContent = race.name;
@@ -281,11 +275,17 @@ function init() {
             add_type_and_id(name, "circuit", race.id);
 
             resultsButton.textContent = "Results";
-
+            resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg";
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
-                list_grandprix_results(race.id, race.name, season); 
+                list_grandprix_results(race.id, race.name, season, "result"); 
                 generate_results_subheader(race.id, race.circuit.id, round.textContent, race.year, race.name, race.date, race.url);
+                resultsTab.addEventListener("click", ()=>{
+                    list_grandprix_results(race.id, race.name, season, "result"); 
+                })
+                qualifyTab.addEventListener("click", ()=>{
+                    list_grandprix_results(race.id, race.name, season, "qualifying"); 
+                })
             });
 
             row.appendChild(round);
@@ -295,9 +295,7 @@ function init() {
             row.appendChild(results);
 
             round_container.appendChild(row)
-
-            table.appendChild(round_container);
-
+            round_container.appendChild(lineDiv);
         }
     }
 
@@ -305,30 +303,42 @@ function init() {
     // Name: list_grandprix_results
     // Purpose: creates the DOM content for the selection grand prix results
     /*------------------------------------------------------------------------------------------------------*/
-    function list_grandprix_results(raceID, raceName, season) {
+    function list_grandprix_results(raceID, raceName, season, resultType) {
 
         qualifyContainer.textContent = "";
         driverContainer.textContent = "";
 
-        resultTitle.textContent = `Results for ${season}, ${raceName}`;
-
-        set_visibility(qualifying, true);
-
-        fetch_race_qualify(raceID).then(data => {
-            generate_qualify_table(data, season);
-        });
-
-        set_visibility(resultsContainer, true);
         set_visibility(preResultsMessage, false);
+        set_visibility(resultsContainer, true);
 
-        fetch_race_results(raceID).then(data => {
-            generate_results_table(data, season);
-            pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
-            pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
-            pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
 
-        });
+        if(resultType == "qualifying")
+        {
+            resultTitle.textContent = `Qualifying for ${season}, ${raceName}`;
+            set_visibility(qualifying, true);
+            set_visibility(results, false);
 
+            fetch_race_qualify(raceID).then(data => {
+                generate_qualify_table(data);
+                pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
+                pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
+                pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
+            });
+            
+        }
+        else if(resultType == "result")
+        {
+            resultTitle.textContent = `Results for ${season}, ${raceName}`;
+            set_visibility(results, true);
+            set_visibility(qualifying, false);
+
+            fetch_race_results(raceID).then(data => {
+                generate_results_table(data);
+                pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
+                pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
+                pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
+            });
+        }
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -338,7 +348,7 @@ function init() {
     function generate_qualify_table(qualifying) {
         for (let qualify of qualifying) {
             const row = document.createElement("tr");
-
+            row.className = "odd: bg-stone-50 even:bg-stone-300"
             const pos = document.createElement("td");
             pos.textContent = qualify.position;
             row.appendChild(pos);
@@ -379,7 +389,7 @@ function init() {
     function generate_results_table(results) {
         for (let result of results) {
             const row = document.createElement("tr");
-
+            row.className = "odd: bg-stone-50 even:bg-stone-300"
             const pos = document.createElement("td");
             pos.textContent = result.position;
             row.appendChild(pos);
@@ -440,7 +450,8 @@ function init() {
         else if (type == "constructor") {
             constructor.showModal();
 
-            fetch_constructor(ref).then(data => {
+            fetch_constructor(ref, season).then(data => {
+                console.log(data);
                 assemble_constructor_popup(ref, data, season);
             });
         }
