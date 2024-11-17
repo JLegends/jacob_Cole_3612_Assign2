@@ -616,6 +616,10 @@ video {
   inset: 0px;
 }
 
+.bottom-0 {
+  bottom: 0px;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -693,6 +697,10 @@ video {
   margin-right: 1.25rem;
 }
 
+.mt-0 {
+  margin-top: 0px;
+}
+
 .mt-10 {
   margin-top: 2.5rem;
 }
@@ -707,6 +715,18 @@ video {
 
 .mt-4 {
   margin-top: 1rem;
+}
+
+.mt-40 {
+  margin-top: 10rem;
+}
+
+.mt-80 {
+  margin-top: 20rem;
+}
+
+.mb-3 {
+  margin-bottom: 0.75rem;
 }
 
 .block {
@@ -745,8 +765,24 @@ video {
   height: 2.5rem;
 }
 
+.h-11 {
+  height: 2.75rem;
+}
+
+.h-20 {
+  height: 5rem;
+}
+
+.h-32 {
+  height: 8rem;
+}
+
 .h-4 {
   height: 1rem;
+}
+
+.h-40 {
+  height: 10rem;
 }
 
 .h-5 {
@@ -755,6 +791,10 @@ video {
 
 .h-8 {
   height: 2rem;
+}
+
+.h-80 {
+  height: 20rem;
 }
 
 .h-96 {
@@ -775,6 +815,14 @@ video {
 
 .h-screen {
   height: 100vh;
+}
+
+.h-1\/2 {
+  height: 50%;
+}
+
+.h-1 {
+  height: 0.25rem;
 }
 
 .max-h-\[650px\] {
@@ -817,12 +865,24 @@ video {
   width: 1rem;
 }
 
+.w-40 {
+  width: 10rem;
+}
+
 .w-5 {
   width: 1.25rem;
 }
 
+.w-6 {
+  width: 1.5rem;
+}
+
 .w-60 {
   width: 15rem;
+}
+
+.w-8 {
+  width: 2rem;
 }
 
 .w-80 {
@@ -839,6 +899,10 @@ video {
 
 .max-w-7xl {
   max-width: 80rem;
+}
+
+.max-w-screen-xl {
+  max-width: 1280px;
 }
 
 .border-collapse {
@@ -864,6 +928,11 @@ video {
 .border-spacing-y-8 {
   --tw-border-spacing-y: 2rem;
   border-spacing: var(--tw-border-spacing-x) var(--tw-border-spacing-y);
+}
+
+.rotate-12 {
+  --tw-rotate: 12deg;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
 .rotate-45 {
@@ -941,6 +1010,10 @@ video {
   align-items: center;
 }
 
+.justify-start {
+  justify-content: flex-start;
+}
+
 .justify-end {
   justify-content: flex-end;
 }
@@ -963,6 +1036,10 @@ video {
   --tw-space-x-reverse: 0;
   margin-right: calc(1rem * var(--tw-space-x-reverse));
   margin-left: calc(1rem * calc(1 - var(--tw-space-x-reverse)));
+}
+
+.self-end {
+  align-self: flex-end;
 }
 
 .overflow-auto {
@@ -1030,6 +1107,10 @@ video {
   border-bottom-right-radius: 1rem;
 }
 
+.rounded-tl-2xl {
+  border-top-left-radius: 1rem;
+}
+
 .rounded-tr-2xl {
   border-top-right-radius: 1rem;
 }
@@ -1066,12 +1147,20 @@ video {
   border-bottom-width: 8px;
 }
 
+.border-l-8 {
+  border-left-width: 8px;
+}
+
 .border-r-0 {
   border-right-width: 0px;
 }
 
 .border-t-8 {
   border-top-width: 8px;
+}
+
+.border-double {
+  border-style: double;
 }
 
 .border-blue-500 {
@@ -1148,6 +1237,11 @@ video {
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
 }
 
+.bg-gray-500 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
+}
+
 .bg-gray-700 {
   --tw-bg-opacity: 1;
   background-color: rgb(55 65 81 / var(--tw-bg-opacity));
@@ -1178,9 +1272,24 @@ video {
   background-color: rgb(185 28 28 / var(--tw-bg-opacity));
 }
 
+.bg-red-800 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(153 27 27 / var(--tw-bg-opacity));
+}
+
 .bg-red-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(127 29 29 / var(--tw-bg-opacity));
+}
+
+.bg-slate-100 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
+}
+
+.bg-slate-200 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 
 .bg-slate-300 {
@@ -1360,12 +1469,20 @@ video {
   padding-bottom: 2rem;
 }
 
+.pt-3 {
+  padding-top: 0.75rem;
+}
+
 .text-left {
   text-align: left;
 }
 
 .text-center {
   text-align: center;
+}
+
+.text-right {
+  text-align: right;
 }
 
 .align-middle {
@@ -1457,6 +1574,16 @@ video {
   color: rgb(12 10 9 / var(--tw-text-opacity));
 }
 
+.text-teal-300 {
+  --tw-text-opacity: 1;
+  color: rgb(94 234 212 / var(--tw-text-opacity));
+}
+
+.text-teal-600 {
+  --tw-text-opacity: 1;
+  color: rgb(13 148 136 / var(--tw-text-opacity));
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -1464,6 +1591,28 @@ video {
 
 .underline {
   text-decoration-line: underline;
+}
+
+.opacity-25 {
+  opacity: 0.25;
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-70 {
+  opacity: 0.7;
+}
+
+.opacity-90 {
+  opacity: 0.9;
+}
+
+.shadow-2xl {
+  --tw-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --tw-shadow-colored: 0 25px 50px -12px var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 
 .shadow-inner {
@@ -1494,6 +1643,12 @@ video {
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
 }
 
+.ring-8 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(8px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+
 .ring-gray-900 {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(17 24 39 / var(--tw-ring-opacity));
@@ -1507,6 +1662,11 @@ video {
 .ring-red-500 {
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(239 68 68 / var(--tw-ring-opacity));
+}
+
+.ring-red-800 {
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(153 27 27 / var(--tw-ring-opacity));
 }
 
 .ring-rose-400 {
@@ -1562,18 +1722,17 @@ video {
   /* Adjust as needed */
   /*From https://css-tricks.com/snippets/css/css-repeating-gradients/ */
   background-image: repeating-linear-gradient( 
-        100deg,               /* Angle of the lines */
-        rgb(168, 168, 168),                 /* Line color */
-        rgb(168, 168, 168) 4px,             /* Line thickness */
-        transparent 4px,     /* Gap starts here */
-        transparent 8px     /* Gap ends here */
+        -40deg,               /* Angle of the lines */
+        rgb(174, 174, 174),                 /* Line color */
+        rgb(174, 174, 174) 2px,             /* Line thickness */
+        transparent 2px,     /* Gap starts here */
+        transparent 10px     /* Gap ends here */
     );
 }
 
 .repeating-x-background {
-  background-image: url('data/images/x_icon.jpeg');
-  background-size: 20px 20px;
-  background-position: 10px 10px;
+  background-image: url('data/images/x_icon.svg');
+  background-size: 40px 40px;
 }
 
 .podium_Box
@@ -1658,8 +1817,20 @@ video {
 }
 
 @media (min-width: 768px) {
+  .md\:mt-40 {
+    margin-top: 10rem;
+  }
+
+  .md\:h-full {
+    height: 100%;
+  }
+
   .md\:w-1\/3 {
     width: 33.333333%;
+  }
+
+  .md\:w-full {
+    width: 100%;
   }
 
   .md\:flex-row {

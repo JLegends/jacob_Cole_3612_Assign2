@@ -5,6 +5,7 @@
     <script src = "scripts.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+
 <body class="bg-gray-100 ">
     <nav class="bg-gray-900 fixed top-0 w-full z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-4 lg:px-6 py-8 sm:py-4 lg:py-6 flex items-center justify-between">
@@ -20,30 +21,30 @@
         </div>
         <div class= "py-1 bg-red-600"></div> <!--A red line-->
     </nav>
-    <main id="container" class="mt-28">
-        <article id ="home_view" class =" visible relative h-screen repeating-lines-background overflow-hidden flex border-t-8 border-b-8 border-red-600 max-h-[650px]">
-            <div class="absolute top-0 left-0 h-full w-1/2 bg-gray-200 text-black clip-diagonal-right z-10 p-3">
-                <p> what this site is about blah blah box lorem upsum more words just to 
+    <div class="w-full h-32 repeating-lines-background mt-3 mb-3"></div>
+    <main id="container" class="">
+        <article id ="home_view" class ="h-screen overflow-hidden flex flex-row border-t-8 border-b-8 border-red-600 max-h-[650px] repeating-x-background">
+            <div class="h-full w-1/2 bg-gray-50  text-black clip-diagonal-right z-10 shadow-inner flex flex-col relative">
+                <p class="p-5"> what this site is about blah blah box lorem upsum more words just to 
                     have an accurate representation more words more words just as an example
                     paragraph describing what this website does testing testing
                 </p>
-                <div id = "select_szn">
-                <h3> Season </h3>
-                <select id = "season-select" class="bg-gray-800 text-white p-2 rounded-md" > 
-                    <option>SELECT A SEASON</option>
-                    <option value=2020> 2020 </option>
-                    <option value=2021> 2021 </option>
-                    <option value=2022> 2022 </option>
-                    <option value=2023> 2023 </option>
-                </select>
+                <div id = "select_szn" class="p-5">
+                    <h3> Season </h3>
+                    <select id = "season-select" class="bg-gray-800 text-white p-2 rounded-md" > 
+                        <option>SELECT A SEASON</option>
+                        <option value=2020> 2020 </option>
+                        <option value=2021> 2021 </option>
+                        <option value=2022> 2022 </option>
+                        <option value=2023> 2023 </option>
+                    </select>    
                 </div>
+                <img src="data/images/chevron.svg" class="h-full w-full md:mt-40 self-end opacity-90">
             </div> 
-            <!--A diagonal shape-->
-            <div id = content_area class="absolute top-0 right-0 h-full w-1/2 bg-gray-900 text-white clip-diagonal-left z-20 flex items-center justify-center shadow-lg">
-                <div class="absolute top-0 left-0 h-full w-full bg-cover bg-center z-10">
-                    <img src="data/images/raceCarPhoto.webp" class="h-full w-full object-cover">
+            <div class="pt-3">
+                <div id ="content_area" class="p-10 border-l-8 border-t-8 border-b-8 border-red-600 rounded-tl-2xl rounded-bl-2xl bg-slate-200 ">
+                    <img src="data/images/raceCarPhoto.webp" class="h-full w-full shadow-2xl">
                 </div>
-
             </div>
 
         </article>

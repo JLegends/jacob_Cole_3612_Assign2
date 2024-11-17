@@ -37,19 +37,17 @@
     /* Adjust as needed */ 
     /*From https://css-tricks.com/snippets/css/css-repeating-gradients/ */
     background-image: repeating-linear-gradient( 
-        100deg,               /* Angle of the lines */
-        rgb(168, 168, 168),                 /* Line color */
-        rgb(168, 168, 168) 4px,             /* Line thickness */
-        transparent 4px,     /* Gap starts here */
-        transparent 8px     /* Gap ends here */
+        -40deg,               /* Angle of the lines */
+        rgb(174, 174, 174),                 /* Line color */
+        rgb(174, 174, 174) 2px,             /* Line thickness */
+        transparent 2px,     /* Gap starts here */
+        transparent 10px     /* Gap ends here */
     );
 }
 
 .repeating-x-background {
-
-    background-image: url('data/images/x_icon.jpeg');
-    background-size: 20px 20px;
-    background-position: 10px 10px;
+    background-image: url('data/images/x_icon.svg');
+    background-size: 40px 40px;
 }
 
 .podium_Box
