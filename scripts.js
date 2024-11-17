@@ -75,14 +75,15 @@ function init() {
     const addFavoriteConst = document.querySelector("#add_favorite_const");
     const addFavoriteCirc = document.querySelector("#add_favorite_circ");
 
-    const constructorInfo = document.querySelector("#constructor_info");
+    const constName = document.querySelector("#const_name");
+    const constNationality = document.querySelector("#const_nationality");
+    const constMoreInfo = document.querySelector("#const_more_info");
     const constructorTable = document.querySelector("#constructor_table");
 
 
     add_event_handlers();
 
     load_view("home");
-
 
     function fetch_race_season(season) {
         let request = `${url}/races.php?season=${season}`;
@@ -233,8 +234,6 @@ function init() {
         fetch_race_season(season).then(data => {
             generate_rounds_table(roundContainer, season, data);
         });
-
-
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -256,7 +255,7 @@ function init() {
             }
             const round = document.createElement("td");
             const name = document.createElement("td");
-            /* needed for button later */
+
             const results = document.createElement("td");
             const resultsButton = document.createElement("button");
             const lineDiv = document.createElement("div");
@@ -266,11 +265,11 @@ function init() {
 
             round.textContent = i++;
             name.textContent = race.name;
-            name.className = "clickable";
+            name.className = "hover:text-white";
             add_type_and_id(name, "circuit", race.id);
 
             resultsButton.textContent = "Results";
-            resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg";
+            resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
                 list_grandprix_results(race.id, race.name, season, "result"); 
@@ -349,14 +348,14 @@ function init() {
             row.appendChild(pos);
 
             const name = document.createElement("td");
-            name.className = "clickable";
+            name.className = "hover:text-white";
             name.textContent = qualify.driver.forename + " " + qualify.driver.surname;
             add_type_and_id(name, "driver", qualify.driver.ref);
 
             row.appendChild(name);
 
             const constructor = document.createElement("td");
-            constructor.className = "clickable";
+            constructor.className = "hover:text-white";
             constructor.textContent = qualify.constructor.name;
             add_type_and_id(constructor, "constructor", qualify.constructor.ref);
             row.appendChild(constructor);
@@ -384,19 +383,19 @@ function init() {
     function generate_results_table(results) {
         for (let result of results) {
             const row = document.createElement("tr");
-            row.className = "odd: bg-stone-50 even:bg-stone-300"
+            row.className = "odd: bg-stone-150 even:bg-stone-300"
             const pos = document.createElement("td");
             pos.textContent = result.position;
             row.appendChild(pos);
 
             const name = document.createElement("td");
-            name.className = "clickable";
+            name.className = "hover:text-white";
             name.textContent = result.driver.forename + " " + result.driver.surname;
             add_type_and_id(name, "driver", result.driver.ref);
             row.appendChild(name);
 
             const constructor = document.createElement("td");
-            constructor.className = "clickable";
+            constructor.className = "hover:text-white";
             constructor.textContent = result.constructor.name;
             add_type_and_id(constructor, "constructor", result.constructor.ref);
             row.appendChild(constructor);
@@ -515,7 +514,11 @@ function init() {
     }
 
     function assemble_constructor_popup(ref, data, season) {
-        constructorInfo.textContent = `${data.name}, ${data.nationality}, ${data.url}` ;
+
+        constName.textContent = `${data.name}`;
+        constNationality.textContent = `${data.nationality}` ;
+        constMoreInfo.textContent = `Learn More`;
+        constMoreInfo.href = data.url;
 
         addFavoriteConst.addEventListener("click", () => {
             favorited.constructors.unshift(data.name);

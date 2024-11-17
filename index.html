@@ -15,8 +15,8 @@
             <h2 class="text-white text-lg font-bold font-doto"> F1 Dashboard Project </h2>
             <!--Buttons-->
            <div class="space-x-4 flex items-start justify-between">
-                <button id="home_button" class=" bg-gray-700 text-white px-4 py-2 rounded-md">Home</button>
-                <button id="favorites_button" class=" bg-red-700 text-white px-4 py-2 rounded-md">Favorites</button>
+                <button id="home_button" class=" bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600">Home</button>
+                <button id="favorites_button" class=" bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-600">Favorites</button>
             </div> 
         </div>
         <div class= "py-1 bg-red-600"></div> <!--A red line-->
@@ -59,7 +59,7 @@
             <h3 class="bg-gray-900 text-white text-center font-titillium p-5 border-b-8 border-b-red-600 rounded-r-lg" id="round_title"></h3>
             <div class="overflow-y-scroll h-[500px] p-4">
                 <table id="races" class="w-full border-collapse">
-                    <tbody id="round_container" class="" >
+                    <tbody id="round_container">
                         <!--Data Generated Programatically Here-->
                     </tbody>
                 </table>
@@ -77,9 +77,9 @@
                 </div>
             </div>
             <div class="w-100% bg-red-600 p-2 transform skew-x-20 rounded-bl-2xl rounded-tr-2xl ring-4 ring-offset-8 ring-gray-900 mt-4 mb-4 text-center"><h3 id="results_title" class="transform -skew-x-20 text-white">for ${this season} ${grandprix} will fix later</h3></div>
-            <span id = "results_subheader" class="flex flex-row items-center text-sm text-gray-600 mb-4">
+            <span id = "results_subheader" class="flex flex-shrink-0 items-center text-sm text-gray-600 mb-4">
                 <p id = "race_info1"></p> <!-- leave this for now but it already being programmatically rewritten -->
-                <p id = "circuit_name" ></p>
+                <p id = "circuit_name" class = "pl-1 pr-1 ml-1 mr-1 rounded font-bold text-white bg-red-700 hover:bg-red-600"></p>
                 <p id = "race_info2"></p>
             </span>
             <div id="race_info_container" class="h-[650px]">
@@ -109,36 +109,40 @@
             </div>
         </div>
     </article>
-    <dialog id = "circuit" close> <!-- Change close/open to make popup disappear/appear-->
-        <h3> Circuit Details </h3>
-        <div id = "circuit_popup">
-            <figure id ="circuit_img_box"></figure>
-            <div id ="circuit_info">
-                <h3> Name, Location, Country, URL (needs to request the circuit data) </h3>
-                <button id="add_favorite_circ">Add Favorites</button>
-                <form method="dialog">
-                    <button id= "close">Close</button>
-                </form>
-            </div>
+    <dialog id = "circuit" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg"> <!-- Change close/open to make popup disappear/appear-->
+        <h1 class = "text-center text-lg font-semibold mb-2"> Circuit Details </h1>
+        <hr class="mb-2">
+        <figure id ="circuit_img_box"></figure>
+        <h3>Information on the circuit itself</h3>
+        <div class = "flex justify-between items-center mt-4">
+            <button id="add_favorite_circ" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Add Favorites</button>
+            <form method = "dialog">
+                <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
+            </form>
         </div>
     </dialog>
-    <dialog id = "driver">
-        <h3> Driver Details </h3>
+    <dialog id = "driver" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
+        <h1 class = "text-center text-lg font-semibold mb-2"> Driver Details </h1>
+        <hr class="mb-2">
+
         <div id = "driver_popup">
             <figure id ="driver_img_box"></figure>
-            <div id ="driver_info">
-                <h3> Name, DOB, nationality, URL (needs to request the driver data)</h3>
-                <button id="add_favorite_driver">Add Favorites</button>
-                <form method="dialog">
-                    <button id= "close">Close</button>
+            <h3> Name, DOB, nationality, URL (needs to request the driver data)</h3>
+            <div class = "flex justify-between items-center mt-4">
+                <button id="add_favorite_driver" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Add Favorites</button>
+                <form method = "dialog">
+                    <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
                 </form>
             </div>
     </dialog>
+    
     <dialog id = "constructor" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
         <h1 class = "text-center text-lg font-semibold mb-2">Constructor Details</h1>
-        <hr class="mb-4">
+        <hr class="mb-2">
         <figure id ="constructor_img_box"></figure>
-        <h3 id = "constructor_info" class="text-center mb-4"> Name, Nationality, URL (needs to request race data) </h3>
+        <h1 id = "const_name" class="text-center text-xl font-bold mb-1"></h1>
+        <h2 id = "const_nationality" class="text-center text-gray-500"></h2>
+        <h3 class="text-center text-gray-500 underline mb-1 hover:text-gray-700"><a id = "const_more_info"></a></h3>
         <div class="overflow-y-auto max-h-[40vh] rounded">
             <table class="w-full rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -162,46 +166,41 @@
         </div>
     </dialog>
 
-    <dialog id = "favorites" class = "max-w-8xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
+    <dialog id = "favorites" class = "max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
         <h1 class = "text-center text-lg font-semibold mb-2"> Favorites </h1>
         <hr class="mb-4">
-        <div id = "constructor_popup">
-            <figure id ="constructor_img_box"></figure>
-            <div id ="constructor_info">
-                <h3 class = "text-center mb-4"> Combines favorites from all 3 of the popups </h3>
-                <div class="flex overflow-x-auto max-h-[40vh] space-x-4">
-                    <table class="w-full rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr><th  class="items-center px-6 py-3">Drivers</th></tr>
-                        </thead>
-                        <tbody id = "fav_drivers"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
-                            <!-- Programmatically Generated -->
-                        </tbody>
-                    </table>
-                    <table class="w-full rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr><th  class="items-center px-6 py-3">Constructors</th></tr>
-                        </thead>
-                        <tbody id = "fav_constructors"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
-                            <!-- Programmatically Generated -->
-                        </tbody>
-                    </table>
-                    <table class="w-full rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                            <tr><th  class="items-center px-6 py-3">Circuits</th></tr>
-                        </thead>
-                        <tbody id = "fav_circuits"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
-                            <!-- Programmatically Generated -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class = "flex justify-between items-center mt-4">
-                <button id="add_favorite_const" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Empty Favorites</button>
-                <form method = "dialog">
-                    <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
-                </form>
-            </div>
+        <h3 class = "text-center mb-4"> Combines favorites from all 3 of the popups </h3>
+        <div class="flex space-x-4 overflow-x-auto max-h-[40vh]" >
+            <table class="w-[40vh] overflow-x-auto max-h-[40vh] rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr><th class="items-center px-6 py-3">Drivers</th></tr>
+                </thead>
+                <tbody id = "fav_drivers"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                    <!-- Programmatically Generated -->
+                </tbody>
+            </table>
+            <table class="w-[40vh] overflow-x-auto max-h-[40vh] rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr><th  class="items-center px-6 py-3">Constructors</th></tr>
+                </thead>
+                <tbody id = "fav_constructors"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                    <!-- Programmatically Generated -->
+                </tbody>
+            </table>
+            <table class="w-[40vh] overflow-x-auto max-h-[40vh] rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr><th  class="items-center px-6 py-3">Circuits</th></tr>
+                </thead>
+                <tbody id = "fav_circuits"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                    <!-- Programmatically Generated -->
+                </tbody>
+            </table>
+        </div>
+        <div class = "flex justify-between items-center mt-4">
+            <button id="add_favorite_const" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Empty Favorites</button>
+            <form method = "dialog">
+                <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
+            </form>
         </div>
     </dialog>
 </body> 
