@@ -10,7 +10,7 @@
     <nav class="bg-gray-900 fixed top-0 w-full z-30">
         <div class="max-w-7xl mx-auto px-4 sm:px-4 lg:px-6 py-8 sm:py-4 lg:py-6 flex items-center justify-between">
             <!--Logo-->
-            <a href="index.html" class="flex items-center space-x-3 rtl:space-x-reverse"> 
+            <a href="index.html" class="flex items-center space-x-3 rtl:space-x-reverse hover:"> 
                 <img class="h-8" src = "data/images/f1_logo.png"></a> 
             <h2 class="text-white text-lg font-bold font-doto"> F1 Dashboard Project </h2>
             <!--Buttons-->
@@ -42,21 +42,21 @@
                 <img src="data/images/chevron.svg" class="h-full w-full md:mt-40 self-end opacity-90">
             </div> 
             <div class="pt-3">
-                <div id ="content_area" class="p-10 border-l-8 border-t-8 border-b-8 border-red-600 rounded-tl-2xl rounded-bl-2xl bg-slate-200 ">
-                    <img src="data/images/raceCarPhoto.webp" class="h-full w-full shadow-2xl">
+                <div id ="content_area" class="max-w-[1000px] max-h-[1000px] w-full h-auto p-10 border-l-8 border-t-8 border-b-8 border-red-600 rounded-tl-2xl rounded-bl-2xl bg-slate-200 ">
+                    <img src="data/images/f1_cars.avif" class="h-full w-full shadow-2xl object-contain">
                 </div>
             </div>
 
         </article>
     <article id="race_view" class="flex flex-col md:flex-row w-[100%] h-[650px] items-start">
         <div id="race_container" class="w-[100%] md:w-1/3">
-            <div id="race_button_container">
-                <button value="2020" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800">2020</button>
-                <button value="2021" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800">2021</button>
-                <button value="2022" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800">2022</button>
-                <button value="2023" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800">2023</button>
+            <div id="race_button_container" class="flex flex-row justify-center space-x-4">
+                <button value="2020" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800 focus:ring-2 focus:ring-blue-700">2020</button>
+                <button value="2021" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800 focus:ring-2 focus:ring-blue-700">2021</button>
+                <button value="2022" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800 focus:ring-2 focus:ring-blue-700">2022</button>
+                <button value="2023" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800 focus:ring-2 focus:ring-blue-700">2023</button>
             </div>
-            <h3 class="bg-gray-900 text-white text-center p-5 border-b-8 border-b-red-600" id="round_title"></h3>
+            <h3 class="bg-gray-900 text-white text-center font-titillium p-5 border-b-8 border-b-red-600 rounded-r-lg" id="round_title"></h3>
             <div class="overflow-y-scroll h-[500px] p-4">
                 <table id="races" class="w-full border-collapse">
                     <tbody id="round_container" class="" >
@@ -68,7 +68,7 @@
         <div id="pre_results_message" class="flex items-center justify-center h-full w-[100%]">
             <h1> SELECT ANY RACE</h1>
         </div>
-        <div id="results_container" class="flex flex-col px-4 bg-gray-100 w-[100%]">
+        <div id="results_container" class="flex flex-col px-4 ml-10 bg-gray-100 w-[100%]">
             <div class="flex items-center justify-center h-full w-[100%]">
                 <div id="qualifying_results_button_container" class="inline-flex rounded-md shadow-sm">
                     <!--From: https://flowbite.com/docs/components/button-group/-->
@@ -83,7 +83,7 @@
                 <p id = "race_info2"></p>
             </span>
             <div id="race_info_container" class="h-[650px]">
-                <div id="podium" class="flex flex-row ">
+                <div id="podium" class="flex flex-row space-x-10 justify-center">
                     <div id="result_1" class="podium_Box"><img id="pd1" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">1</div></div> 
                     <div id="result_2" class="podium_Box"><img id="pd2" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">2</div></div>
                     <div id="result_3" class="podium_Box"><img id="pd3" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">3</div></div>
