@@ -44,7 +44,6 @@
                 <div class="absolute top-0 left-0 h-full w-full bg-cover bg-center z-10">
                     <img src="data/images/raceCarPhoto.webp" class="h-full w-full object-cover">
                 </div>
-
             </div>
 
         </article>
@@ -120,19 +119,34 @@
                 </form>
             </div>
     </dialog>
-    <dialog id = "constructor">
-        <h3> Constructor Details </h3>
-        <div id = "constructor_popup">
-            <figure id ="constructor_img_box"></figure>
-            <div id ="cconstructor_info">
-                <h3> Rnd, Name, Driver, Pos (needs to request race data) </h3>
-                <button id="add_favorite_const">Add Favorites</button> <!-- This might need a class (add_favorits) with an id = favorite_constructor,etc..-->
-                <form method="dialog">
-                    <button id= "close">Close</button>
+    <dialog id = "constructor" class = "max-w-3xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg" close>
+        <h1 class = "text-center text-lg font-semibold mb-2">Constructor Details</h1>
+        <hr class="mb-4">
+        <figure id ="constructor_img_box"></figure>
+        <h3 id = "constructor_info" class="mb-4"> Name, Nationality, URL (needs to request race data) </h3>
+        <div class="relative overflow-y-auto max-h-[40vh]">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Round</th>
+                        <th scope="col" class="px-6 py-3">Name</th>
+                        <th scope="col" class="px-6 py-3">Driver</th>
+                        <th scope="col" class="px-6 py-3">Position</th>
+                    </tr>
+                </thead>
+                <tbody id = "constructor_table">
+                    <!-- Programmatically Generated -->
+                </tbody>
+            </table>
+            <div class = "flex-shrink-0 mt-4 flex justify-end space-x-4"></div>
+                <button id="add_favorite_const" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add Favorites</button>
+                <form method = "dialog">
+                    <button id= "close" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Close</button>
                 </form>
             </div>
         </div>
     </dialog>
+
     <dialog id = "favorites">
         <h3> Favorites </h3>
         <div id = "constructor_popup">

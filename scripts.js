@@ -76,7 +76,9 @@ function init() {
     const addFavoriteConst = document.querySelector("#add_favorite_const");
     const addFavoriteCirc = document.querySelector("#add_favorite_circ");
 
-    
+    const constructorInfo = document.querySelector("#constructor_info");
+    const constructorTable = document.querySelector("#constructor_table");
+
 
     add_event_handlers();
 
@@ -100,6 +102,11 @@ function init() {
 
     function fetch_race_results(raceID) {
         let request = `${url}/results.php?race=${raceID}`;
+        return fetch_store_API_data(request);
+    }
+
+    function fetch_constructor(constructorRef) {
+        let request = `${url}/constructors.php?ref=${constructorRef}`;
         return fetch_store_API_data(request);
     }
 
@@ -196,7 +203,6 @@ function init() {
             favorited.circuits.unshift("added circuit");
             console.log(`favorited ${favorited.circuits}`);
         });
-
     }
 
     /*------------------------------------------------------------------------------------------------------*/
@@ -329,7 +335,7 @@ function init() {
     // Name: generate_qualify_table
     // Purpose: generates the table of qualifying drivers in a grand prix
     /*------------------------------------------------------------------------------------------------------*/
-    function generate_qualify_table(qualifying, season) {
+    function generate_qualify_table(qualifying) {
         for (let qualify of qualifying) {
             const row = document.createElement("tr");
 
@@ -370,7 +376,7 @@ function init() {
     // Name: generate_results_table
     // Purpose: generates the table of individual results in a grand prix
     /*------------------------------------------------------------------------------------------------------*/
-    function generate_results_table(results, season) {
+    function generate_results_table(results) {
         for (let result of results) {
             const row = document.createElement("tr");
 
@@ -414,6 +420,12 @@ function init() {
         node.setAttribute("ref", ref);
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: load_popup
+    // Purpose: assigns a type and an id for a specified node, this is used so that information
+    can be looked up for a specific node when clicked. For example within generate_results_table: 
+    add_type_and_id(name, "driver", result.driver.id)
+    /*------------------------------------------------------------------------------------------------------*/
     function load_popup(e) {
         const type = e.target.getAttribute("type");
         const ref = e.target.getAttribute("ref");
@@ -428,9 +440,8 @@ function init() {
         else if (type == "constructor") {
             constructor.showModal();
 
-            fetch_constructor_results(ref, season).then(data => {
-                console.log(data);
-                
+            fetch_constructor(ref).then(data => {
+                assemble_constructor_popup(ref, data, season);
             });
         }
     }
@@ -490,8 +501,46 @@ function init() {
             favCircuits.appendChild(row);
         }
     }
+
+    function assemble_constructor_popup(ref, data, season) {
+        
+        console.log(data.name, data.nationality, data.url);
+
+        constructorInfo.textContent = `${data.name}, ${data.nationality}, ${data.url}` ;
+
+
+        fetch_constructor_results(ref, season).then(data => { 
+            console.log(data);
+            for (let constructor of data) {
+
+                const row = document.createElement("tr");
+                row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+                
+                const round = document.createElement("td");
+                round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
+                round.scope = "row";
+                round.textContent = constructor.round;
+                row.appendChild(round);
+        
+                const raceName = document.createElement("td");
+                raceName.className = "px-6 py-4";
+                raceName.textContent = constructor.name;
+                row.appendChild(raceName);
+
+                const driverName = document.createElement("td");
+                driverName.className = "px-6 py-4";
+                driverName.textContent = constructor.forename + " " + constructor.surname;
+                row.appendChild(driverName);
+        
+                const position = document.createElement("td");
+                position.className = "px-6 py-4";
+                position.textContent = constructor.positionOrder;
+                row.appendChild(position);
+        
+                constructorTable.appendChild(row);
+            }
+        });
+        
+
+    }
 }
-
-
-
-
