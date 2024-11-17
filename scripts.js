@@ -197,11 +197,6 @@ function init() {
             console.log(`favorited ${favorited.drivers}`);
         });
 
-        addFavoriteConst.addEventListener("click", () => {
-            favorited.constructors.unshift("added constructor");
-            console.log(`favorited ${favorited.constructors}`);
-        });
-
         addFavoriteCirc.addEventListener("click", () => {
             favorited.circuits.unshift("added circuit");
             console.log(`favorited ${favorited.circuits}`);
@@ -490,7 +485,9 @@ function init() {
 
         for (let driver of favorited.drivers) {
             const row = document.createElement("tr");
+            row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
+            element.className = "px-6 py-6 font-medium text-gray-900 dark:text-white truncate";
             element.textContent = driver;
             row.appendChild(element);
             favDrivers.appendChild(row);
@@ -498,7 +495,9 @@ function init() {
 
         for (let constructor of favorited.constructors) {
             const row = document.createElement("tr");
+            row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
+            element.className = "px-6 py-6 font-medium text-gray-900dark:text-white truncate";
             element.textContent = constructor;
             row.appendChild(element);
             favConstructors.appendChild(row);
@@ -506,7 +505,9 @@ function init() {
 
         for (let circuit of favorited.circuits) {
             const row = document.createElement("tr");
+            row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
+            element.className = "px-6 py-6 font-medium text-gray-900 dark:text-white truncate";
             element.textContent = circuit;
             row.appendChild(element);
             favCircuits.appendChild(row);
@@ -514,22 +515,21 @@ function init() {
     }
 
     function assemble_constructor_popup(ref, data, season) {
-        
-        console.log(data.name, data.nationality, data.url);
-
         constructorInfo.textContent = `${data.name}, ${data.nationality}, ${data.url}` ;
 
+        addFavoriteConst.addEventListener("click", () => {
+            favorited.constructors.unshift(data.name);
+        });
 
         fetch_constructor_results(ref, season).then(data => { 
-            console.log(data);
-            for (let constructor of data) {
+            constructorTable.innerHTML = "";
 
+            for (let constructor of data) {
                 const row = document.createElement("tr");
                 row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
                 
                 const round = document.createElement("td");
                 round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
-                round.scope = "row";
                 round.textContent = constructor.round;
                 row.appendChild(round);
         
@@ -551,7 +551,5 @@ function init() {
                 constructorTable.appendChild(row);
             }
         });
-        
-
     }
 }

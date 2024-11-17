@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="w-100% bg-red-600 p-2 transform skew-x-20 rounded-bl-2xl rounded-tr-2xl ring-4 ring-offset-8 ring-gray-900 mt-4 mb-4 text-center"><h3 id="results_title" class="transform -skew-x-20 text-white">for ${this season} ${grandprix} will fix later</h3></div>
-            <span id = "results_subheader" class="block text-center text-sm text-gray-600 mb-4">
+            <span id = "results_subheader" class="flex flex-row items-center text-sm text-gray-600 mb-4">
                 <p id = "race_info1"></p> <!-- leave this for now but it already being programmatically rewritten -->
                 <p id = "circuit_name" ></p>
                 <p id = "race_info2"></p>
@@ -134,64 +134,73 @@
                 </form>
             </div>
     </dialog>
-    <dialog id = "constructor" class = "max-w-3xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg" close>
+    <dialog id = "constructor" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
         <h1 class = "text-center text-lg font-semibold mb-2">Constructor Details</h1>
         <hr class="mb-4">
         <figure id ="constructor_img_box"></figure>
-        <h3 id = "constructor_info" class="mb-4"> Name, Nationality, URL (needs to request race data) </h3>
-        <div class="relative overflow-y-auto max-h-[40vh]">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <h3 id = "constructor_info" class="text-center mb-4"> Name, Nationality, URL (needs to request race data) </h3>
+        <div class="overflow-y-auto max-h-[40vh] rounded">
+            <table class="w-full rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                        <th scope="col" class="px-6 py-3">Round</th>
-                        <th scope="col" class="px-6 py-3">Name</th>
-                        <th scope="col" class="px-6 py-3">Driver</th>
-                        <th scope="col" class="px-6 py-3">Position</th>
+                        <th  class="px-6 py-3">Round</th>
+                        <th  class="px-6 py-3">Name</th>
+                        <th  class="px-6 py-3">Driver</th>
+                        <th  class="px-6 py-3">Position</th>
                     </tr>
                 </thead>
                 <tbody id = "constructor_table"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
                     <!-- Programmatically Generated -->
                 </tbody>
             </table>
-            <div class = "flex-shrink-0 mt-4 flex justify-end space-x-4"></div>
-                <button id="add_favorite_const" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add Favorites</button>
-                <form method = "dialog">
-                    <button id= "close" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Close</button>
-                </form>
-            </div>
+        </div>
+        <div class = "flex justify-between items-center mt-4">
+            <button id="add_favorite_const" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Add Favorites</button>
+            <form method = "dialog">
+                <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
+            </form>
         </div>
     </dialog>
 
-    <dialog id = "favorites">
-        <h3> Favorites </h3>
+    <dialog id = "favorites" class = "max-w-8xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
+        <h1 class = "text-center text-lg font-semibold mb-2"> Favorites </h1>
+        <hr class="mb-4">
         <div id = "constructor_popup">
             <figure id ="constructor_img_box"></figure>
             <div id ="constructor_info">
-                <h3> Combines favorites from all 3 of the popups </h3>
-                <button id="added_favorites">Empty Favorites</button> <!-- This might need a class (add_favorits) with an id = favorite_constructor,etc..-->
-                <form method="dialog">
-                    <button id= "close">Close</button>
-                </form>
-                <div id = "fav_table_container">
-                    <table class="favorite_tables">
-                        <tr><th>Drivers</th></tr>
-                        <tbody id = "fav_drivers">
-                            <!--Data Generated Programatically-->
+                <h3 class = "text-center mb-4"> Combines favorites from all 3 of the popups </h3>
+                <div class="flex overflow-x-auto max-h-[40vh] space-x-4">
+                    <table class="w-full rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr><th  class="items-center px-6 py-3">Drivers</th></tr>
+                        </thead>
+                        <tbody id = "fav_drivers"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                            <!-- Programmatically Generated -->
                         </tbody>
                     </table>
-                    <table class="favorite_tables">
-                        <tr><th>Constructors</th></tr>
-                        <tbody id = "fav_constructors">
-                            <!--Data Generated Programatically-->
+                    <table class="w-full rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr><th  class="items-center px-6 py-3">Constructors</th></tr>
+                        </thead>
+                        <tbody id = "fav_constructors"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                            <!-- Programmatically Generated -->
                         </tbody>
                     </table>
-                    <table class="favorite_tables">
-                        <tr><th>Circuits</th></tr>
-                        <tbody id ="fav_circuits">
-                            <!--Data Generated Programatically-->
+                    <table class="w-full rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                            <tr><th  class="items-center px-6 py-3">Circuits</th></tr>
+                        </thead>
+                        <tbody id = "fav_circuits"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                            <!-- Programmatically Generated -->
                         </tbody>
                     </table>
                 </div>
+            </div>
+            <div class = "flex justify-between items-center mt-4">
+                <button id="add_favorite_const" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Empty Favorites</button>
+                <form method = "dialog">
+                    <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
+                </form>
             </div>
         </div>
     </dialog>
