@@ -5,16 +5,15 @@
     ==== TO DO =====
     sorting by the selected table header
 
-    the dialog popups HTML + the needed js and api requests for that data
-    -then they need to send the right name to the favorites tab
+    theres a bug where the event listeners recopy their successful clicks for adding to favorites 
 
 */
 
 const favorited =
 {
-    drivers: ["Max Verstappen", "Test", "123"], 
-    constructors: ["456", "789"], 
-    circuits: ["Populate Dynamically", "another", "testing"],
+    drivers: [], 
+    constructors: [], 
+    circuits: [],
 };
 
 let season = null; /* I need this globally accessible for the load_popup function */
@@ -80,6 +79,11 @@ function init() {
     const constMoreInfo = document.querySelector("#const_more_info");
     const constructorTable = document.querySelector("#constructor_table");
 
+    const driverInfo = document.querySelector("#driver_info");
+    const driverNationality = document.querySelector("#driver_nationality");
+    const driverMoreInfo = document.querySelector("#driver_more_info");
+    const driverTable = document.querySelector("#driver_table");
+
 
     add_event_handlers();
 
@@ -102,6 +106,16 @@ function init() {
 
     function fetch_race_results(raceID) {
         let request = `${url}/results.php?race=${raceID}`;
+        return fetch_store_API_data(request);
+    }
+
+    function fetch_driver(driverRef) {
+        let request = `${url}/drivers.php?ref=${driverRef}`;
+        return fetch_store_API_data(request);
+    }
+
+    function fetch_driver_results(driverRef, season) {
+        let request = `${url}/driverResults.php?driver=${driverRef}&season=${season}`;
         return fetch_store_API_data(request);
     }
 
@@ -164,6 +178,10 @@ function init() {
         }
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: add_event_handlers
+    // Purpose: 
+    /*------------------------------------------------------------------------------------------------------*/
     function add_event_handlers() {
         home.onclick = () => load_view("home");
 
@@ -192,11 +210,6 @@ function init() {
         circuitName.addEventListener("click", load_popup);
 
         /* these should go in a seperate funcion eventually*/
-
-        addFavoriteDriver.addEventListener("click", () => {
-            favorited.drivers.unshift("added driver");
-            console.log(`favorited ${favorited.drivers}`);
-        });
 
         addFavoriteCirc.addEventListener("click", () => {
             favorited.circuits.unshift("added circuit");
@@ -313,12 +326,12 @@ function init() {
             set_visibility(results, false);
 
             fetch_race_qualify(raceID).then(data => {
+                console.log(`qualify data ${data[0].driver.ref}`);
                 generate_qualify_table(data);
                 pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
                 pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
                 pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
             });
-            
         }
         else if(resultType == "result")
         {
@@ -327,6 +340,7 @@ function init() {
             set_visibility(qualifying, false);
 
             fetch_race_results(raceID).then(data => {
+                console.log(`results data ${data[0].driver.ref}`);
                 generate_results_table(data);
                 pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
                 pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
@@ -351,7 +365,6 @@ function init() {
             name.className = "hover:text-white";
             name.textContent = qualify.driver.forename + " " + qualify.driver.surname;
             add_type_and_id(name, "driver", qualify.driver.ref);
-
             row.appendChild(name);
 
             const constructor = document.createElement("td");
@@ -436,6 +449,10 @@ function init() {
 
         if (type == "driver") {
             driver.showModal();
+            fetch_driver(ref, season).then(data => {
+                assemble_driver_popup(ref, data, season);
+
+            });
         }
         else if(type == "circuit")
         {
@@ -443,9 +460,7 @@ function init() {
         }
         else if (type == "constructor") {
             constructor.showModal();
-
             fetch_constructor(ref, season).then(data => {
-                console.log(data);
                 assemble_constructor_popup(ref, data, season);
             });
         }
@@ -476,11 +491,9 @@ function init() {
     additions or removals in the lists
     /*------------------------------------------------------------------------------------------------------*/
     function generate_favorite_tables() {
-
         favDrivers.innerHTML = "";
         favConstructors.innerHTML = "";
         favCircuits.innerHTML = "";
-
 
         for (let driver of favorited.drivers) {
             const row = document.createElement("tr");
@@ -513,15 +526,21 @@ function init() {
         }
     }
 
-    function assemble_constructor_popup(ref, data, season) {
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: assemble_constructor_popup
+    // Purpose: 
+    /*------------------------------------------------------------------------------------------------------*/
+    function assemble_constructor_popup(ref, data, season) {
         constName.textContent = `${data.name}`;
         constNationality.textContent = `${data.nationality}` ;
         constMoreInfo.textContent = `Learn More`;
         constMoreInfo.href = data.url;
 
+        addFavoriteConst.onclick = null;
+
         addFavoriteConst.addEventListener("click", () => {
-            favorited.constructors.unshift(data.name);
+            favorited.constructors.push(data.name);
         });
 
         fetch_constructor_results(ref, season).then(data => { 
@@ -552,6 +571,54 @@ function init() {
                 row.appendChild(position);
         
                 constructorTable.appendChild(row);
+            }
+        });
+    }
+
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: assemble_constructor_popup
+    // Purpose: 
+    /*------------------------------------------------------------------------------------------------------*/
+    function assemble_driver_popup(ref, data, season) {
+        driverInfo.textContent = `${data.forename + " " + data.surname + " - " + data.dob}`;
+        driverNationality.textContent = `${data.nationality}` ;
+        driverMoreInfo.textContent = `Learn More`;
+        driverMoreInfo.href = data.url;
+
+        addFavoriteDriver.addEventListener("click", () => {
+            favorited.drivers.push(data.forename + " " + data.surname);
+            console.log(favorited.drivers);
+        });
+
+        fetch_driver_results(ref, season).then(data => { 
+            console.log(data);
+            driverTable.innerHTML = "";
+
+            for (let driver of data) {
+                const row = document.createElement("tr");
+                row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+                
+                const round = document.createElement("td");
+                round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
+                round.textContent = driver.round;
+                row.appendChild(round);
+        
+                const raceName = document.createElement("td");
+                raceName.className = "px-6 py-4";
+                raceName.textContent = driver.name;
+                row.appendChild(raceName);
+        
+                const position = document.createElement("td");
+                position.className = "px-6 py-4";
+                position.textContent = driver.positionOrder;
+                row.appendChild(position);
+
+                const points = document.createElement("td");
+                points.className = "px-6 py-4";
+                points.textContent = "ask randy for this";
+                row.appendChild(points);
+        
+                driverTable.appendChild(row);
             }
         });
     }
