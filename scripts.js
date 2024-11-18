@@ -8,13 +8,9 @@
     new bug discovered (2023 - Saudi Arabian Grand Prix - Guanyu Zhou & Nyck de Vries break for some reason?)
 
 */
+const storedFavorites = JSON.parse(localStorage.getItem("favorited"));
+const favorited = storedFavorites || {drivers: [], constructors: [], circuits: []}; //Check if any favorites stored otherwise default to empty
 
-const favorited =
-{
-    drivers: [], 
-    constructors: [], 
-    circuits: [],
-};
 
 let season = null; /* I need this globally accessible for the load_popup function */
 
@@ -69,10 +65,12 @@ function init() {
     const favDrivers = document.querySelector("#fav_drivers");
     const favConstructors = document.querySelector("#fav_constructors");
     const favCircuits = document.querySelector("#fav_circuits");
+    const emptyFavorites = document.querySelector("#empty_favorites");
 
-    const addFavoriteDriver = document.querySelector("#add_favorite_driver");
-    const addFavoriteConst = document.querySelector("#add_favorite_const");
-    const addFavoriteCirc = document.querySelector("#add_favorite_circ");
+    let addFavoriteDriver = document.querySelector("#add_favorite_driver");
+    let addFavoriteConst = document.querySelector("#add_favorite_const");
+    let addFavoriteCirc = document.querySelector("#add_favorite_circ");
+
 
     const constName = document.querySelector("#const_name");
     const constNationality = document.querySelector("#const_nationality");
@@ -158,6 +156,7 @@ function init() {
             set_visibility(raceView, false);
             set_visibility(resultsContainer, false);
             set_visibility(preResultsMessage, true);
+            seasonSelect.value = "SELECT"
         }
 
         if (view === "races") {
@@ -209,12 +208,8 @@ function init() {
         qualifyContainer.addEventListener("click", load_popup);
         circuitName.addEventListener("click", load_popup);
 
+        emptyFavorites.addEventListener("click", empty_favorite_table);
         /* these should go in a seperate funcion eventually*/
-
-        addFavoriteCirc.addEventListener("click", () => {
-            favorited.circuits.unshift("added circuit");
-            console.log(`favorited ${favorited.circuits}`);
-        });
 
     }
 
@@ -451,7 +446,6 @@ function init() {
             driver.showModal();
             fetch_driver(ref, season).then(data => {
                 assemble_driver_popup(ref, data, season);
-
             });
         }
         else if(type == "circuit")
@@ -500,7 +494,7 @@ function init() {
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
             element.className = "px-6 py-6 font-medium text-gray-900 dark:text-white truncate";
-            element.textContent = driver;
+            element.textContent = `${driver.forename} ${driver.surname}`;
             row.appendChild(element);
             favDrivers.appendChild(row);
         }
@@ -524,8 +518,39 @@ function init() {
             row.appendChild(element);
             favCircuits.appendChild(row);
         }
+        store_favorite_table();
+        console.log(favorited);
     }
 
+    function store_favorite_table()
+    {
+        localStorage.setItem("favorited", JSON.stringify(favorited));
+    }
+
+    
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: assemble_constructor_popup
+    // Purpose: empty the favorites table, this function should only be called while the favorites modal is open 
+    /*------------------------------------------------------------------------------------------------------*/
+    function empty_favorite_table()
+    {
+        for(array in favorited)
+        {
+            favorited[array].length = 0;
+        }
+
+        localStorage.removeItem("favorited");
+        favDrivers.innerHTML = "";
+        favConstructors.innerHTML = "";
+        favCircuits.innerHTML = "";
+        console.log("Favorites table emptied");
+        console.log(favorited);
+    }
+
+    function remove_favorite(type, ref)
+    {
+
+    }
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: assemble_constructor_popup
@@ -536,6 +561,8 @@ function init() {
         constNationality.textContent = `${data.nationality}` ;
         constMoreInfo.textContent = `Learn More`;
         constMoreInfo.href = data.url;
+
+        addFavoriteConst.removeEventListener()
 
         addFavoriteConst.addEventListener("click", () => {
             if (!favorited.constructors.includes(data.name)) {
@@ -577,7 +604,7 @@ function init() {
     }
 
     /*--------------------------------------------------------------------------------------------------------
-    // Name: assemble_constructor_popup
+    // Name: assemble_driver_popup
     // Purpose: 
     /*------------------------------------------------------------------------------------------------------*/
     function assemble_driver_popup(ref, data, season) {
@@ -586,10 +613,21 @@ function init() {
         driverMoreInfo.textContent = `Learn More`;
         driverMoreInfo.href = data.url;
 
+        const newButton = addFavoriteDriver.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
+        addFavoriteDriver.replaceWith(newButton);
+        addFavoriteDriver = newButton;
+
         addFavoriteDriver.addEventListener("click", () => {
-            if (!favorited.drivers.includes(data.forename + " " + data.surname)) {
-                favorited.drivers.push(data.forename + " " + data.surname);
-                console.log(favorited.drivers);
+            if (!favorited.drivers.some(driver => driver.forename === data.forename && driver.surname === data.surname)) {
+                
+                const driver = {
+                    forename: data.forename,
+                    surname: data.surname,
+                    referenceValue: ref
+                };
+
+                favorited.drivers.push(driver);
+                store_favorite_table();
             }
             else {
                 console.log("already added");

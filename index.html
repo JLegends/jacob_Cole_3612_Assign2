@@ -14,9 +14,9 @@
                 <img class="h-8" src = "data/images/f1_logo.png"></a> 
             <h2 class="text-white text-lg font-bold font-doto"> F1 Dashboard Project </h2>
             <!--Buttons-->
-           <div class="space-x-4 flex items-start justify-between">
-                <button id="home_button" class=" bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600">Home</button>
-                <button id="favorites_button" class=" bg-red-700 text-white px-4 py-2 rounded-md hover:bg-red-600">Favorites</button>
+           <div class="space-x-4 flex items-start justify-between"> <!--Buttos from: https://buttons.ibelick.com/-->
+                <button id="home_button" class=" bg-gray-700 text-white px-4 py-2 rounded-md group relative inline-flex h-12 items-center justify-center overflow-hidden font-medium transition hover:scale-110"><span>Home</span><div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]"><div class="relative h-full w-8 bg-white/20"></div></div></button>
+                <button id="favorites_button" class=" bg-red-700 text-white px-4 py-2 rounded-md group relative inline-flex h-12 items-center justify-center overflow-hidden font-medium transition hover:scale-110"><span>Favorites</span><div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]"><div class="relative h-full w-8 bg-white/20"></div></div></button>
             </div> 
         </div>
         <div class= "py-1 bg-red-600"></div> <!--A red line-->
@@ -32,7 +32,7 @@
                 <div id = "select_szn" class="p-5">
                     <h3> Season </h3>
                     <select id = "season-select" class="bg-gray-800 text-white p-2 rounded-md" > 
-                        <option>SELECT A SEASON</option>
+                        <option value=SELECT>SELECT A SEASON</option>
                         <option value=2020> 2020 </option>
                         <option value=2021> 2021 </option>
                         <option value=2022> 2022 </option>
@@ -43,7 +43,7 @@
             </div> 
             <div class="pt-3">
                 <div id ="content_area" class="max-w-[1000px] max-h-[1000px] w-full h-auto p-10 border-l-8 border-t-8 border-b-8 border-red-600 rounded-tl-2xl rounded-bl-2xl bg-slate-200 ">
-                    <img src="data/images/f1_cars.avif" class="h-full w-full shadow-2xl object-contain">
+                    <img src="data/images/f1_cars.avif" class="h-full w-full shadow-2xl object-contain rounded-lg">
                 </div>
             </div>
 
@@ -212,7 +212,7 @@
             </table>
         </div>
         <div class = "flex justify-between items-center mt-4">
-            <button id="add_favorite_const" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Empty Favorites</button>
+            <button id="empty_favorites" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Empty Favorites</button>
             <form method = "dialog">
                 <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
             </form>
