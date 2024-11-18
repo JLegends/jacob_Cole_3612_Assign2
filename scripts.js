@@ -5,7 +5,7 @@
     ==== TO DO =====
     sorting by the selected table header
 
-    theres a bug where the event listeners recopy their successful clicks for adding to favorites 
+    new bug discovered (2023 - Saudi Arabian Grand Prix - Guanyu Zhou & Nyck de Vries break for some reason?)
 
 */
 
