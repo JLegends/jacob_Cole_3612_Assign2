@@ -537,14 +537,15 @@ function init() {
         constMoreInfo.textContent = `Learn More`;
         constMoreInfo.href = data.url;
 
-        addFavoriteConst.onclick = null;
-
         addFavoriteConst.addEventListener("click", () => {
-            favorited.constructors.push(data.name);
+            if (!favorited.constructors.includes(data.name)) {
+                favorited.constructors.push(data.name);
+            }
         });
 
         fetch_constructor_results(ref, season).then(data => { 
             constructorTable.innerHTML = "";
+
 
             for (let constructor of data) {
                 const row = document.createElement("tr");
@@ -586,8 +587,13 @@ function init() {
         driverMoreInfo.href = data.url;
 
         addFavoriteDriver.addEventListener("click", () => {
-            favorited.drivers.push(data.forename + " " + data.surname);
-            console.log(favorited.drivers);
+            if (!favorited.drivers.includes(data.forename + " " + data.surname)) {
+                favorited.drivers.push(data.forename + " " + data.surname);
+                console.log(favorited.drivers);
+            }
+            else {
+                console.log("already added");
+            }
         });
 
         fetch_driver_results(ref, season).then(data => { 
