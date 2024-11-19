@@ -501,7 +501,7 @@ function init() {
             const deleteButton = document.createElement("button");
             buttonContainer.className = "text-right"
             
-            deleteButton.id = driver.ref;
+            deleteButton.setAttribute("ref", driver.ref); 
             deleteButton.setAttribute("type", "drivers");
             deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
             deleteButton.textContent = "X";
@@ -528,7 +528,7 @@ function init() {
             buttonContainer.className = "text-right";
             
             
-            deleteButton.id = constructor.ref;
+            deleteButton.setAttribute("ref", constructor.ref); 
             deleteButton.setAttribute("type", "constructors");
             deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
             deleteButton.textContent = "X";
@@ -556,8 +556,8 @@ function init() {
     function store_favorite_table()
     {
         favorited.drivers.sort((a, b) => a.forename.localeCompare(b.forename));
-        favorited.constructors.sort((a, b) => a.forename.localeCompare(b.forename));
-        favorited.circuits.sort((a, b) => a.forename.localeCompare(b.forename));
+        favorited.constructors.sort((a, b) => a.name.localeCompare(b.name));
+        //favorited.circuits.sort((a, b) => a.forename.localeCompare(b.forename));
 
         console.log("sorted: " + favorited.drivers);
         localStorage.setItem("favorited", JSON.stringify(favorited));
@@ -591,12 +591,61 @@ function init() {
     function remove_favorite(e)
     {        
         const targetArray = favorited[e.target.getAttribute("type")];
-        const index = targetArray.findIndex(item => item.ref == e.target.id);
+        const index = targetArray.findIndex(item => item.ref == e.target.getAttribute("ref"));
+        console.log("In remove_favorite:");
+        console.log(e);
+        console.log("Index: " + index);
+        
         if(index != -1)
         {
             targetArray.splice(index, 1);
         }
         generate_favorite_tables();
+    }
+
+    function add_fav_button_event(button, type, itemFavorited, data, ref)
+    {        
+        button.setAttribute("ref", ref);
+        button.setAttribute("type", type);
+        button.textContent = "";
+        
+        if(!itemFavorited)
+        {
+            button.textContent = "Add to Favorites";
+            button.addEventListener("click", () => {      
+                if(type == "constructors")
+                {
+                    const constructor = {
+                        name: data.name,
+                        ref: ref,
+                    };
+                    favorited.constructors.push(constructor);
+                }
+                else if(type == "drivers")
+                {
+                    const driver = {
+                        forename: data.forename,
+                        surname: data.surname,
+                        ref: ref,
+                    };
+                    
+                    favorited.drivers.push(driver);
+                }
+                store_favorite_table();                
+                add_fav_button_event(button, type, true, data, ref);
+            });
+    
+        }
+        else
+        {
+            button.textContent = "Remove from Favorites";
+            button.addEventListener("click", (e) => {  
+                remove_favorite(e);
+                store_favorite_table();                
+                add_fav_button_event(button, type, false, data, ref);
+            });
+        }     
+
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -609,27 +658,12 @@ function init() {
         constMoreInfo.textContent = `Learn More`;
         constMoreInfo.href = data.url;
 
-        
         const newButton = addFavoriteConst.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
         addFavoriteConst.replaceWith(newButton);
         addFavoriteConst = newButton;
 
-
-        addFavoriteConst.addEventListener("click", () => {
-            if (!favorited.drivers.some(constructor => constructor.name === data.name)) {
-                
-            const constructor = {
-                name: data.name,
-                ref: ref,
-            };
-
-            favorited.constructors.push(constructor);
-            store_favorite_table();
-            }
-            else {
-                console.log("already added");
-            }
-        });
+        const itemFavorited = favorited.constructors.some(constructor => constructor.name === data.name);
+        add_fav_button_event(addFavoriteConst, "constructors", itemFavorited, data, ref);
 
         fetch_constructor_results(ref, season).then(data => { 
             constructorTable.innerHTML = "";
@@ -678,22 +712,9 @@ function init() {
         addFavoriteDriver.replaceWith(newButton);
         addFavoriteDriver = newButton;
 
-        addFavoriteDriver.addEventListener("click", () => {
-            if (!favorited.drivers.some(driver => driver.forename === data.forename && driver.surname === data.surname)) {
-                
-                const driver = {
-                    forename: data.forename,
-                    surname: data.surname,
-                    ref: ref,
-                };
 
-                favorited.drivers.push(driver);
-                store_favorite_table();
-            }
-            else {
-                console.log("already added");
-            }
-        });
+        const itemFavorited = favorited.drivers.some(driver => driver.forename === data.forename && driver.surname === data.surname)
+        add_fav_button_event(addFavoriteDriver, "drivers", itemFavorited, data, ref);
 
         fetch_driver_results(ref, season).then(data => { 
             console.log(data);
