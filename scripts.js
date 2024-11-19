@@ -1,9 +1,16 @@
 /* Known Issues 
     ==== TO DO =====
     sorting by the selected table header
+    
     would be nice to add loading icons for when we're grabbing data or something is loading. Could add to the
     race table, result table, modal popups and the modal popup button so it doesn't switch from add favorite to remove
     while it checks!
+
+    Improve the look of the images in results plus add the same image to the driver cards, probably will use a gradient for the
+    background
+
+    Change the highlighting style for the results/races to be more readable.
+
     new bug discovered (2023 - Saudi Arabian Grand Prix - Guanyu Zhou & Nyck de Vries break for some reason?)
 
 */
