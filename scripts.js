@@ -1,10 +1,9 @@
 /* Known Issues 
-
-    Some of the data grabbed from the API has weird characters will probably have to ask about this.
-
     ==== TO DO =====
     sorting by the selected table header
-
+    would be nice to add loading icons for when we're grabbing data or something is loading. Could add to the
+    race table, result table, modal popups and the modal popup button so it doesn't switch from add favorite to remove
+    while it checks!
     new bug discovered (2023 - Saudi Arabian Grand Prix - Guanyu Zhou & Nyck de Vries break for some reason?)
 
 */
