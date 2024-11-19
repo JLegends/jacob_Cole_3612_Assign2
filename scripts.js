@@ -493,9 +493,26 @@ function init() {
             const row = document.createElement("tr");
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
+            const data = document.createElement("span");
+            
             element.className = "px-6 py-6 font-medium text-gray-900 dark:text-white truncate";
-            element.textContent = `${driver.forename} ${driver.surname}`;
+            data.textContent = `${driver.forename} ${driver.surname}`;
+            element.appendChild(data);
+
+
+            const buttonContainer = document.createElement("td");
+            const deleteButton = document.createElement("button");
+            buttonContainer.className = "text-right"
+            
+            deleteButton.id = driver.ref;
+            deleteButton.setAttribute("type", "drivers");
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
+            deleteButton.textContent = "X";
+            deleteButton.addEventListener("click", remove_favorite);
+            buttonContainer.appendChild(deleteButton);
+            
             row.appendChild(element);
+            row.appendChild(buttonContainer);
             favDrivers.appendChild(row);
         }
 
@@ -524,6 +541,11 @@ function init() {
 
     function store_favorite_table()
     {
+        favorited.drivers.sort((a, b) => a.forename.localeCompare(b.forename));
+        favorited.constructors.sort((a, b) => a.forename.localeCompare(b.forename));
+        favorited.circuits.sort((a, b) => a.forename.localeCompare(b.forename));
+
+        console.log("sorted: " + favorited.drivers);
         localStorage.setItem("favorited", JSON.stringify(favorited));
     }
 
@@ -546,10 +568,21 @@ function init() {
         console.log("Favorites table emptied");
         console.log(favorited);
     }
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: remove_favorite(type)
+    // Purpose: remove a single favorited item from the list.
+    /*------------------------------------------------------------------------------------------------------*/
 
-    function remove_favorite(type, ref)
-    {
 
+    function remove_favorite(e)
+    {        
+        const targetArray = favorited[e.target.getAttribute("type")];
+        const index = targetArray.findIndex(item => item.ref == e.target.id);
+        if(index != -1)
+        {
+            targetArray.splice(index, 1);
+        }
+        generate_favorite_tables();
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -562,7 +595,11 @@ function init() {
         constMoreInfo.textContent = `Learn More`;
         constMoreInfo.href = data.url;
 
-        addFavoriteConst.removeEventListener()
+        
+        const newButton = addFavoriteConst.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
+        addFavoriteConst.replaceWith(newButton);
+        addFavoriteConst = newButton;
+
 
         addFavoriteConst.addEventListener("click", () => {
             if (!favorited.constructors.includes(data.name)) {
@@ -623,7 +660,7 @@ function init() {
                 const driver = {
                     forename: data.forename,
                     surname: data.surname,
-                    referenceValue: ref
+                    ref: ref,
                 };
 
                 favorited.drivers.push(driver);
@@ -666,4 +703,13 @@ function init() {
             }
         });
     }
+    function assemble_circuit_popup()
+    {
+
+    }
+
+
+
 }
+
+
