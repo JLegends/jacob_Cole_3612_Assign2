@@ -493,12 +493,9 @@ function init() {
             const row = document.createElement("tr");
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
-            const data = document.createElement("span");
             
             element.className = "px-6 py-6 font-medium text-gray-900 dark:text-white truncate";
-            data.textContent = `${driver.forename} ${driver.surname}`;
-            element.appendChild(data);
-
+            element.textContent = `${driver.forename} ${driver.surname}`;
 
             const buttonContainer = document.createElement("td");
             const deleteButton = document.createElement("button");
@@ -520,9 +517,26 @@ function init() {
             const row = document.createElement("tr");
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
+            
             element.className = "px-6 py-6 font-medium text-gray-900dark:text-white truncate";
-            element.textContent = constructor;
+            element.textContent = constructor.name; 
+            
+
+            
+            const buttonContainer = document.createElement("td");
+            const deleteButton = document.createElement("button");
+            buttonContainer.className = "text-right";
+            
+            
+            deleteButton.id = constructor.ref;
+            deleteButton.setAttribute("type", "constructors");
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
+            deleteButton.textContent = "X";
+            deleteButton.addEventListener("click", remove_favorite);
+            buttonContainer.appendChild(deleteButton);
+            
             row.appendChild(element);
+            row.appendChild(buttonContainer);
             favConstructors.appendChild(row);
         }
 
@@ -602,8 +616,18 @@ function init() {
 
 
         addFavoriteConst.addEventListener("click", () => {
-            if (!favorited.constructors.includes(data.name)) {
-                favorited.constructors.push(data.name);
+            if (!favorited.drivers.some(constructor => constructor.name === data.name)) {
+                
+            const constructor = {
+                name: data.name,
+                ref: ref,
+            };
+
+            favorited.constructors.push(constructor);
+            store_favorite_table();
+            }
+            else {
+                console.log("already added");
             }
         });
 
