@@ -340,7 +340,6 @@ function init() {
         fetch_race_results(raceID).then(data => { //Generate results for the results page
             resultsDataHeader.addEventListener("click",  (e) => sort_data(e, data));
             
-            //sort_data(data, "")
             generate_results_table(data);
             pdImg1r.src = `data/images/drivers/${data[0].driver.ref}.avif`;
             pdImg2r.src = `data/images/drivers/${data[1].driver.ref}.avif`;
@@ -348,6 +347,8 @@ function init() {
         });
     
         fetch_race_qualify(raceID).then(data => { //Generate results for the qualifying page
+            qualifyDataHeader.addEventListener("click",  (e) => sort_data(e, data));
+            
             generate_qualify_table(data);
             pdImg1q.src = `data/images/drivers/${data[0].driver.ref}.avif`;
             pdImg2q.src = `data/images/drivers/${data[1].driver.ref}.avif`;
@@ -374,38 +375,126 @@ function init() {
     function sort_data(e, data)
     {        
         const targetList = e.currentTarget;
+        let generateFunction;
         if(!targetList.hasAttribute("sortDirection"))
         {
             targetList.setAttribute("sortDirection", "dsc"); //Setting to descending first because we want to sort by ascending initally
         }
+        if(!targetList.hasAttribute("sortArg"))
+        {
+            targetList.setAttribute("sortArg", "Position");
+        }
         if(targetList.id == "results_data_header")
         {
-
+            resultsContainer.textContent = "";
+            generateFunction = generate_results_table;
+        }
+        else if(targetList.id == "qualify_data_header")
+        {
+            qualifyContainer.textContent = "";
+            generateFunction = generate_qualify_table;
+        }
+        sortArg = e.target.textContent;
+        if(sortArg != targetList.getAttribute("sortArg")) //If we are switching to a different category we also want to sort by ascending
+        {
+            targetList.setAttribute("sortDirection", "dsc");
         }
         
-        sortArg = e.target.textContent;
+        console.log("Sort arg:");
+        console.log(sortArg);
         //When this event is triggered it should sort by ascending by checking if the targetList is already sorting by decending and vice versa.
         if(targetList.getAttribute("sortDirection") == "dsc")
         {
             if(sortArg == "Name")
             {
                 data.sort((a, b) => a.driver.forename.localeCompare(b.driver.forename));
+                targetList.setAttribute("sortArg", "Name");
             }
+            else if(sortArg == "Position")
+            {
+                data.sort((a, b) => a.position - b.position);
+                targetList.setAttribute("sortArg", "Position");
+            }
+            else if(sortArg == "Constructor")
+            {
+                data.sort((a, b) => a.constructor.name.localeCompare(b.constructor.name));
+                targetList.setAttribute("sortArg", "Constructor");
+            }
+            else if(sortArg == "Laps")
+            {
+                data.sort((a, b) => a.laps - b.laps);
+                targetList.setAttribute("sortArg", "Laps");
+            }
+            else if(sortArg == "Points")
+            {
+                data.sort((a, b) => a.points - b.points);
+                targetList.setAttribute("sortArg", "Points");
+            }
+            else if(sortArg.includes('Q'))
+            {                
+                const num = sortArg.charAt(1);
+                const key = "q" + num; // q1, q2, q3
+                data.sort((a, b) => timeToSeconds(a[key]) - timeToSeconds(b[key]));
+                targetList.setAttribute("sortArg", "Q" + num);
+            }
+
             targetList.setAttribute("sortDirection", "asc");
         }
+        else if(targetList.getAttribute("sortDirection") == "asc")
+        {
+            console.log("sort by descending");
+            if(sortArg == "Name")
+            {
+                data.sort((a, b) => b.driver.forename.localeCompare(a.driver.forename));
+                targetList.setAttribute("sortArg", "Name");
+            }
+            else if(sortArg == "Position")
+            {
+                data.sort((a, b) => b.position - a.position);
+                targetList.setAttribute("sortArg", "Position");
+            }
+            else if(sortArg == "Constructor")
+            {
+                data.sort((a, b) => b.constructor.name.localeCompare(a.constructor.name));
+                targetList.setAttribute("sortArg", "Constructor");
+            }
+            else if(sortArg == "Laps")
+            {
+                data.sort((a, b) => b.laps - a.laps);
+                targetList.setAttribute("sortArg", "Laps");
+            }
+            else if(sortArg == "Points")
+            {
+                data.sort((a, b) => b.points - a.points);
+                targetList.setAttribute("sortArg", "Points");
+            }
+            else if(sortArg.includes('Q'))
+            {               
+                const num = sortArg.charAt(1);
+                const key = "q" + num; // q1, q2, q3
+                data.sort((a, b) => timeToSeconds(b[key]) - timeToSeconds(a[key]));
+                targetList.setAttribute("sortArg", "Q" + num);
+            }
+            
+            targetList.setAttribute("sortDirection", "dsc");
+        }
+        console.log("this is the data as given to the generate function");
+        console.dir(data);
+        generateFunction(data);
+    }
+    
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: timeToSeconds
+    // Purpose: Necessary to convert the strings from q1,q2,q3, to float numbers so that we can compare the values
+    /*------------------------------------------------------------------------------------------------------*/
 
-        console.log("node with the listener");
-        console.log(e.currentTarget);
-        console.log("In sort function");
-        console.log(e.target.textContent);
-        
-        console.log(data);
-        
-        
-
-        qualifyContainer.textContent = "";
-        resultsContainer.textContent = "";
-        generate_results_table(data);
+    function timeToSeconds(time) {
+        if(time == null)
+        {
+            return 1000; //Return a large number so that times with no entries aren't considered in comparisons
+        }
+        const [minutes, seconds] = time.split(':');
+        return parseFloat(minutes) * 60 + parseFloat(seconds);
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -453,8 +542,6 @@ function init() {
     // Purpose: generates the table of individual results in a grand prix
     /*------------------------------------------------------------------------------------------------------*/
     function generate_results_table(results) {
-        console.log("this is the data as given to the generate_results function");
-        console.dir(results);
         for (let result of results) {
             const row = document.createElement("tr");
             row.className = "odd: bg-stone-150 even:bg-stone-300"
