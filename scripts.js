@@ -41,13 +41,13 @@ function init() {
     const roundContainer = document.querySelector("#round_container");
     const raceTable = document.querySelector("#races");
 
-    
-    const results = document.querySelector("#results");
-    
-    const qualifying = document.querySelector("#qualifying");
+    const raceDataContainer = document.querySelector("#race_data_container");
+
+    const results = document.querySelector("#results_page");
+    const qualifying = document.querySelector("#qualify_page");
     const qualifyContainer = document.querySelector("#qualify_container");
     const qualifyDataHeader = document.querySelector("#qualify_data_header");
-    const resultsContainer = document.querySelector("#results_container");
+    
     const resultsDataHeader = document.querySelector("#results_data_header");
     
     const resultTitle = document.querySelector("#results_title");
@@ -61,11 +61,15 @@ function init() {
     const resultsTab = document.querySelector("#results_button");
     const qualifyTab = document.querySelector("#qualifying_button");
     const preResultsMessage = document.querySelector("#pre_results_message");
-    const driverContainer = document.querySelector("#driver_container");
+    const resultsContainer = document.querySelector("#results_container");
 
-    const pdImg1 = document.querySelector("#pd1");
-    const pdImg2 = document.querySelector("#pd2");
-    const pdImg3 = document.querySelector("#pd3");
+    const pdImg1q = document.querySelector("#pd1q");
+    const pdImg2q = document.querySelector("#pd2q");
+    const pdImg3q = document.querySelector("#pd3q");
+    const pdImg1r = document.querySelector("#pd1r");
+    const pdImg2r = document.querySelector("#pd2r");
+    const pdImg3r = document.querySelector("#pd3r");
+
 
     const seasonSelect = document.querySelector("#season-select");
 
@@ -175,7 +179,7 @@ function init() {
         if (view === "home") {
             set_visibility(homeView, true);
             set_visibility(raceView, false);
-            set_visibility(resultsContainer, false);
+            set_visibility(raceDataContainer, false);
             set_visibility(preResultsMessage, true);
             seasonSelect.value = "SELECT"
         }
@@ -225,7 +229,7 @@ function init() {
         });
 
 
-        driverContainer.addEventListener("click", load_popup);
+        resultsContainer.addEventListener("click", load_popup);
         roundContainer.addEventListener("click", load_popup);
         qualifyContainer.addEventListener("click", load_popup);
         circuitName.addEventListener("click", load_popup);
@@ -242,7 +246,7 @@ function init() {
     function list_season_races(season) {
         /*container.style.border ="none";*/
         set_visibility(qualifying, false)
-        set_visibility(resultsContainer, false);
+        set_visibility(raceDataContainer, false);
         set_visibility(preResultsMessage, true);
         roundTitle.textContent = `${season} Races`;
         roundContainer.textContent = "";
@@ -302,14 +306,8 @@ function init() {
             resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
-                list_grandprix_results(race.id, race.name, season, "result"); 
+                list_grandprix_results(race.id, race.name, season); 
                 generate_results_subheader(race.circuit.id, round.textContent, race.date, race.url);
-                resultsTab.addEventListener("click", ()=>{
-                    list_grandprix_results(race.id, race.name, season, "result"); 
-                })
-                qualifyTab.addEventListener("click", ()=>{
-                    list_grandprix_results(race.id, race.name, season, "qualifying"); 
-                })
             });
 
             row.appendChild(round);
@@ -327,49 +325,87 @@ function init() {
     // Name: list_grandprix_results
     // Purpose: creates the DOM content for the selection grand prix results
     /*------------------------------------------------------------------------------------------------------*/
-    function list_grandprix_results(raceID, raceName, season, resultType) {
+    function list_grandprix_results(raceID, raceName, season) {
 
         qualifyContainer.textContent = "";
-        driverContainer.textContent = "";
+        resultsContainer.textContent = "";
 
         set_visibility(preResultsMessage, false);
-        set_visibility(resultsContainer, true);
+        set_visibility(raceDataContainer, true);
+
+        resultTitle.textContent = `Results for ${season}, ${raceName}`;
+        set_visibility(results, true);
+        set_visibility(qualifying, false);
+
+        fetch_race_results(raceID).then(data => { //Generate results for the results page
+            resultsDataHeader.addEventListener("click",  (e) => sort_data(e, data));
+            
+            //sort_data(data, "")
+            generate_results_table(data);
+            pdImg1r.src = `data/images/drivers/${data[0].driver.ref}.avif`;
+            pdImg2r.src = `data/images/drivers/${data[1].driver.ref}.avif`;
+            pdImg3r.src = `data/images/drivers/${data[2].driver.ref}.avif`;
+        });
+    
+        fetch_race_qualify(raceID).then(data => { //Generate results for the qualifying page
+            generate_qualify_table(data);
+            pdImg1q.src = `data/images/drivers/${data[0].driver.ref}.avif`;
+            pdImg2q.src = `data/images/drivers/${data[1].driver.ref}.avif`;
+            pdImg3q.src = `data/images/drivers/${data[2].driver.ref}.avif`;
+        });
 
 
-        if(resultType == "qualifying")
-        {
+        resultsTab.addEventListener("click", ()=>{ //Add events to enable switching between the two pages
+            //list_grandprix_results(race.id, race.name, season, "result"); 
+            resultTitle.textContent = `Results for ${season}, ${raceName}`;
+            set_visibility(results, true);
+            set_visibility(qualifying, false);        
+        })
+        qualifyTab.addEventListener("click", ()=>{
+            //list_grandprix_results(race.id, race.name, season, "qualifying"); 
             resultTitle.textContent = `Qualifying for ${season}, ${raceName}`;
             set_visibility(qualifying, true);
             set_visibility(results, false);
 
-            fetch_race_qualify(raceID).then(data => {
-                generate_qualify_table(data);
-                pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
-                pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
-                pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
-            });
-        }
-        else if(resultType == "result")
-        {
-            resultTitle.textContent = `Results for ${season}, ${raceName}`;
-            set_visibility(results, true);
-            set_visibility(qualifying, false);
+        })
 
-            fetch_race_results(raceID).then(data => {
-                //resultsDataHeader.addEventListener("click", sort_data);
-                
-                //sort_data(data, "")
-                generate_results_table(data);
-                pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
-                pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
-                pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
-            });
-        }
     }
 
     function sort_data(e, data)
-    {
+    {        
+        const targetList = e.currentTarget;
+        if(!targetList.hasAttribute("sortDirection"))
+        {
+            targetList.setAttribute("sortDirection", "dsc"); //Setting to descending first because we want to sort by ascending initally
+        }
+        if(targetList.id == "results_data_header")
+        {
 
+        }
+        
+        sortArg = e.target.textContent;
+        //When this event is triggered it should sort by ascending by checking if the targetList is already sorting by decending and vice versa.
+        if(targetList.getAttribute("sortDirection") == "dsc")
+        {
+            if(sortArg == "Name")
+            {
+                data.sort((a, b) => a.driver.forename.localeCompare(b.driver.forename));
+            }
+            targetList.setAttribute("sortDirection", "asc");
+        }
+
+        console.log("node with the listener");
+        console.log(e.currentTarget);
+        console.log("In sort function");
+        console.log(e.target.textContent);
+        
+        console.log(data);
+        
+        
+
+        qualifyContainer.textContent = "";
+        resultsContainer.textContent = "";
+        generate_results_table(data);
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -446,7 +482,7 @@ function init() {
             pts.textContent = result.points;
             row.appendChild(pts);
 
-            driverContainer.appendChild(row);
+            resultsContainer.appendChild(row);
         }
     }
 
@@ -638,11 +674,7 @@ function init() {
     function remove_favorite(e)
     {        
         const targetArray = favorited[e.target.getAttribute("type")];
-        const index = targetArray.findIndex(item => item.ref == e.target.getAttribute("ref"));
-        console.log("In remove_favorite:");
-        console.log(e);
-        console.log("Index: " + index);
-        
+        const index = targetArray.findIndex(item => item.ref == e.target.getAttribute("ref")); 
         if(index != -1)
         {
             targetArray.splice(index, 1);
@@ -651,8 +683,12 @@ function init() {
     }
 
     function add_fav_button_event(button, type, itemFavorited, data, ref)
-    {        
-        add_type_and_id(button,)
+    {                
+        const newButton = button.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
+        button.replaceWith(newButton);
+        button = newButton;
+
+        add_type_and_id(button, type, ref);
         button.textContent = "";
         
         if(!itemFavorited)
@@ -713,10 +749,6 @@ function init() {
         constMoreInfo.textContent = `Learn More`;
         constMoreInfo.href = data.url;
 
-        const newButton = addFavoriteConst.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
-        addFavoriteConst.replaceWith(newButton);
-        addFavoriteConst = newButton;
-
         const itemFavorited = favorited.constructors.some(constructor => constructor.name === data.name);
         add_fav_button_event(addFavoriteConst, "constructors", itemFavorited, data, ref);
 
@@ -762,10 +794,6 @@ function init() {
         driverNationality.textContent = `${data.nationality}` ;
         driverMoreInfo.textContent = `Learn More`;
         driverMoreInfo.href = data.url;
-
-        const newButton = addFavoriteDriver.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
-        addFavoriteDriver.replaceWith(newButton);
-        addFavoriteDriver = newButton;
 
         const itemFavorited = favorited.drivers.some(driver => driver.forename === data.forename && driver.surname === data.surname)
         add_fav_button_event(addFavoriteDriver, "drivers", itemFavorited, data, ref);
@@ -813,11 +841,6 @@ function init() {
         popupCircuitCountry.textContent = data.country;
         popupCircuitURL.href = data.url;
 
-        const newButton = addFavoriteCirc.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
-        addFavoriteCirc.replaceWith(newButton);
-        addFavoriteCirc = newButton;
-        console.log("circuit ref: ");
-        console.log(ref);
         const itemFavorited = favorited.circuits.some(circuit => circuit.name === data.name);
         add_fav_button_event(addFavoriteCirc, "circuits", itemFavorited, data, ref);
     }

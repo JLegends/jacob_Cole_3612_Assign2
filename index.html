@@ -29,7 +29,7 @@
                     have an accurate representation more words more words just as an example
                     paragraph describing what this website does testing testing
                 </p>
-                <div id = "select_szn" class="p-5">
+                <div id ="select_szn" class="p-5">
                     <h3> Season </h3>
                     <select id = "season-select" class="bg-gray-800 text-white p-2 rounded-md" > 
                         <option value=SELECT>SELECT A SEASON</option>
@@ -68,7 +68,7 @@
         <div id="pre_results_message" class="flex items-center justify-center h-full w-[100%] repeating-x-background">
             <h1> SELECT ANY RACE</h1>
         </div>
-        <div id="results_container" class="flex flex-col w-[98%] md:px-4 md:ml-10 md:mr-10 bg-gray-100 md:w-full">
+        <div id="race_data_container" class="flex flex-col w-[98%] md:px-4 md:ml-10 md:mr-10 bg-gray-100 md:w-full">
             <div class="flex items-center justify-center h-full w-[100%]">
                 <div id="qualifying_results_button_container" class="inline-flex rounded-md shadow-sm">
                     <!--From: https://flowbite.com/docs/components/button-group/-->
@@ -83,27 +83,37 @@
                 <p id = "race_info2" class="hover:text-white"></p>
             </span>
             <div id="race_info_container" class="h-[650px]">
-                <div id="podium" class="flex flex-row space-x-10 justify-center">
-                    <div id="result_1" class="podium_Box"><img id="pd1" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">1</div></div> 
-                    <div id="result_2" class="podium_Box"><img id="pd2" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">2</div></div>
-                    <div id="result_3" class="podium_Box"><img id="pd3" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">3</div></div>
-                </div>
-                <div id="qualifying" class="overflow-y-scroll h-[500px] p-4 md:h-[350px] w-[100%]">
-                    <table class="w-full text-left rtl:text-right text-black">
-                        <thead id="qualify_data_header"><th>Position</th><th>Name</th><th>Constructor</th><th>Q1</th><th>Q2</th><th>Q3</th></thead>
-                        <tbody id="qualify_container">
-                            <!--Data Generated Programatically-->
-                        </tbody>
-                    </table>
+                <div id="qualify_page" class="flex flex-col">
+                    <div id="podium" class="flex flex-row space-x-10 justify-center">
+                        <div id="result_1" class="text-black flex justify-center items-center relative"><img id="pd1q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">1</div></div> 
+                        <div id="result_2" class="text-black flex justify-center items-center relative"><img id="pd2q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">2</div></div>
+                        <div id="result_3" class="text-black flex justify-center items-center relative"><img id="pd3q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">3</div></div>
                     </div>
-                <div id="results" class="relative overflow-y-scroll h-[500px] md:h-[350px] p-4 w-[100%]">
-                    <div id=results_driver_table class="w-[100%]">   
+                    <div id="qualifying" class="overflow-y-scroll h-[500px] p-4 md:h-[350px] w-[100%]">
                         <table class="w-full text-left rtl:text-right text-black">
-                            <thead id = "results_data_header"><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>pts</th></thead>
-                            <tbody id="driver_container">
+                            <thead id="qualify_data_header"><th>Position</th><th>Name</th><th>Constructor</th><th>Q1</th><th>Q2</th><th>Q3</th></thead>
+                            <tbody id="qualify_container">
                                 <!--Data Generated Programatically-->
                             </tbody>
                         </table>
+                    </div>
+                </div>
+                
+                <div id="results_page" class="flex flex-col">
+                    <div id="podium" class="flex flex-row space-x-10 justify-center">
+                        <div id="result_1" class="text-black flex justify-center items-center relative"><img id="pd1r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">1</div></div> 
+                        <div id="result_2" class="text-black flex justify-center items-center relative"><img id="pd2r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">2</div></div>
+                        <div id="result_3" class="text-black flex justify-center items-center relative"><img id="pd3r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">3</div></div>
+                    </div>
+                    <div id="results" class="overflow-y-scroll h-[500px] md:h-[350px] p-4 w-[100%]">
+                        <div id=results_driver_table class="w-[100%]">   
+                            <table class="w-full text-left rtl:text-right text-black">
+                                <thead id = "results_data_header"><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>pts</th></thead>
+                                <tbody id="results_container">
+                                    <!--Data Generated Programatically-->
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
