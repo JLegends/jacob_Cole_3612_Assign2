@@ -564,7 +564,7 @@ function init() {
             buttonContainer.className = "text-right";
             
 
-            add_type_and_id(deleteButton, "drivers", driver.ref);
+            add_type_and_id(deleteButton, "constructors", constructor.ref);
             deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
@@ -587,7 +587,7 @@ function init() {
             const deleteButton = document.createElement("button");
             buttonContainer.className = "text-right";
 
-            add_type_and_id(deleteButton, "drivers", driver.ref);
+            add_type_and_id(deleteButton, "circuits", circuit.ref);
             deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
@@ -607,7 +607,6 @@ function init() {
         favorited.constructors.sort((a, b) => a.name.localeCompare(b.name));
         favorited.circuits.sort((a, b) => a.name.localeCompare(b.name));
 
-        console.log("sorted: " + favorited.drivers);
         localStorage.setItem("favorited", JSON.stringify(favorited));
     }
 
@@ -653,8 +652,7 @@ function init() {
 
     function add_fav_button_event(button, type, itemFavorited, data, ref)
     {        
-        button.setAttribute("ref", ref);
-        button.setAttribute("type", type);
+        add_type_and_id(button,)
         button.textContent = "";
         
         if(!itemFavorited)
@@ -818,7 +816,8 @@ function init() {
         const newButton = addFavoriteCirc.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
         addFavoriteCirc.replaceWith(newButton);
         addFavoriteCirc = newButton;
-
+        console.log("circuit ref: ");
+        console.log(ref);
         const itemFavorited = favorited.circuits.some(circuit => circuit.name === data.name);
         add_fav_button_event(addFavoriteCirc, "circuits", itemFavorited, data, ref);
     }
