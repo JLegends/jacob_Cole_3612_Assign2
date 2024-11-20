@@ -79,27 +79,27 @@
             <div class="w-100% bg-red-600 p-2 transform skew-x-20 rounded-bl-2xl rounded-tr-2xl ring-4 ring-offset-8 ring-gray-900 mt-4 mb-4 text-center"><h3 id="results_title" class="transform -skew-x-20 text-white">for ${this season} ${grandprix} will fix later</h3></div>
             <span id = "results_subheader" class="flex justify-center items-center text-sm text-gray-600 mb-4">
                 <p id = "race_info1"></p> 
-                <p id = "circuit_name" class = "pl-1 pr-1 ml-1 mr-1 rounded font-bold text-white bg-red-700 hover:bg-red-600"></p>
+                <p id = "circuit_name" class = "pl-1 pr-1 ml-1 mr-1 rounded font-bold text-white bg-red-700 hover:bg-red-600 cursor-pointer"></p>
                 <p id = "race_info2" class="hover:text-white"></p>
             </span>
-            <div id="race_info_container" class="h-[700px]">
+            <div id="race_info_container" class="h-[650px]">
                 <div id="podium" class="flex flex-row space-x-10 justify-center">
                     <div id="result_1" class="podium_Box"><img id="pd1" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">1</div></div> 
                     <div id="result_2" class="podium_Box"><img id="pd2" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">2</div></div>
                     <div id="result_3" class="podium_Box"><img id="pd3" src="data/images/drivers/max_verstappen.avif"><div class="number_overlay">3</div></div>
                 </div>
-                <div id="qualifying" class="overflow-y-scroll h-[500px] p-4">
+                <div id="qualifying" class="overflow-y-scroll h-[500px] p-4 md:h-[350px] w-[100%]">
                     <table class="w-full text-left rtl:text-right text-black">
-                                <tr><th>Position</th><th>Name</th><th>Constructor</th><th>Q1</th><th>Q2</th><th>Q3</th></tr>
-                            <tbody id="qualify_container">
-                                <!--Data Generated Programatically-->
-                            </tbody>
-                        </table>
+                        <tr><th>Position</th><th>Name</th><th>Constructor</th><th>Q1</th><th>Q2</th><th>Q3</th></tr>
+                        <tbody id="qualify_container">
+                            <!--Data Generated Programatically-->
+                        </tbody>
+                    </table>
                     </div>
-                <div id="results" class="overflow-y-scroll h-[500px] p-4 w-[100%]">
+                <div id="results" class="relative overflow-y-scroll h-[500px] md:h-[350px] p-4 w-[100%]">
                     <div id=results_driver_table class="w-[100%]">   
                         <table class="w-full text-left rtl:text-right text-black">
-                                <tr><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>pts</th></tr>
+                                <thead class="bg-gray-100 top-0 z-10"><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>pts</th></thead>
                             <tbody id="driver_container">
                                 <!--Data Generated Programatically-->
                             </tbody>

@@ -290,7 +290,7 @@ function init() {
 
             round.textContent = i++;
             name.textContent = race.name;
-            name.className = "hover:text-white";
+            name.className = "hover:text-red-600 cursor-pointer";
             add_type_and_id(name, "circuit", race.circuit.id);
 
             resultsButton.textContent = "Results";
@@ -372,13 +372,13 @@ function init() {
             row.appendChild(pos);
 
             const name = document.createElement("td");
-            name.className = "hover:text-white";
+            name.className = "hover:text-red-600 cursor-pointer";
             name.textContent = qualify.driver.forename + " " + qualify.driver.surname;
             add_type_and_id(name, "driver", qualify.driver.ref);
             row.appendChild(name);
 
             const constructor = document.createElement("td");
-            constructor.className = "hover:text-white";
+            constructor.className = "hover:text-red-600 cursor-pointer";
             constructor.textContent = qualify.constructor.name;
             add_type_and_id(constructor, "constructor", qualify.constructor.ref);
             row.appendChild(constructor);
@@ -412,13 +412,13 @@ function init() {
             row.appendChild(pos);
 
             const name = document.createElement("td");
-            name.className = "hover:text-white";
+            name.className = "hover:text-red-600 cursor-pointer";
             name.textContent = result.driver.forename + " " + result.driver.surname;
             add_type_and_id(name, "driver", result.driver.ref);
             row.appendChild(name);
 
             const constructor = document.createElement("td");
-            constructor.className = "hover:text-white";
+            constructor.className = "hover:text-red-600 cursor-pointer"
             constructor.textContent = result.constructor.name;
             add_type_and_id(constructor, "constructor", result.constructor.ref);
             row.appendChild(constructor);
@@ -524,8 +524,8 @@ function init() {
             const deleteButton = document.createElement("button");
             buttonContainer.className = "text-right"
             
-            deleteButton.setAttribute("ref", driver.ref); 
-            deleteButton.setAttribute("type", "drivers");
+            add_type_and_id(deleteButton, "drivers", driver.ref);
+  
             deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
@@ -548,9 +548,8 @@ function init() {
             const deleteButton = document.createElement("button");
             buttonContainer.className = "text-right";
             
-            
-            deleteButton.setAttribute("ref", constructor.ref); 
-            deleteButton.setAttribute("type", "constructors");
+
+            add_type_and_id(deleteButton, "drivers", driver.ref);
             deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
@@ -572,9 +571,8 @@ function init() {
             const buttonContainer = document.createElement("td");
             const deleteButton = document.createElement("button");
             buttonContainer.className = "text-right";
-            
-            deleteButton.setAttribute("ref", circuit.ref); 
-            deleteButton.setAttribute("type", "circuits");
+
+            add_type_and_id(deleteButton, "drivers", driver.ref);
             deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
