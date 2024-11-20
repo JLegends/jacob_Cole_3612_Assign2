@@ -68,7 +68,7 @@
         <div id="pre_results_message" class="flex items-center justify-center h-full w-[100%] repeating-x-background">
             <h1> SELECT ANY RACE</h1>
         </div>
-        <div id="results_container" class="flex flex-col px-4 ml-10 mr-10 bg-gray-100 w-[100%]">
+        <div id="results_container" class="flex flex-col w-[98%] md:px-4 md:ml-10 md:mr-10 bg-gray-100 md:w-full">
             <div class="flex items-center justify-center h-full w-[100%]">
                 <div id="qualifying_results_button_container" class="inline-flex rounded-md shadow-sm">
                     <!--From: https://flowbite.com/docs/components/button-group/-->
@@ -90,7 +90,7 @@
                 </div>
                 <div id="qualifying" class="overflow-y-scroll h-[500px] p-4 md:h-[350px] w-[100%]">
                     <table class="w-full text-left rtl:text-right text-black">
-                        <tr><th>Position</th><th>Name</th><th>Constructor</th><th>Q1</th><th>Q2</th><th>Q3</th></tr>
+                        <thead id="qualify_data_header"><th>Position</th><th>Name</th><th>Constructor</th><th>Q1</th><th>Q2</th><th>Q3</th></thead>
                         <tbody id="qualify_container">
                             <!--Data Generated Programatically-->
                         </tbody>
@@ -99,7 +99,7 @@
                 <div id="results" class="relative overflow-y-scroll h-[500px] md:h-[350px] p-4 w-[100%]">
                     <div id=results_driver_table class="w-[100%]">   
                         <table class="w-full text-left rtl:text-right text-black">
-                                <thead class="bg-gray-100 top-0 z-10"><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>pts</th></thead>
+                            <thead id = "results_data_header"><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>pts</th></thead>
                             <tbody id="driver_container">
                                 <!--Data Generated Programatically-->
                             </tbody>

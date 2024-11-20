@@ -41,12 +41,15 @@ function init() {
     const roundContainer = document.querySelector("#round_container");
     const raceTable = document.querySelector("#races");
 
-    const resultsContainer = document.querySelector("#results_container");
-
+    
+    const results = document.querySelector("#results");
+    
     const qualifying = document.querySelector("#qualifying");
     const qualifyContainer = document.querySelector("#qualify_container");
-    const results = document.querySelector("#results");
-
+    const qualifyDataHeader = document.querySelector("#qualify_data_header");
+    const resultsContainer = document.querySelector("#results_container");
+    const resultsDataHeader = document.querySelector("#results_data_header");
+    
     const resultTitle = document.querySelector("#results_title");
     const resultSubheader = document.querySelector("#results_subheader");
 
@@ -221,13 +224,14 @@ function init() {
             generate_favorite_tables();
         });
 
+
         driverContainer.addEventListener("click", load_popup);
         roundContainer.addEventListener("click", load_popup);
         qualifyContainer.addEventListener("click", load_popup);
         circuitName.addEventListener("click", load_popup);
 
         emptyFavorites.addEventListener("click", empty_favorite_table);
-        /* these should go in a seperate funcion eventually*/
+        
 
     }
 
@@ -352,12 +356,20 @@ function init() {
             set_visibility(qualifying, false);
 
             fetch_race_results(raceID).then(data => {
+                //resultsDataHeader.addEventListener("click", sort_data);
+                
+                //sort_data(data, "")
                 generate_results_table(data);
                 pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
                 pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
                 pdImg3.src = `data/images/drivers/${data[2].driver.ref}.avif`;
             });
         }
+    }
+
+    function sort_data(e, data)
+    {
+
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -405,6 +417,8 @@ function init() {
     // Purpose: generates the table of individual results in a grand prix
     /*------------------------------------------------------------------------------------------------------*/
     function generate_results_table(results) {
+        console.log("this is the data as given to the generate_results function");
+        console.dir(results);
         for (let result of results) {
             const row = document.createElement("tr");
             row.className = "odd: bg-stone-150 even:bg-stone-300"
@@ -590,7 +604,7 @@ function init() {
     function store_favorite_table()
     {
         favorited.drivers.sort((a, b) => a.forename.localeCompare(b.forename));
-        favorited.constructors.sort((a, b) => a.forename.localeCompare(b.forename));
+        favorited.constructors.sort((a, b) => a.name.localeCompare(b.name));
         favorited.circuits.sort((a, b) => a.name.localeCompare(b.name));
 
         console.log("sorted: " + favorited.drivers);

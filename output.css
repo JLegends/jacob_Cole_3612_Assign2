@@ -961,6 +961,14 @@ video {
   width: 100%;
 }
 
+.w-\[90\%\] {
+  width: 90%;
+}
+
+.w-\[98\%\] {
+  width: 98%;
+}
+
 .max-w-3xl {
   max-width: 48rem;
 }
@@ -2218,6 +2226,14 @@ video {
     margin-top: 10rem;
   }
 
+  .md\:ml-10 {
+    margin-left: 2.5rem;
+  }
+
+  .md\:mr-10 {
+    margin-right: 2.5rem;
+  }
+
   .md\:h-\[350px\] {
     height: 350px;
   }
@@ -2226,8 +2242,17 @@ video {
     width: 33.333333%;
   }
 
+  .md\:w-full {
+    width: 100%;
+  }
+
   .md\:flex-row {
     flex-direction: row;
+  }
+
+  .md\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }
 
