@@ -9,7 +9,8 @@
     Improve the look of the images in results plus add the same image to the driver cards, probably will use a gradient for the
     background
 
-    Change the highlighting style for the results/races to be more readable.
+    Make an is favorited function and then replace the code within the modal constructors to use it, we can also use it to 
+    check if an item is in favorites and then if it is add some sort of styling to it when we add data
 
     new bug discovered (2023 - Saudi Arabian Grand Prix - Guanyu Zhou & Nyck de Vries break for some reason?)
 
