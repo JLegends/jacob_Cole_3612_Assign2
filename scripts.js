@@ -39,6 +39,7 @@ function init() {
 
     const raceButtonContainer = document.querySelector("#race_button_container")
     const roundContainer = document.querySelector("#round_container");
+    const roundDataHeader = document.querySelector("#round_data_header");
     const raceTable = document.querySelector("#races");
 
     const raceDataContainer = document.querySelector("#race_data_container");
@@ -252,7 +253,10 @@ function init() {
         roundContainer.textContent = "";
 
         fetch_race_season(season).then(data => {
-            generate_rounds_table(roundContainer, season, data);
+            generate_rounds_table(data);
+            console.log("races");
+            console.log(data);
+            roundDataHeader.addEventListener("click", (e) => sort_data(e, data));
         });
     }
 
@@ -260,9 +264,9 @@ function init() {
     // Name: generate_rounds_table
     // Purpose: generates the table of rounds that took place in a season
     /*------------------------------------------------------------------------------------------------------*/
-    function generate_rounds_table(round_container, season, racesArray) {
-        let i = 1;
-        for (let race of racesArray) {
+    function generate_rounds_table(data) {
+        let i = 0;
+        for (let race of data) {
 
             const row = document.createElement("tr");
             if(i % 2 == 0)
@@ -273,6 +277,7 @@ function init() {
             {
                 row.className = "bg-stone-300 border-b-red-700 border-b-4";
             }
+            i++;
             const round = document.createElement("td");
             const name = document.createElement("td");
 
@@ -283,7 +288,7 @@ function init() {
 
             results.className = "";
 
-            round.textContent = i++;
+            round.textContent = race.round;
             name.textContent = race.name;
             name.className = "hover:text-red-600 cursor-pointer";
             add_type_and_id(name, "circuit", race.circuit.id);
@@ -292,7 +297,7 @@ function init() {
             resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
-                list_grandprix_results(race.id, race.name, season); 
+                list_grandprix_results(race.id, race.name, race.year); 
                 generate_results_subheader(race.circuit.id, round.textContent, race.date, race.url);
             });
 
@@ -302,8 +307,8 @@ function init() {
             results.appendChild(resultsButton);
             row.appendChild(results);
 
-            round_container.appendChild(row)
-            round_container.appendChild(lineDiv);
+            roundContainer.appendChild(row)
+            roundContainer.appendChild(lineDiv);
         }
     }
 
@@ -381,7 +386,13 @@ function init() {
             qualifyContainer.textContent = "";
             generateFunction = generate_qualify_table;
         }
+        else if(targetList.id == "round_data_header")
+        {
+            roundContainer.textContent = "";
+            generateFunction = generate_rounds_table;
+        }
         sortArg = e.target.getAttribute("value"); //Get the sortArg, has to be an attribute and can't use text content because we will add items to the header
+
         if(sortArg != targetList.getAttribute("sortArg")) //If we are switching to a different category we also want to sort by ascending
         {
             targetList.setAttribute("sortDirection", "asc");
@@ -389,23 +400,26 @@ function init() {
 
         const sortDirection = targetList.getAttribute("sortDirection");
         const isDescending = sortDirection === "dsc";
-        console.log("is descending? ");
-        console.log(isDescending);
+
         const compare = (a, b) => { //Had help from here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator, initally this was a bunch of if else
-            if (sortArg == "Name") return isDescending
+            if(sortArg == "Name") return isDescending
                 ? b.driver.forename.localeCompare(a.driver.forename)
                 : a.driver.forename.localeCompare(b.driver.forename);
-            if (sortArg == "Position") return isDescending ? b.position - a.position : a.position - b.position;
-            if (sortArg == "Constructor") return isDescending
+            if(sortArg == "Position") return isDescending ? b.position - a.position : a.position - b.position;
+            if(sortArg == "Constructor") return isDescending
                 ? b.constructor.name.localeCompare(a.constructor.name)
                 : a.constructor.name.localeCompare(b.constructor.name);
-            if (sortArg == "Laps") return isDescending ? b.laps - a.laps : a.laps - b.laps;
-            if (sortArg == "Points") return isDescending ? b.points - a.points : a.points - b.points;
-            if (sortArg.includes('q')) {
+            if(sortArg == "Laps") return isDescending ? b.laps - a.laps : a.laps - b.laps;
+            if(sortArg == "Points") return isDescending ? b.points - a.points : a.points - b.points;
+            if(sortArg.includes('q')) {
                 return isDescending
                     ? timeToSeconds(b[sortArg]) - timeToSeconds(a[sortArg])
                     : timeToSeconds(a[sortArg]) - timeToSeconds(b[sortArg]);
             }
+            if(sortArg == "Round") return isDescending ? b.round - a.round : a.round - b.round;
+            if(sortArg == "RaceName") return isDescending
+            ? b.name.localeCompare(a.name)
+            : a.name.localeCompare(b.name);
         };
 
         data.sort(compare);
@@ -415,8 +429,6 @@ function init() {
         targetList.setAttribute("sortArg", sortArg);
 
         generateFunction(data);
-        console.log("node before icon:");
-        console.log(e.target);
         add_sort_icon(e.target, isDescending);
     }
     function add_sort_icon(targetNode, isDescending)
