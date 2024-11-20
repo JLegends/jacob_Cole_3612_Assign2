@@ -20,7 +20,6 @@
 const storedFavorites = JSON.parse(localStorage.getItem("favorited"));
 const favorited = storedFavorites || {drivers: [], constructors: [], circuits: []}; //Check if any favorites stored otherwise default to empty
 
-const TEXT_RED_HOVER = "hover:text-red-600 cursor-pointer";
 
 let season = null; /* I need this globally accessible for the load_popup function */
 
@@ -286,11 +285,11 @@ function init() {
 
             round.textContent = i++;
             name.textContent = race.name;
-            name.className = TEXT_RED_HOVER;
+            name.className = "hover:text-red-600 cursor-pointer";
             add_type_and_id(name, "circuit", race.circuit.id);
 
             resultsButton.textContent = "Results";
-            resultsButton.className = "bg-red-700 text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
+            resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
                 list_grandprix_results(race.id, race.name, season); 
@@ -430,7 +429,7 @@ function init() {
         
         icon = document.createElement("span");
         icon.textContent = "^";
-        icon.className = isDescending ? "font-bold rotate-180" : "font-bold"
+        icon.className = isDescending ? "ml-1 inline-block font-bold rotate-180" : " ml-1 font-bold inline-block"
         targetNode.appendChild(icon);
 
     }
@@ -463,13 +462,13 @@ function init() {
             row.appendChild(pos);
 
             const name = document.createElement("td");
-            name.className = TEXT_RED_HOVER;
+            name.className = "hover:text-red-600 cursor-pointer";
             name.textContent = qualify.driver.forename + " " + qualify.driver.surname;
             add_type_and_id(name, "driver", qualify.driver.ref);
             row.appendChild(name);
 
             const constructor = document.createElement("td");
-            constructor.className = TEXT_RED_HOVER;
+            constructor.className = "hover:text-red-600 cursor-pointer";
             constructor.textContent = qualify.constructor.name;
             add_type_and_id(constructor, "constructor", qualify.constructor.ref);
             row.appendChild(constructor);
@@ -503,13 +502,13 @@ function init() {
             row.appendChild(pos);
 
             const name = document.createElement("td");
-            name.className = TEXT_RED_HOVER;
+            name.className = "hover:text-red-600 cursor-pointer";
             name.textContent = result.driver.forename + " " + result.driver.surname;
             add_type_and_id(name, "driver", result.driver.ref);
             row.appendChild(name);
 
             const constructor = document.createElement("td");
-            constructor.className = TEXT_RED_HOVER;
+            constructor.className = "hover:text-red-600 cursor-pointer"
             constructor.textContent = result.constructor.name;
             add_type_and_id(constructor, "constructor", result.constructor.ref);
             row.appendChild(constructor);
