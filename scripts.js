@@ -15,8 +15,6 @@
 
     new bug - if you flip quickly between qualify and results tabs (before they finish loading) you can duplicate table info
 
-    new bug - the round table race names dont match what gets output on the 
-
 */
 const storedFavorites = JSON.parse(localStorage.getItem("favorited"));
 const favorited = storedFavorites || {drivers: [], constructors: [], circuits: []}; //Check if any favorites stored otherwise default to empty
@@ -575,7 +573,7 @@ function init() {
             const deleteButton = document.createElement("button");
             buttonContainer.className = "text-right";
             
-            deleteButton.id = circuit.ref;
+            deleteButton.setAttribute("ref", circuit.ref); 
             deleteButton.setAttribute("type", "circuits");
             deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
             deleteButton.textContent = "X";
@@ -585,7 +583,6 @@ function init() {
             row.appendChild(element);
             row.appendChild(buttonContainer)            
             favCircuits.appendChild(row);
-
         }
         store_favorite_table();
         console.log(favorited);
@@ -669,6 +666,15 @@ function init() {
                     
                     favorited.drivers.push(driver);
                 }
+                else if(type == "circuits")
+                {
+                    const circuit = {
+                        name: data.name,
+                        ref: ref,
+                    };
+                        
+                    favorited.circuits.push(circuit);
+                }
                 store_favorite_table();                
                 add_fav_button_event(button, type, true, data, ref);
             });
@@ -750,7 +756,6 @@ function init() {
         addFavoriteDriver.replaceWith(newButton);
         addFavoriteDriver = newButton;
 
-
         const itemFavorited = favorited.drivers.some(driver => driver.forename === data.forename && driver.surname === data.surname)
         add_fav_button_event(addFavoriteDriver, "drivers", itemFavorited, data, ref);
 
@@ -786,35 +791,23 @@ function init() {
         });
     }
 
-
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: assemble_circuit_popup
+    // Purpose: 
+    /*------------------------------------------------------------------------------------------------------*/
     function assemble_circuit_popup(ref, data)
     {
-        console.log(data.name);
         popupCircuitName.textContent = data.name;
         popupCircuitLocation.textContent = data.location;
         popupCircuitCountry.textContent = data.country;
-
         popupCircuitURL.href = data.url;
 
         const newButton = addFavoriteCirc.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
         addFavoriteCirc.replaceWith(newButton);
         addFavoriteCirc = newButton;
 
-        addFavoriteCirc.addEventListener("click", () => {
-            if (!favorited.circuits.some(circuit => circuit.name === data.forename)) {
-                
-                const circuit = {
-                    name: data.name,
-                    ref: ref,
-                };
-
-                favorited.circuits.push(circuit);
-                store_favorite_table();
-            }
-            else {
-                console.log("already added");
-            }
-        });
+        const itemFavorited = favorited.circuits.some(circuit => circuit.name === data.name);
+        add_fav_button_event(addFavoriteCirc, "circuits", itemFavorited, data, ref);
     }
 }
 
