@@ -7,6 +7,10 @@
 
     new bug discovered (2023 - Saudi Arabian Grand Prix - Guanyu Zhou & Nyck de Vries break for some reason?)
 
+    new bug - if you flip quickly between qualify and results tabs (before they finish loading) you can duplicate table info
+
+    new bug - the round table race names dont match what gets output on the 
+
 */
 const storedFavorites = JSON.parse(localStorage.getItem("favorited"));
 const favorited = storedFavorites || {drivers: [], constructors: [], circuits: []}; //Check if any favorites stored otherwise default to empty
@@ -82,6 +86,10 @@ function init() {
     const driverMoreInfo = document.querySelector("#driver_more_info");
     const driverTable = document.querySelector("#driver_table");
 
+    const popupCircuitName = document.querySelector("#popup_circuit_name");
+    const popupCircuitLocation = document.querySelector("#popup_circuit_location");
+    const popupCircuitCountry = document.querySelector("#popup_circuit_country");
+    const popupCircuitURL = document.querySelector("#popup_circuit_url");
 
     add_event_handlers();
 
@@ -124,6 +132,11 @@ function init() {
 
     function fetch_constructor_results(constructorRef, season) {
         let request = `${url}/constructorResults.php?constructor=${constructorRef}&season=${season}`;
+        return fetch_store_API_data(request);
+    }
+
+    function fetch_circuit(circuitID) {
+        let request = `${url}/circuits.php?id=${circuitID}`;
         return fetch_store_API_data(request);
     }
 
@@ -274,14 +287,14 @@ function init() {
             round.textContent = i++;
             name.textContent = race.name;
             name.className = "hover:text-white";
-            add_type_and_id(name, "circuit", race.id);
+            add_type_and_id(name, "circuit", race.circuit.id);
 
             resultsButton.textContent = "Results";
             resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
                 list_grandprix_results(race.id, race.name, season, "result"); 
-                generate_results_subheader(race.id, race.circuit.id, round.textContent, race.year, race.name, race.date, race.url);
+                generate_results_subheader(race.circuit.id, round.textContent, race.date, race.url);
                 resultsTab.addEventListener("click", ()=>{
                     list_grandprix_results(race.id, race.name, season, "result"); 
                 })
@@ -321,7 +334,6 @@ function init() {
             set_visibility(results, false);
 
             fetch_race_qualify(raceID).then(data => {
-                console.log(`qualify data ${data[0].driver.ref}`);
                 generate_qualify_table(data);
                 pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
                 pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
@@ -335,7 +347,6 @@ function init() {
             set_visibility(qualifying, false);
 
             fetch_race_results(raceID).then(data => {
-                console.log(`results data ${data[0].driver.ref}`);
                 generate_results_table(data);
                 pdImg1.src = `data/images/drivers/${data[0].driver.ref}.avif`;
                 pdImg2.src = `data/images/drivers/${data[1].driver.ref}.avif`;
@@ -451,6 +462,9 @@ function init() {
         else if(type == "circuit")
         {
             circuit.showModal();
+            fetch_circuit(ref).then(data => {
+                assemble_circuit_popup(ref, data);
+            });
         }
         else if (type == "constructor") {
             constructor.showModal();
@@ -466,16 +480,21 @@ function init() {
     // Purpose: assigns the variables to the whole results container subheader (will soon also allow for the 
     circuit name popup on circuit name click)
     /*------------------------------------------------------------------------------------------------------*/
-    function generate_results_subheader(raceId, circuitId, raceRound, raceYear, raceName, raceDate, raceUrl) {
+    function generate_results_subheader(circuitId, raceRound, raceDate, raceUrl) {
         fetch_circuit_name(circuitId).then(data => {
-            raceInfo1.textContent = `${raceName} - Round ${raceRound} - ${raceYear} - ` + " ";
+            raceInfo1.textContent = `Round ${raceRound} - ${raceDate} - `;
             circuitName.textContent = data.name;
-            add_type_and_id(circuitName, "circuit", raceId);
-            raceInfo2.textContent = " " + `- ${raceDate} - ${raceUrl}`;
+            console.log(circuitId);
+            add_type_and_id(circuitName, "circuit", circuitId);
+            raceInfo2.textContent = " - Learn More";
+
+            const link = document.createElement("a");
+            link.href = raceUrl;
+            link.appendChild(raceInfo2);
 
             resultSubheader.appendChild(raceInfo1);
             resultSubheader.appendChild(circuitName);
-            resultSubheader.appendChild(raceInfo2);
+            resultSubheader.appendChild(link);
         });
     }
 
@@ -521,8 +540,6 @@ function init() {
             element.className = "px-6 py-6 font-medium text-gray-900dark:text-white truncate";
             element.textContent = constructor.name; 
             
-
-            
             const buttonContainer = document.createElement("td");
             const deleteButton = document.createElement("button");
             buttonContainer.className = "text-right";
@@ -543,11 +560,26 @@ function init() {
         for (let circuit of favorited.circuits) {
             const row = document.createElement("tr");
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+    
             const element = document.createElement("td");
             element.className = "px-6 py-6 font-medium text-gray-900 dark:text-white truncate";
-            element.textContent = circuit;
+            element.textContent = circuit.name;
+
+            const buttonContainer = document.createElement("td");
+            const deleteButton = document.createElement("button");
+            buttonContainer.className = "text-right";
+            
+            deleteButton.id = circuit.ref;
+            deleteButton.setAttribute("type", "circuits");
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
+            deleteButton.textContent = "X";
+            deleteButton.addEventListener("click", remove_favorite);
+
+            buttonContainer.appendChild(deleteButton);
             row.appendChild(element);
+            row.appendChild(buttonContainer)            
             favCircuits.appendChild(row);
+
         }
         store_favorite_table();
         console.log(favorited);
@@ -557,7 +589,7 @@ function init() {
     {
         favorited.drivers.sort((a, b) => a.forename.localeCompare(b.forename));
         favorited.constructors.sort((a, b) => a.forename.localeCompare(b.forename));
-        favorited.circuits.sort((a, b) => a.forename.localeCompare(b.forename));
+        favorited.circuits.sort((a, b) => a.name.localeCompare(b.name));
 
         console.log("sorted: " + favorited.drivers);
         localStorage.setItem("favorited", JSON.stringify(favorited));
@@ -696,7 +728,6 @@ function init() {
         });
 
         fetch_driver_results(ref, season).then(data => { 
-            console.log(data);
             driverTable.innerHTML = "";
 
             for (let driver of data) {
@@ -727,13 +758,37 @@ function init() {
             }
         });
     }
-    function assemble_circuit_popup()
+
+
+    function assemble_circuit_popup(ref, data)
     {
+        console.log(data.name);
+        popupCircuitName.textContent = data.name;
+        popupCircuitLocation.textContent = data.location;
+        popupCircuitCountry.textContent = data.country;
 
+        popupCircuitURL.href = data.url;
+
+        const newButton = addFavoriteCirc.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
+        addFavoriteCirc.replaceWith(newButton);
+        addFavoriteCirc = newButton;
+
+        addFavoriteCirc.addEventListener("click", () => {
+            if (!favorited.circuits.some(circuit => circuit.name === data.forename)) {
+                
+                const circuit = {
+                    name: data.name,
+                    ref: ref,
+                };
+
+                favorited.circuits.push(circuit);
+                store_favorite_table();
+            }
+            else {
+                console.log("already added");
+            }
+        });
     }
-
-
-
 }
 
 
