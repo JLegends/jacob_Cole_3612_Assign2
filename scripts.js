@@ -326,7 +326,7 @@ function init() {
 
         fetch_race_results(raceID).then(data => { //Generate results for the results page
             resultsDataHeader.addEventListener("click",  (e) => sort_data(e, data));
-            
+
             generate_results_table(data);
             pdImg1r.src = `data/images/drivers/${data[0].driver.ref}.avif`;
             pdImg2r.src = `data/images/drivers/${data[1].driver.ref}.avif`;
@@ -363,9 +363,10 @@ function init() {
     {        
         const targetList = e.currentTarget;
         let generateFunction;
+        // Initialize sort direction and argument if not set
         if(!targetList.hasAttribute("sortDirection"))
         {
-            targetList.setAttribute("sortDirection", "dsc"); //Setting to descending first because we want to sort by ascending initally
+            targetList.setAttribute("sortDirection", "asc"); //Setting to ascending first
         }
         if(!targetList.hasAttribute("sortArg"))
         {
@@ -381,95 +382,60 @@ function init() {
             qualifyContainer.textContent = "";
             generateFunction = generate_qualify_table;
         }
-        sortArg = e.target.textContent;
+        sortArg = e.target.getAttribute("value"); //Get the sortArg, has to be an attribute and can't use text content because we will add items to the header
         if(sortArg != targetList.getAttribute("sortArg")) //If we are switching to a different category we also want to sort by ascending
         {
-            targetList.setAttribute("sortDirection", "dsc");
-        }
-        
-        console.log("Sort arg:");
-        console.log(sortArg);
-        //When this event is triggered it should sort by ascending by checking if the targetList is already sorting by decending and vice versa.
-        if(targetList.getAttribute("sortDirection") == "dsc")
-        {
-            if(sortArg == "Name")
-            {
-                data.sort((a, b) => a.driver.forename.localeCompare(b.driver.forename));
-                targetList.setAttribute("sortArg", "Name");
-            }
-            else if(sortArg == "Position")
-            {
-                data.sort((a, b) => a.position - b.position);
-                targetList.setAttribute("sortArg", "Position");
-            }
-            else if(sortArg == "Constructor")
-            {
-                data.sort((a, b) => a.constructor.name.localeCompare(b.constructor.name));
-                targetList.setAttribute("sortArg", "Constructor");
-            }
-            else if(sortArg == "Laps")
-            {
-                data.sort((a, b) => a.laps - b.laps);
-                targetList.setAttribute("sortArg", "Laps");
-            }
-            else if(sortArg == "Points")
-            {
-                data.sort((a, b) => a.points - b.points);
-                targetList.setAttribute("sortArg", "Points");
-            }
-            else if(sortArg.includes('Q'))
-            {                
-                const num = sortArg.charAt(1);
-                const key = "q" + num; // q1, q2, q3
-                data.sort((a, b) => timeToSeconds(a[key]) - timeToSeconds(b[key]));
-                targetList.setAttribute("sortArg", "Q" + num);
-            }
-
             targetList.setAttribute("sortDirection", "asc");
         }
-        else if(targetList.getAttribute("sortDirection") == "asc")
-        {
-            console.log("sort by descending");
-            if(sortArg == "Name")
-            {
-                data.sort((a, b) => b.driver.forename.localeCompare(a.driver.forename));
-                targetList.setAttribute("sortArg", "Name");
+
+        const sortDirection = targetList.getAttribute("sortDirection");
+        const isDescending = sortDirection === "dsc";
+        console.log("is descending? ");
+        console.log(isDescending);
+        const compare = (a, b) => { //Had help from here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_operator, initally this was a bunch of if else
+            if (sortArg == "Name") return isDescending
+                ? b.driver.forename.localeCompare(a.driver.forename)
+                : a.driver.forename.localeCompare(b.driver.forename);
+            if (sortArg == "Position") return isDescending ? b.position - a.position : a.position - b.position;
+            if (sortArg == "Constructor") return isDescending
+                ? b.constructor.name.localeCompare(a.constructor.name)
+                : a.constructor.name.localeCompare(b.constructor.name);
+            if (sortArg == "Laps") return isDescending ? b.laps - a.laps : a.laps - b.laps;
+            if (sortArg == "Points") return isDescending ? b.points - a.points : a.points - b.points;
+            if (sortArg.includes('q')) {
+                return isDescending
+                    ? timeToSeconds(b[sortArg]) - timeToSeconds(a[sortArg])
+                    : timeToSeconds(a[sortArg]) - timeToSeconds(b[sortArg]);
             }
-            else if(sortArg == "Position")
-            {
-                data.sort((a, b) => b.position - a.position);
-                targetList.setAttribute("sortArg", "Position");
-            }
-            else if(sortArg == "Constructor")
-            {
-                data.sort((a, b) => b.constructor.name.localeCompare(a.constructor.name));
-                targetList.setAttribute("sortArg", "Constructor");
-            }
-            else if(sortArg == "Laps")
-            {
-                data.sort((a, b) => b.laps - a.laps);
-                targetList.setAttribute("sortArg", "Laps");
-            }
-            else if(sortArg == "Points")
-            {
-                data.sort((a, b) => b.points - a.points);
-                targetList.setAttribute("sortArg", "Points");
-            }
-            else if(sortArg.includes('Q'))
-            {               
-                const num = sortArg.charAt(1);
-                const key = "q" + num; // q1, q2, q3
-                data.sort((a, b) => timeToSeconds(b[key]) - timeToSeconds(a[key]));
-                targetList.setAttribute("sortArg", "Q" + num);
-            }
-            
-            targetList.setAttribute("sortDirection", "dsc");
-        }
-        console.log("this is the data as given to the generate function");
-        console.dir(data);
+        };
+
+        data.sort(compare);
+
+        // Toggle sort direction 
+        targetList.setAttribute("sortDirection", isDescending ? "asc" : "dsc");
+        targetList.setAttribute("sortArg", sortArg);
+
         generateFunction(data);
+        console.log("node before icon:");
+        console.log(e.target);
+        add_sort_icon(e.target, isDescending);
     }
-    
+    function add_sort_icon(targetNode, isDescending)
+    {
+        const headers = targetNode.parentElement.children;
+        Array.from(headers).forEach(header => {
+            const icon = header.querySelector("span");
+            if (icon) header.removeChild(icon);
+        });
+        
+        icon = document.createElement("span");
+        icon.textContent = "^";
+        icon.className = isDescending ? "font-bold rotate-180" : "font-bold"
+        targetNode.appendChild(icon);
+
+    }
+
+
     /*--------------------------------------------------------------------------------------------------------
     // Name: timeToSeconds
     // Purpose: Necessary to convert the strings from q1,q2,q3, to float numbers so that we can compare the values
