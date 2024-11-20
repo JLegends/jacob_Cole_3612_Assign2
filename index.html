@@ -48,7 +48,7 @@
             </div>
 
         </article>
-    <article id="race_view" class="flex flex-col md:flex-row w-[100%] h-[650px] items-start">
+    <article id="race_view" class="flex flex-col md:flex-row w-[100%] h-[600px] items-start">
         <div id="race_container" class="w-[100%] md:w-1/3">
             <div id="race_button_container" class="flex flex-row justify-center space-x-4">
                 <button value="2020" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800 focus:ring-2 focus:ring-blue-700">2020</button>
@@ -57,8 +57,9 @@
                 <button value="2023" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800 focus:ring-2 focus:ring-blue-700">2023</button>
             </div>
             <h3 class="bg-gray-900 text-white text-xl text-center font-titillium p-5 border-b-8 border-b-red-600 rounded-r-lg" id="round_title"></h3>
-            <div class="overflow-y-scroll h-[500px] p-4">
+            <div class="overflow-y-scroll h-[500px] px-4">
                 <table id="races" class="w-full border-collapse">
+                    <thead class="bg-gray-200 sticky top-0 z-10"><th>Round</th><th>Name</th><th></th></thead>
                     <tbody id="round_container">
                         <!--Data Generated Programatically Here-->
                     </tbody>
@@ -82,16 +83,16 @@
                 <p id = "circuit_name" class = "pl-1 pr-1 ml-1 mr-1 rounded font-bold text-white bg-red-700 hover:bg-red-600 cursor-pointer"></p>
                 <p id = "race_info2" class="hover:text-white"></p>
             </span>
-            <div id="race_info_container" class="h-[650px]">
+            <div id="race_info_container" class="h-[600px]">
                 <div id="qualify_page" class="flex flex-col">
                     <div id="podium" class="flex flex-row space-x-10 justify-center">
                         <div id="result_1" class="text-black flex justify-center items-center relative"><img id="pd1q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">1</div></div> 
                         <div id="result_2" class="text-black flex justify-center items-center relative"><img id="pd2q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">2</div></div>
                         <div id="result_3" class="text-black flex justify-center items-center relative"><img id="pd3q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">3</div></div>
                     </div>
-                    <div id="qualifying" class="overflow-y-scroll h-[500px] p-4 md:h-[350px] w-[100%]">
+                    <div id="qualifying" class="overflow-y-scroll h-[500px] md:h-[350px] w-[100%]">
                         <table class="w-full text-left rtl:text-right text-black">
-                            <thead id="qualify_data_header"><th>Position</th><th>Name</th><th>Constructor</th><th>Q1</th><th>Q2</th><th>Q3</th></thead>
+                            <thead id="qualify_data_header" class="bg-gray-200 sticky top-0 z-10"><th>Position</th><th>Name</th><th>Constructor</th><th>Q1</th><th>Q2</th><th>Q3</th></thead>
                             <tbody id="qualify_container">
                                 <!--Data Generated Programatically-->
                             </tbody>
@@ -105,15 +106,13 @@
                         <div id="result_2" class="text-black flex justify-center items-center relative"><img id="pd2r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">2</div></div>
                         <div id="result_3" class="text-black flex justify-center items-center relative"><img id="pd3r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">3</div></div>
                     </div>
-                    <div id="results" class="overflow-y-scroll h-[500px] md:h-[350px] p-4 w-[100%]">
-                        <div id=results_driver_table class="w-[100%]">   
-                            <table class="w-full text-left rtl:text-right text-black">
-                                <thead id = "results_data_header"><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>Points</th></thead>
-                                <tbody id="results_container">
-                                    <!--Data Generated Programatically-->
-                                </tbody>
-                            </table>
-                        </div>
+                    <div id="results" class="overflow-y-scroll h-[500px] md:h-[350px] w-[100%]">
+                        <table class="w-full text-left rtl:text-right text-black">
+                            <thead id = "results_data_header" class="bg-gray-200 sticky top-0 z-10"><th>Position</th><th>Name</th><th>Constructor</th><th>Laps</th><th>Points</th></thead>
+                            <tbody id="results_container">
+                                <!--Data Generated Programatically-->
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
