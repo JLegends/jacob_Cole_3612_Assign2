@@ -251,20 +251,6 @@ function init() {
         roundTitle.textContent = `${season} Races`;
         roundContainer.textContent = "";
 
-        const headerRow = document.createElement("tr");
-        headerRow.className = "text-l text-stone-950 uppercase";
-        const roundColumn = document.createElement("th");
-        roundColumn.textContent = "Round";
-
-        const nameColumn = document.createElement("th");
-        nameColumn.textContent = "Name";
-
-        headerRow.appendChild(roundColumn);
-        headerRow.appendChild(nameColumn);
-
-        roundContainer.appendChild(headerRow)
-
-
         fetch_race_season(season).then(data => {
             generate_rounds_table(roundContainer, season, data);
         });
