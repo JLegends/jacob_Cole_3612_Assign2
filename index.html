@@ -2,6 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="output.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src = "scripts.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -122,7 +123,7 @@
     </article>
     <dialog id = "circuit" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg"> <!-- Change close/open to make popup disappear/appear-->
         <h1 class = "text-center text-lg font-semibold mb-2"> Circuit Details </h1>
-        <hr class="mb-2">
+        <hr id = "circ_popup_bar" class="mb-2">
         <figure id ="circuit_img_box"></figure>
         <div>
             <h1 id="popup_circuit_name" class="text-center text-xl font-bold mb-1"></h1>
@@ -139,7 +140,7 @@
     </dialog>
 
     <dialog id = "driver" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
-        <h1 class = "text-center text-lg font-semibold mb-2"> Driver Details </h1>
+        <h1 id = "driver_popup_title" class = "text-center text-lg font-semibold mb-2"> Driver Details </h1>
         <hr class="mb-2">
         <h1 id = "driver_info" class="text-center text-xl font-bold mb-1"></h1>
         <h2 id = "driver_nationality" class="text-center text-gray-500"></h2>
@@ -189,10 +190,14 @@
                         <th  class="px-6 py-3">Position</th>
                     </tr>
                 </thead>
-                <tbody id = "constructor_table"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
-                    <!-- Programmatically Generated -->
-                </tbody>
             </table>
+            <div class="overflow-y-auto max-h-[40vh]">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <tbody id = "constructor_table"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                        <!-- Programmatically Generated -->
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class = "flex justify-between items-center mt-4">
             <button id="add_favorite_const" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600"></button>

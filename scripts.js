@@ -18,6 +18,8 @@
 const storedFavorites = JSON.parse(localStorage.getItem("favorited"));
 const favorited = storedFavorites || {drivers: [], constructors: [], circuits: []}; //Check if any favorites stored otherwise default to empty
 
+let currentResults = [];
+let currentQualifyData = [];
 
 let season = null; /* I need this globally accessible for the load_popup function */
 
@@ -336,9 +338,8 @@ function init() {
         qualifyDataHeader.replaceWith(newQualifyDataHeader);
         qualifyDataHeader = newQualifyDataHeader;
     
-
-
         fetch_race_results(raceID).then(data => { //Generate results for the results page
+            currentResults = data;
             resultsDataHeader.addEventListener("click",  (e) => sort_data(e, data));
 
             generate_results_table(data);
@@ -348,6 +349,7 @@ function init() {
         });
     
         fetch_race_qualify(raceID).then(data => { //Generate results for the qualifying page
+            currentQualifyData = data;
             qualifyDataHeader.addEventListener("click",  (e) => sort_data(e, data));
             
             generate_qualify_table(data);
@@ -497,12 +499,30 @@ function init() {
             const name = document.createElement("td");
             name.className = "hover:text-red-600 cursor-pointer";
             name.textContent = qualify.driver.forename + " " + qualify.driver.surname;
+
+            const isDriverFavorited = favorited.drivers.some(driver => driver.ref === qualify.driver.ref);
+
+            if (isDriverFavorited) {
+                const heartIcon = document.createElement("span");
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                name.appendChild(heartIcon);
+            }
+
             add_type_and_id(name, "driver", qualify.driver.ref);
             row.appendChild(name);
 
             const constructor = document.createElement("td");
             constructor.className = "hover:text-red-600 cursor-pointer";
             constructor.textContent = qualify.constructor.name;
+
+            const isConstructorFavorited = favorited.constructors.some(constructor => constructor.ref === qualify.constructor.ref);
+
+            if (isConstructorFavorited) {
+                const heartIcon = document.createElement("span");
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                constructor.appendChild(heartIcon);
+            }
+
             add_type_and_id(constructor, "constructor", qualify.constructor.ref);
             row.appendChild(constructor);
 
@@ -537,12 +557,30 @@ function init() {
             const name = document.createElement("td");
             name.className = "hover:text-red-600 cursor-pointer";
             name.textContent = result.driver.forename + " " + result.driver.surname;
+
+            const isDriverFavorited = favorited.drivers.some(driver => driver.ref === result.driver.ref);
+
+            if (isDriverFavorited) {
+                const heartIcon = document.createElement("span");
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                name.appendChild(heartIcon);
+            }
+            
             add_type_and_id(name, "driver", result.driver.ref);
             row.appendChild(name);
 
             const constructor = document.createElement("td");
             constructor.className = "hover:text-red-600 cursor-pointer"
             constructor.textContent = result.constructor.name;
+
+            const isConstructorFavorited = favorited.constructors.some(constructor => constructor.ref === result.constructor.ref);
+
+            if (isConstructorFavorited) {
+                const heartIcon = document.createElement("span");
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                constructor.appendChild(heartIcon);
+            }
+
             add_type_and_id(constructor, "constructor", result.constructor.ref);
             row.appendChild(constructor);
 
@@ -736,6 +774,12 @@ function init() {
         favCircuits.innerHTML = "";
         console.log("Favorites table emptied");
         console.log(favorited);
+
+        resultsContainer.innerHTML = ""; // Clear existing content
+        qualifyContainer.innerHTML = ""; // Clear existing content
+
+        generate_results_table(currentResults);
+        generate_qualify_table(currentQualifyData);
     }
     /*--------------------------------------------------------------------------------------------------------
     // Name: remove_favorite(type)
@@ -745,13 +789,33 @@ function init() {
 
     function remove_favorite(e)
     {        
-        const targetArray = favorited[e.target.getAttribute("type")];
-        const index = targetArray.findIndex(item => item.ref == e.target.getAttribute("ref")); 
+        const type = e.target.getAttribute("type");
+        const ref = e.target.getAttribute("ref");
+
+        const targetArray = favorited[type];
+        const index = targetArray.findIndex(item => item.ref == ref); 
         if(index != -1)
         {
             targetArray.splice(index, 1);
         }
+        store_favorite_table();                
         generate_favorite_tables();
+
+        if (resultsContainer) {
+            resultsContainer.innerHTML = "";
+            generate_results_table(currentResults);
+        }
+        else {
+            console.log("undefined res container");
+        }
+        
+        if (qualifyContainer) {
+            qualifyContainer.innerHTML = "";
+            generate_qualify_table(currentQualifyData);
+        }
+        else {
+            console.log("undefined qualif container");
+        }
     }
 
     function add_fav_button_event(button, type, itemFavorited, data, ref)
@@ -794,7 +858,13 @@ function init() {
                         
                     favorited.circuits.push(circuit);
                 }
-                store_favorite_table();                
+                store_favorite_table();               
+                
+                resultsContainer.innerHTML = ""; // Clear existing content
+                qualifyContainer.innerHTML = ""; // Clear existing content
+
+                generate_results_table(currentResults);
+                generate_qualify_table(currentQualifyData);
                 add_fav_button_event(button, type, true, data, ref);
             });
     
@@ -804,7 +874,7 @@ function init() {
             button.textContent = "Remove from Favorites";
             button.addEventListener("click", (e) => {  
                 remove_favorite(e);
-                store_favorite_table();                
+
                 add_fav_button_event(button, type, false, data, ref);
             });
         }     
@@ -915,6 +985,10 @@ function init() {
 
         const itemFavorited = favorited.circuits.some(circuit => circuit.name === data.name);
         add_fav_button_event(addFavoriteCirc, "circuits", itemFavorited, data, ref);
+    } 
+
+    function show_loader(parentNode, visibility, size) {
+
     }
 }
 
