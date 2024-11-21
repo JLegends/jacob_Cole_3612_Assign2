@@ -45,9 +45,9 @@ function init() {
     const results = document.querySelector("#results_page");
     const qualifying = document.querySelector("#qualify_page");
     const qualifyContainer = document.querySelector("#qualify_container");
-    const qualifyDataHeader = document.querySelector("#qualify_data_header");
+    let qualifyDataHeader = document.querySelector("#qualify_data_header");
     
-    const resultsDataHeader = document.querySelector("#results_data_header");
+    let resultsDataHeader = document.querySelector("#results_data_header");
     
     const resultTitle = document.querySelector("#results_title");
     const resultSubheader = document.querySelector("#results_subheader");
@@ -326,6 +326,17 @@ function init() {
         set_visibility(results, true);
         set_visibility(qualifying, false);
 
+        const newResultsDataHeader = resultsDataHeader.cloneNode(true);
+        resultsDataHeader.replaceWith(newResultsDataHeader);
+        resultsDataHeader = newResultsDataHeader;
+    
+        // Replace and update qualifyDataHeader
+        const newQualifyDataHeader = qualifyDataHeader.cloneNode(true);
+        qualifyDataHeader.replaceWith(newQualifyDataHeader);
+        qualifyDataHeader = newQualifyDataHeader;
+    
+
+
         fetch_race_results(raceID).then(data => { //Generate results for the results page
             resultsDataHeader.addEventListener("click",  (e) => sort_data(e, data));
 
@@ -363,6 +374,7 @@ function init() {
 
     function sort_data(e, data)
     {        
+        console.log("in sort");
         const targetHeader = e.target.closest("[value]"); // Find the closest element with the "value" attribute
         if (!targetHeader) return; // Exit if no valid header is clicked
     
@@ -454,7 +466,6 @@ function init() {
         newIcon.className = isDescending ? "ml-1 inline-block font-bold rotate-180" : " ml-1 font-bold inline-block"
         targetHeader.appendChild(newIcon);  
     }
-
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: timeToSeconds
