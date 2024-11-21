@@ -252,6 +252,8 @@ function init() {
         roundTitle.textContent = `${season} Races`;
         roundContainer.textContent = "";
 
+        show_loader(roundContainer, true, 6);
+
         fetch_race_season(season).then(data => {
             generate_rounds_table(data);
             console.log("races");
@@ -266,8 +268,11 @@ function init() {
     /*------------------------------------------------------------------------------------------------------*/
     function generate_rounds_table(data) {
         let i = 0;
+        show_loader(roundContainer, false);
+
         for (let race of data) {
 
+            
             const row = document.createElement("tr");
             if(i % 2 == 0)
             {
@@ -295,6 +300,7 @@ function init() {
 
             resultsButton.textContent = "Results";
             resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
+
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
                 list_grandprix_results(race.id, race.name, race.year); 
@@ -338,6 +344,7 @@ function init() {
         qualifyDataHeader.replaceWith(newQualifyDataHeader);
         qualifyDataHeader = newQualifyDataHeader;
     
+        show_loader(resultsContainer, true, 4);
         fetch_race_results(raceID).then(data => { //Generate results for the results page
             currentResults = data;
             resultsDataHeader.addEventListener("click",  (e) => sort_data(e, data));
@@ -547,6 +554,8 @@ function init() {
     // Purpose: generates the table of individual results in a grand prix
     /*------------------------------------------------------------------------------------------------------*/
     function generate_results_table(results) {
+        show_loader(resultsContainer, false);
+
         for (let result of results) {
             const row = document.createElement("tr");
             row.className = "odd: bg-stone-150 even:bg-stone-300"
@@ -620,6 +629,8 @@ function init() {
 
         if (type == "driver") {
             driver.showModal();
+            driverTable.innerHTML = "";
+            show_loader(driverTable, true, 4);
             fetch_driver(ref, season).then(data => {
                 assemble_driver_popup(ref, data, season);
             });
@@ -627,12 +638,20 @@ function init() {
         else if(type == "circuit")
         {
             circuit.showModal();
+            popupCircuitName.innerHTML = "";
+            popupCircuitLocation.innerHTML = "";
+            popupCircuitCountry.innerHTML = "";
+            popupCircuitURL.innerHTML = "";
+
+            show_loader(popupCircuitName, true, 4);
             fetch_circuit(ref).then(data => {
                 assemble_circuit_popup(ref, data);
             });
         }
         else if (type == "constructor") {
             constructor.showModal();
+            constructorTable.innerHTML = "";
+            show_loader(constructorTable, true, 4);
             fetch_constructor(ref, season).then(data => {
                 assemble_constructor_popup(ref, data, season);
             });
@@ -895,6 +914,8 @@ function init() {
         add_fav_button_event(addFavoriteConst, "constructors", itemFavorited, data, ref);
 
         fetch_constructor_results(ref, season).then(data => { 
+
+            show_loader(constructorTable, false);
             constructorTable.innerHTML = "";
 
 
@@ -941,7 +962,8 @@ function init() {
         add_fav_button_event(addFavoriteDriver, "drivers", itemFavorited, data, ref);
 
         fetch_driver_results(ref, season).then(data => { 
-            driverTable.innerHTML = "";
+            
+            show_loader(driverTable, false);
 
             for (let driver of data) {
                 const row = document.createElement("tr");
@@ -978,6 +1000,8 @@ function init() {
     /*------------------------------------------------------------------------------------------------------*/
     function assemble_circuit_popup(ref, data)
     {
+        show_loader(popupCircuitName, false);
+
         popupCircuitName.textContent = data.name;
         popupCircuitLocation.textContent = data.location;
         popupCircuitCountry.textContent = data.country;
@@ -988,7 +1012,28 @@ function init() {
     } 
 
     function show_loader(parentNode, visibility, size) {
+        /* HTML for loader found here: https://uiverse.io/devAaus/funny-catfish-94 */
+        const loader = document.querySelector("#spinner");
 
+        if(visibility) {
+            const spinner_container = document.createElement("div");
+            spinner_container.id = "spinner";
+            spinner_container.className = "flex w-full h-full left-1/2 top-1/2 items-center justify-center";
+
+            const blue_spinner = document.createElement("div");
+            blue_spinner.className = `w-${(size * 4)} h-${(size * 4)} border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-blue-400 rounded-full`;
+
+            const red_spinner = document.createElement("div");
+            red_spinner.className = `w-${(size-1) * 4} h-${(size-1) * 4} border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-red-400 rounded-full`;
+
+            blue_spinner.appendChild(red_spinner);
+            spinner_container.appendChild(blue_spinner);
+            parentNode.appendChild(spinner_container);
+
+        }
+        else if (loader) {
+            parentNode.removeChild(loader);
+        }
     }
 }
 
