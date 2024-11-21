@@ -326,6 +326,7 @@ function init() {
         set_visibility(results, true);
         set_visibility(qualifying, false);
 
+        // Replace and update resultsDataHeader
         const newResultsDataHeader = resultsDataHeader.cloneNode(true);
         resultsDataHeader.replaceWith(newResultsDataHeader);
         resultsDataHeader = newResultsDataHeader;
