@@ -1,7 +1,5 @@
 /* Known Issues 
     ==== TO DO =====
-    sorting by the selected table header
-    
     would be nice to add loading icons for when we're grabbing data or something is loading. Could add to the
     race table, result table, modal popups and the modal popup button so it doesn't switch from add favorite to remove
     while it checks!
@@ -365,7 +363,12 @@ function init() {
 
     function sort_data(e, data)
     {        
-        const targetList = e.currentTarget;
+        const targetHeader = e.target.closest("[value]"); // Find the closest element with the "value" attribute
+        if (!targetHeader) return; // Exit if no valid header is clicked
+    
+        const targetList = targetHeader.closest("thead"); // Find the closest <thead>
+        if (!targetList) return; // Exit if no valid <thead> is found
+        
         let generateFunction;
         // Initialize sort direction and argument if not set
         if(!targetList.hasAttribute("sortDirection"))
@@ -391,7 +394,14 @@ function init() {
             roundContainer.textContent = "";
             generateFunction = generate_rounds_table;
         }
-        sortArg = e.target.getAttribute("value"); //Get the sortArg, has to be an attribute and can't use text content because we will add items to the header
+        
+        sortArg = targetHeader.getAttribute("value"); //Get the sortArg, has to be an attribute and can't use text content because we will add items to the header
+        console.log("in sort");
+        console.dir(e);
+
+        console.log("sort arg");
+        console.log(sortArg);
+
 
         if(sortArg != targetList.getAttribute("sortArg")) //If we are switching to a different category we also want to sort by ascending
         {
@@ -418,8 +428,9 @@ function init() {
             }
             if(sortArg == "Round") return isDescending ? b.round - a.round : a.round - b.round;
             if(sortArg == "RaceName") return isDescending
-            ? b.name.localeCompare(a.name)
-            : a.name.localeCompare(b.name);
+                ? b.name.localeCompare(a.name)
+                : a.name.localeCompare(b.name);
+            return 0;
         };
 
         data.sort(compare);
@@ -429,21 +440,19 @@ function init() {
         targetList.setAttribute("sortArg", sortArg);
 
         generateFunction(data);
-        add_sort_icon(e.target, isDescending);
+        add_sort_icon(targetHeader, isDescending);
     }
-    function add_sort_icon(targetNode, isDescending)
+    function add_sort_icon(targetHeader, isDescending)
     {
-        const headers = targetNode.parentElement.children;
+        const headers = targetHeader.parentElement.children;
         Array.from(headers).forEach(header => {
             const icon = header.querySelector("span");
             if (icon) header.removeChild(icon);
         });
-        
-        icon = document.createElement("span");
-        icon.textContent = "^";
-        icon.className = isDescending ? "ml-1 inline-block font-bold rotate-180" : " ml-1 font-bold inline-block"
-        targetNode.appendChild(icon);
-
+        const newIcon = document.createElement("span");
+        newIcon.textContent = "^";
+        newIcon.className = isDescending ? "ml-1 inline-block font-bold rotate-180" : " ml-1 font-bold inline-block"
+        targetHeader.appendChild(newIcon);  
     }
 
 
