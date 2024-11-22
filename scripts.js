@@ -843,9 +843,8 @@ function init() {
 
     function add_fav_button_event(button, type, itemFavorited, data, ref)
     {                
-        const newButton = button.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
-        button.replaceWith(newButton);
-        button = newButton;
+        console.log("in add fav button");
+        console.log("button: ", button, "type: ", type, "itemFavorited", itemFavorited, "data: ", data, "ref: ", ref);
 
         add_type_and_id(button, type, ref);
         button.textContent = "";
@@ -915,6 +914,10 @@ function init() {
         constMoreInfo.href = data.url;
 
         const itemFavorited = favorited.constructors.some(constructor => constructor.name === data.name);
+        const newButton = addFavoriteConst.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
+        addFavoriteConst.replaceWith(newButton);
+        addFavoriteConst = newButton;
+        
         add_fav_button_event(addFavoriteConst, "constructors", itemFavorited, data, ref);
 
         fetch_constructor_results(ref, season).then(data => { 
@@ -963,6 +966,10 @@ function init() {
         driverMoreInfo.href = data.url;
 
         const itemFavorited = favorited.drivers.some(driver => driver.forename === data.forename && driver.surname === data.surname)
+        const newButton = addFavoriteDriver.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
+        addFavoriteDriver.replaceWith(newButton);
+        addFavoriteDriver = newButton;
+
         add_fav_button_event(addFavoriteDriver, "drivers", itemFavorited, data, ref);
 
         fetch_driver_results(ref, season).then(data => { 
@@ -1012,6 +1019,10 @@ function init() {
         popupCircuitURL.href = data.url;
 
         const itemFavorited = favorited.circuits.some(circuit => circuit.name === data.name);
+        const newButton = addFavoriteCirc.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
+        addFavoriteCirc.replaceWith(newButton);
+        addFavoriteCirc = newButton;
+        
         add_fav_button_event(addFavoriteCirc, "circuits", itemFavorited, data, ref);
     } 
 
@@ -1039,6 +1050,13 @@ function init() {
             parentNode.removeChild(loader);
         }
     }
+
+    function replaceNode()
+    {
+        
+    }
+
 }
+
 
 
