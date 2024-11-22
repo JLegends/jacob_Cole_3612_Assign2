@@ -2,6 +2,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="output.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
     <script src = "scripts.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
@@ -67,7 +68,7 @@
             </div>
         </div>
         <div id="pre_results_message" class="flex items-center justify-center h-full w-[100%] repeating-x-background">
-            <h1> SELECT ANY RACE</h1>
+            <h1 class="p-20 bg-gray-200 font-titillium font-bold rounded-lg border-8 border-red-600 "> SELECT ANY RACE</h1>
         </div>
         <div id="race_data_container" class="flex flex-col w-[98%] md:px-4 md:ml-10 md:mr-10 bg-gray-100 md:w-full">
             <div class="flex items-center justify-center h-full w-[100%]">
@@ -83,7 +84,7 @@
                 <p id = "circuit_name" class = "pl-1 pr-1 ml-1 mr-1 rounded font-bold text-white bg-red-700 hover:bg-red-600 cursor-pointer"></p>
                 <p id = "race_info2" class="hover:text-red-600 cursor-pointer"></p>
             </span>
-            <div id="race_info_container" class="h-[600px]">
+            <div id="race_info_container" class="h-[466px]">
                 <div id="qualify_page" class="flex flex-col">
                     <div id="podium" class="flex flex-row space-x-10 justify-center">
                         <div id="result_1" class="text-black flex justify-center items-center relative"><img id="pd1q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">1</div></div> 
@@ -106,7 +107,7 @@
                         <div id="result_2" class="text-black flex justify-center items-center relative"><img id="pd2r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">2</div></div>
                         <div id="result_3" class="text-black flex justify-center items-center relative"><img id="pd3r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">3</div></div>
                     </div>
-                    <div id="results" class="overflow-y-scroll h-[500px] md:h-[350px] p-4 w-[100%]">
+                    <div id="results" class="overflow-y-scroll h-[500px] md:h-[350px] w-[100%]">
                         <div id=results_driver_table class="w-[100%]">   
                             <table class="w-full text-left rtl:text-right text-black">
                                 <thead id = "results_data_header" class="bg-gray-200 sticky top-0 z-10 cursor-pointer"><th value="Position">Position</th><th value="Name">Name</th><th value="Constructor">Constructor</th><th value="Laps">Laps</th><th value="Points">Points</th></thead>
@@ -122,7 +123,7 @@
     </article>
     <dialog id = "circuit" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg"> <!-- Change close/open to make popup disappear/appear-->
         <h1 class = "text-center text-lg font-semibold mb-2"> Circuit Details </h1>
-        <hr class="mb-2">
+        <hr id = "circ_popup_bar" class="mb-2">
         <figure id ="circuit_img_box"></figure>
         <div>
             <h1 id="popup_circuit_name" class="text-center text-xl font-bold mb-1"></h1>
@@ -139,7 +140,7 @@
     </dialog>
 
     <dialog id = "driver" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
-        <h1 class = "text-center text-lg font-semibold mb-2"> Driver Details </h1>
+        <h1 id = "driver_popup_title" class = "text-center text-lg font-semibold mb-2"> Driver Details </h1>
         <hr class="mb-2">
         <h1 id = "driver_info" class="text-center text-xl font-bold mb-1"></h1>
         <h2 id = "driver_nationality" class="text-center text-gray-500"></h2>
@@ -189,10 +190,14 @@
                         <th  class="px-6 py-3">Position</th>
                     </tr>
                 </thead>
-                <tbody id = "constructor_table"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
-                    <!-- Programmatically Generated -->
-                </tbody>
             </table>
+            <div class="overflow-y-auto max-h-[40vh]">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <tbody id = "constructor_table"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                        <!-- Programmatically Generated -->
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class = "flex justify-between items-center mt-4">
             <button id="add_favorite_const" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600"></button>
