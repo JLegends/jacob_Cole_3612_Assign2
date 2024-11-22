@@ -627,6 +627,9 @@ function init() {
         const type = e.target.getAttribute("type");
         const ref = e.target.getAttribute("ref");
 
+        console.log(`Loading popup for type: ${type}, ref: ${ref}`);
+        console.log("Favorited:", favorited);
+
         if (type == "driver") {
             driver.showModal();
             driverTable.innerHTML = "";
@@ -768,6 +771,8 @@ function init() {
 
     function store_favorite_table()
     {
+        console.log("Storing favorites:", favorited);
+
         favorited.drivers.sort((a, b) => a.forename.localeCompare(b.forename));
         favorited.constructors.sort((a, b) => a.name.localeCompare(b.name));
         favorited.circuits.sort((a, b) => a.name.localeCompare(b.name));
