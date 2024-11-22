@@ -375,13 +375,12 @@ function init() {
 
     function sort_data(e, data)
     {        
-        console.log("in sort");
         const targetHeader = e.target.closest("[value]"); // Find the closest element with the "value" attribute
         if (!targetHeader) return; // Exit if no valid header is clicked
     
         const targetList = targetHeader.closest("thead"); // Find the closest <thead>
         if (!targetList) return; // Exit if no valid <thead> is found
-        
+        // closest function help from: https://www.w3schools.com/jsref/met_element_closest.asp
         let generateFunction;
         // Initialize sort direction and argument if not set
         if(!targetList.hasAttribute("sortDirection"))
