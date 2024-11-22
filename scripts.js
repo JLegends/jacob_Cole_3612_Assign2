@@ -1,8 +1,8 @@
 /* Known Issues 
     ==== TO DO =====
-    would be nice to add loading icons for when we're grabbing data or something is loading. Could add to the
-    race table, result table, modal popups and the modal popup button so it doesn't switch from add favorite to remove
-    while it checks!
+    Fix the modal popups in small width views being offscreen
+
+    
 
     Improve the look of the images in results plus add the same image to the driver cards, probably will use a gradient for the
     background
