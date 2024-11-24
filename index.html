@@ -8,8 +8,8 @@
 </head>
 
 <body class="bg-gray-100 ">
-    <nav class="bg-gray-900 fixed top-0 w-full z-30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-4 lg:px-6 py-8 sm:py-4 lg:py-6 flex items-center justify-between">
+    <header class="bg-gray-900 fixed top-0 w-full z-30">
+        <nav class="max-w-7xl mx-auto px-4 sm:px-4 lg:px-6 py-8 sm:py-4 lg:py-6 flex items-center justify-between">
             <!--Logo-->
             <a href="index.html" class="flex items-center space-x-3 rtl:space-x-reverse hover:"> 
                 <img class="h-8" src = "data/images/f1_logo.png"></a> 
@@ -19,9 +19,9 @@
                 <button id="home_button" class=" bg-gray-700 text-white px-4 py-2 rounded-md group relative inline-flex h-12 items-center justify-center overflow-hidden font-medium transition hover:scale-110"><span>Home</span><div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]"><div class="relative h-full w-8 bg-white/20"></div></div></button>
                 <button id="favorites_button" class=" bg-red-700 text-white px-4 py-2 rounded-md group relative inline-flex h-12 items-center justify-center overflow-hidden font-medium transition hover:scale-110"><span>Favorites</span><div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]"><div class="relative h-full w-8 bg-white/20"></div></div></button>
             </div> 
-        </div>
+        </nav>
         <div class= "py-1 bg-red-600"></div> <!--A red line-->
-    </nav>
+    </header>
     <div class="w-full h-32 repeating-lines-background mt-3"></div>
     <main id="container" class="">
         <article id ="home_view" class ="h-screen overflow-hidden flex flex-row border-t-8 border-b-8 border-red-600 max-h-[650px] repeating-x-background">
@@ -57,14 +57,14 @@
                 <button value="2023" class=" bg-gray-900 text-white w-1/5 py-2 rounded-t-lg hover:bg-gray-800 focus:ring-2 focus:ring-blue-700">2023</button>
             </div>
             <h3 class="bg-gray-900 text-white text-xl text-center font-titillium p-5 border-b-8 border-b-red-600 rounded-r-lg" id="round_title"></h3>
-            <div class="overflow-y-scroll h-[500px] px-4">
+            <section class="overflow-y-scroll h-[500px] px-4">
                 <table id="races" class="w-full border-collapse">
                     <thead class="bg-gray-200 sticky top-0 z-10 cursor-pointer" id="round_data_header"><th value="Round">Round</th><th value="RaceName">Name</th><th></th></thead>
                     <tbody id="round_container">
                         <!--Data Generated Programatically Here-->
                     </tbody>
                 </table>
-            </div>
+            </section>
         </div>
         <div id="pre_results_message" class="flex items-center justify-center h-full w-[100%] repeating-x-background">
             <h1 class="text-center px-72 py-48 bg-gray-900 text-white rounded-lg uppercase font-bold text-3xl border-8 border-red-600"> SELECT RACE RESULTS</h1>
@@ -84,11 +84,11 @@
                 <p id = "race_info2" class="hover:text-red-600 cursor-pointer"></p>
             </span>
             <div id="race_info_container" class="h-[466px]">
-                <div id="qualify_page" class="flex flex-col">
+                <section id="qualify_page" class="flex flex-col">
                     <div id="podium" class="flex flex-row space-x-10 justify-center">
-                        <div id="result_1" class="text-black flex justify-center items-center relative"><img id="pd1q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">1</div></div> 
-                        <div id="result_2" class="text-black flex justify-center items-center relative"><img id="pd2q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">2</div></div>
-                        <div id="result_3" class="text-black flex justify-center items-center relative"><img id="pd3q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">3</div></div>
+                        <figure id="result_1" class="text-black flex justify-center items-center relative"><img id="pd1q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">1</div></figure> 
+                        <figure id="result_2" class="text-black flex justify-center items-center relative"><img id="pd2q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">2</div></figure>
+                        <figure id="result_3" class="text-black flex justify-center items-center relative"><img id="pd3q" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">3</div></figure>
                     </div>
                     <div id="qualifying" class="overflow-y-scroll h-[500px] md:h-[350px] w-[100%]">
                         <table class="w-full text-left rtl:text-right text-black">
@@ -98,13 +98,12 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
-                
-                <div id="results_page" class="flex flex-col">
+                </section>
+                <section id="results_page" class="flex flex-col">
                     <div id="podium" class="flex flex-row space-x-10 justify-center">
-                        <div id="result_1" class="text-black flex justify-center items-center relative"><img id="pd1r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">1</div></div> 
-                        <div id="result_2" class="text-black flex justify-center items-center relative"><img id="pd2r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">2</div></div>
-                        <div id="result_3" class="text-black flex justify-center items-center relative"><img id="pd3r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">3</div></div>
+                        <figure id="result_1" class="text-black flex justify-center items-center relative"><img id="pd1r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">1</div></figure> 
+                        <figure id="result_2" class="text-black flex justify-center items-center relative"><img id="pd2r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">2</div></figure>
+                        <figure id="result_3" class="text-black flex justify-center items-center relative"><img id="pd3r" class="max-w-full max-h-[100px] object-cover" src="data/images/drivers/max_verstappen.avif"><div class="absolute top-[5px] right-[5px] color-black font-bold">3</div></figure>
                     </div>
                     <div id="results" class="overflow-y-scroll h-[500px] md:h-[350px] w-[100%]">
                         <div id=results_driver_table class="w-[100%]">   
@@ -116,29 +115,41 @@
                             </table>
                         </div>
                     </div>
-                </div>
+                </section>
             </div>
         </div>
     </article>
-    <dialog id = "circuit" class = "border border-white max-w-5xl max-h-[80vh] p-4 bg-gray-900 text-white rounded-lg shadow-lg"> <!-- Change close/open to make popup disappear/appear-->
+    <dialog id = "circuit" class = "border border-white max-w-5xl max-h-[80vh] p-4 bg-gray-900 text-white rounded-lg shadow-lg"> 
+        <header class = "flex items-center justify-between">
+            <h1 class = "flex-1 items-center text-center text-lg font-semibold mb-2"> Favorites </h1>
+            <form method="dialog">
+                <button id= "close" class="bg-red-700 rounded-full text-white px-3 py-1 hover:bg-red-600 mb-2">X</button>
+            </form>
+        </header>
         <h1 class = "text-center text-lg font-semibold mb-2"> Circuit Details </h1>
         <hr id = "circ_popup_bar" class="mb-2">
         <figure id ="circuit_img_box"></figure>
-        <div>
+        <aside>
             <h1 id="popup_circuit_name" class="text-center text-xl font-bold mb-1"></h1>
             <h2 id="popup_circuit_location" class="text-center text-gray-300"></h2>
             <h3 id="popup_circuit_country" class="text-center text-gray-300"></h3>
             <h4 class="text-center text-gray-300 underline mb-1 hover:text-gray-700"><a id="popup_circuit_url">Learn More</a></h4>
-        </div>
-        <div class = "flex justify-between items-center mt-4">
+        </aside>
+        <footer class = "flex justify-between items-center mt-4">
             <button id="add_favorite_circ" class="bg-red-700 mr-4 text-white px-4 py-2 rounded hover:bg-red-600">Add Favorites</button>
             <form method = "dialog">
                 <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
             </form>
-        </div>
+        </footer>
     </dialog>
 
     <dialog id = "driver" class = "border border-white max-w-5xl max-h-[90vh] p-4 bg-gray-900 text-white rounded-lg shadow-lg">
+        <header class = "flex items-center justify-between">
+            <h1 class = "flex-1 items-center text-center text-lg font-semibold mb-2"> Favorites </h1>
+            <form method="dialog">
+                <button id= "close" class="bg-red-700 rounded-full text-white px-3 py-1 hover:bg-red-600 mb-2">X</button>
+            </form>
+        </header>
         <h1 id = "driver_popup_title" class = "text-center text-lg font-semibold mb-2"> Driver Details </h1>
         <hr class="mb-2">
         <h1 id = "driver_info" class="text-center text-xl font-bold mb-1"></h1>
@@ -166,16 +177,21 @@
                 </table>
             </div>
         </div>
-        <div class = "flex justify-between items-center mt-4">
+        <footer class = "flex justify-between items-center mt-4">
             <button id="add_favorite_driver" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600"></button>
             <form method = "dialog">
                 <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
             </form>
-        </div>
+        </footer>
     </dialog>
     
     <dialog id = "constructor" class = "border border-white max-w-5xl max-h-[80vh] p-4 bg-gray-900 text-white rounded-lg shadow-lg">
-        <h1 class = "text-center text-lg font-semibold mb-2">Constructor Details</h1>
+        <header class = "flex items-center justify-between">
+            <h1 class = "flex-1 items-center text-center text-lg font-semibold mb-2"> Favorites </h1>
+            <form method="dialog">
+                <button id= "close" class="bg-red-700 rounded-full text-white px-3 py-1 hover:bg-red-600 mb-2">X</button>
+            </form>
+        </header>        <h1 class = "text-center text-lg font-semibold mb-2">Constructor Details</h1>
         <hr class="mb-2">
         <h1 id = "const_name" class="text-center text-xl font-bold mb-1"></h1>
         <h2 id = "const_nationality" class="text-center text-gray-300"></h2>
@@ -199,19 +215,24 @@
                 </table>
             </div>
         </div>
-        <div class = "flex justify-between items-center mt-4">
+        <footer class = "flex justify-between items-center mt-4">
             <button id="add_favorite_const" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600"></button>
             <form method = "dialog">
                 <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
             </form>
-        </div>
+        </footer>
     </dialog>
 
     <dialog id = "favorites" class = "border border-white max-h-[80vh] p-4 bg-gray-900 text-white rounded-lg shadow-lg">
-        <h1 class = "text-center text-lg font-semibold mb-2"> Favorites </h1>
+        <header class = "flex items-center justify-between">
+            <h1 class = "flex-1 items-center text-center text-lg font-semibold mb-2"> Favorites </h1>
+            <form method="dialog">
+                <button id= "close" class="bg-red-700 rounded-full text-white px-3 py-1 hover:bg-red-600 mb-2">X</button>
+            </form>
+        </header>
         <hr class="mb-4">
-        <div class="flex space-x-4" >
-            <div class = "overflow-x-auto rounded"> 
+        <section class="flex space-x-4" >
+            <section class = "overflow-x-auto rounded"> 
                 <table class="w-[40vh] h-0 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-300 dark:text-gray-900">
                         <tr><th class="items-center px-6 py-3">Drivers</th></tr> <!--The second th here is for the delete button-->
@@ -224,8 +245,8 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class = "overflow-x-auto rounded">
+            </section>
+            <section class = "overflow-x-auto rounded">
                 <table class="w-[40vh] h-0 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-300 dark:text-gray-900 ">
                         <tr><th class="items-center px-6 py-3">Constructors</th></tr>
@@ -238,8 +259,8 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-            <div class = "overflow-x-auto rounded">
+            </section>
+            <section class = "overflow-x-auto rounded">
                 <table class="w-[40vh] h-0 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                     <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-300 dark:text-gray-900 ">
                         <tr><th class="items-center px-6 py-3">Circuits</th></tr>
@@ -252,14 +273,14 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
-        </div>
-        <div class = "flex justify-between items-center mt-4">
+            </section>
+        </section>
+        <footer class = "flex justify-between items-center mt-4">
             <button id="empty_favorites" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Empty Favorites</button>
             <form method = "dialog">
                 <button id= "close" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Close</button>
             </form>
-        </div>
+        </footer>
     </dialog>
 </body> 
 </html>

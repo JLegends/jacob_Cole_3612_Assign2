@@ -503,7 +503,7 @@ function init() {
 
             if (isDriverFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-600";
                 name.appendChild(heartIcon);
             }
 
@@ -518,7 +518,7 @@ function init() {
 
             if (isConstructorFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-600";
                 constructor.appendChild(heartIcon);
             }
 
@@ -563,7 +563,7 @@ function init() {
 
             if (isDriverFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-600";
                 name.appendChild(heartIcon);
             }
             
@@ -578,7 +578,7 @@ function init() {
 
             if (isConstructorFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-600";
                 constructor.appendChild(heartIcon);
             }
 
