@@ -13,7 +13,7 @@
             <!--Logo-->
             <a href="index.html" class="flex items-center space-x-3 rtl:space-x-reverse hover:"> 
                 <img class="h-8" src = "data/images/f1_logo.png"></a> 
-            <h2 class="text-white text-lg font-bold font-doto"> F1 Dashboard Project </h2>
+            <h2 class="text-center text-white text-lg font-bold font-doto"> F1 Dashboard Project </h2>
             <!--Buttons-->
            <div class="space-x-4 flex items-start justify-between"> <!--Buttos from: https://buttons.ibelick.com/-->
                 <button id="home_button" class=" bg-gray-700 text-white px-4 py-2 rounded-md group relative inline-flex h-12 items-center justify-center overflow-hidden font-medium transition hover:scale-110"><span>Home</span><div class="absolute inset-0 flex h-full w-full justify-center [transform:skew(-12deg)_translateX(-100%)] group-hover:duration-1000 group-hover:[transform:skew(-12deg)_translateX(100%)]"><div class="relative h-full w-8 bg-white/20"></div></div></button>
@@ -25,8 +25,8 @@
     <div class="w-full h-32 repeating-lines-background mt-3"></div>
     <main id="container" class="">
         <article id ="home_view" class ="h-screen overflow-hidden flex flex-row border-t-8 border-b-8 border-red-600 max-h-[650px] repeating-x-background">
-            <div class="h-full w-1/2 bg-gray-50  text-black clip-diagonal-right z-10 shadow-inner flex flex-col relative">
-                <h1 class="p-5 font-bold text-2xl text-center">Welcome to the F1 Dashboard</h1>
+            <div class="text-center h-full w-1/2 bg-gray-50  text-black clip-diagonal-right z-10 shadow-inner flex flex-col relative">
+                <h1 class="p-5 font-bold text-2xl">Welcome to the F1 Dashboard</h1>
                 <p class="p-5"> Select a season to view results data.
                 </p>
                 <div id ="select_szn" class="p-5">
@@ -67,7 +67,7 @@
             </div>
         </div>
         <div id="pre_results_message" class="flex items-center justify-center h-full w-[100%] repeating-x-background">
-            <h1 class="px-72 py-48 bg-gray-900 text-white rounded-lg uppercase font-bold text-3xl border-8 border-red-600"> SELECT RACE RESULTS</h1>
+            <h1 class="text-center px-72 py-48 bg-gray-900 text-white rounded-lg uppercase font-bold text-3xl border-8 border-red-600"> SELECT RACE RESULTS</h1>
         </div>
         <div id="race_data_container" class="flex flex-col w-[98%] md:px-4 md:ml-10 md:mr-10 bg-gray-100 md:w-full">
             <div class="flex items-center justify-center h-full w-[100%]">
@@ -120,15 +120,15 @@
             </div>
         </div>
     </article>
-    <dialog id = "circuit" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg"> <!-- Change close/open to make popup disappear/appear-->
+    <dialog id = "circuit" class = "border border-white max-w-5xl max-h-[80vh] p-4 bg-gray-900 text-white rounded-lg shadow-lg"> <!-- Change close/open to make popup disappear/appear-->
         <h1 class = "text-center text-lg font-semibold mb-2"> Circuit Details </h1>
         <hr id = "circ_popup_bar" class="mb-2">
         <figure id ="circuit_img_box"></figure>
         <div>
             <h1 id="popup_circuit_name" class="text-center text-xl font-bold mb-1"></h1>
-            <h2 id="popup_circuit_location" class="text-center text-gray-500"></h2>
-            <h3 id="popup_circuit_country" class="text-center text-gray-500"></h3>
-            <h4 class="text-center text-gray-500 underline mb-1 hover:text-gray-700"><a id="popup_circuit_url">Learn More</a></h4>
+            <h2 id="popup_circuit_location" class="text-center text-gray-300"></h2>
+            <h3 id="popup_circuit_country" class="text-center text-gray-300"></h3>
+            <h4 class="text-center text-gray-300 underline mb-1 hover:text-gray-700"><a id="popup_circuit_url">Learn More</a></h4>
         </div>
         <div class = "flex justify-between items-center mt-4">
             <button id="add_favorite_circ" class="bg-red-700 mr-4 text-white px-4 py-2 rounded hover:bg-red-600">Add Favorites</button>
@@ -138,16 +138,18 @@
         </div>
     </dialog>
 
-    <dialog id = "driver" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
+    <dialog id = "driver" class = "border border-white max-w-5xl max-h-[90vh] p-4 bg-gray-900 text-white rounded-lg shadow-lg">
         <h1 id = "driver_popup_title" class = "text-center text-lg font-semibold mb-2"> Driver Details </h1>
         <hr class="mb-2">
         <h1 id = "driver_info" class="text-center text-xl font-bold mb-1"></h1>
-        <h2 id = "driver_nationality" class="text-center text-gray-500"></h2>
-        <h3 class="text-center text-gray-500 underline mb-1 hover:text-gray-700"><a id = "driver_more_info"></a></h3>
-        <figure id ="driver_img_box"></figure>
-        <div class="rounded">
-            <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <h2 id = "driver_nationality" class="text-center text-gray-300"></h2>
+        <h3 class="text-center text-gray-300 underline mb-1 hover:text-gray-700"><a id = "driver_more_info"></a></h3>
+        <figure id ="driver_img_box" class="flex justify-center my-4">
+            <img id="driver_image" class="rounded-lg shadow-xl bg-white object-cover max-w-[150px] max-h-[150px]" alt="Driver Image">
+        </figure>
+        <div class = "overflow-y-auto max-h-[30vh] rounded">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-300 dark:text-gray-200">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-300 dark:text-gray-900">
                     <tr class="text-lg">
                         <th class="px-6 py-3">Round</th>
                         <th class="px-6 py-3">Name</th>
@@ -156,8 +158,8 @@
                     </tr>
                 </thead>
             </table>
-            <div class="overflow-y-auto max-h-[40vh]">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <div class="overflow-y-auto max-h-[30vh]">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-200 dark:text-gray-300">
                     <tbody id = "driver_table"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
                         <!-- Programmatically Generated -->
                     </tbody>
@@ -172,16 +174,15 @@
         </div>
     </dialog>
     
-    <dialog id = "constructor" class = "max-w-5xl max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
+    <dialog id = "constructor" class = "border border-white max-w-5xl max-h-[80vh] p-4 bg-gray-900 text-white rounded-lg shadow-lg">
         <h1 class = "text-center text-lg font-semibold mb-2">Constructor Details</h1>
         <hr class="mb-2">
-        <figure id ="constructor_img_box"></figure>
         <h1 id = "const_name" class="text-center text-xl font-bold mb-1"></h1>
-        <h2 id = "const_nationality" class="text-center text-gray-500"></h2>
-        <h3 class="text-center text-gray-500 underline mb-1 hover:text-gray-700"><a id = "const_more_info"></a></h3>
+        <h2 id = "const_nationality" class="text-center text-gray-300"></h2>
+        <h3 class="text-center text-gray-300 underline mb-1 hover:text-gray-700"><a id = "const_more_info"></a></h3>
         <div class="overflow-y-auto max-h-[40vh] rounded">
-            <table class="w-full rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <table class="w-full text-sm text-left rtl:text-right text-gray-300 dark:text-gray-200">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-300 dark:text-gray-900">
                     <tr class="text-lg">
                         <th  class="px-6 py-3">Round</th>
                         <th  class="px-6 py-3">Name</th>
@@ -191,7 +192,7 @@
                 </thead>
             </table>
             <div class="overflow-y-auto max-h-[40vh]">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                <table class="w-full text-sm text-left rtl:text-right text-gray-200 dark:text-gray-300">
                     <tbody id = "constructor_table"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
                         <!-- Programmatically Generated -->
                     </tbody>
@@ -206,34 +207,52 @@
         </div>
     </dialog>
 
-    <dialog id = "favorites" class = "max-h-[80vh] p-4 bg-white rounded-lg shadow-lg">
+    <dialog id = "favorites" class = "border border-white max-h-[80vh] p-4 bg-gray-900 text-white rounded-lg shadow-lg">
         <h1 class = "text-center text-lg font-semibold mb-2"> Favorites </h1>
         <hr class="mb-4">
-        <div class="flex space-x-4 overflow-x-auto max-h-[40vh]" >
-            <table class="w-[40vh] overflow-x-auto max-h-[40vh] rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr><th class="items-center px-6 py-3">Drivers</th><th class="py-3"></th></tr> <!--The second th here is for the delete button-->
-                </thead>
-                <tbody id = "fav_drivers"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
-                    <!-- Programmatically Generated -->
-                </tbody>
-            </table>
-            <table class="w-[40vh] overflow-x-auto max-h-[40vh] rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr><th  class="items-center px-6 py-3">Constructors</th><th class="py-3"></th></tr>
-                </thead>
-                <tbody id = "fav_constructors"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
-                    <!-- Programmatically Generated -->
-                </tbody>
-            </table>
-            <table class="w-[40vh] overflow-x-auto max-h-[40vh] rounded text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                    <tr><th  class="items-center px-6 py-3">Circuits</th><th class="py-3"></th></tr>
-                </thead>
-                <tbody id = "fav_circuits"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
-                    <!-- Programmatically Generated -->
-                </tbody>
-            </table>
+        <div class="flex space-x-4" >
+            <div class = "overflow-x-auto rounded"> 
+                <table class="w-[40vh] h-0 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 border-collapse">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-300 dark:text-gray-900">
+                        <tr><th class="items-center px-6 py-3">Drivers</th></tr> <!--The second th here is for the delete button-->
+                    </thead>
+                </table>
+                <div class="overflow-y-auto max-h-[40vh]">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-200 dark:text-gray-300">
+                        <tbody id = "fav_drivers"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                            <!-- Programmatically Generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class = "overflow-x-auto rounded">
+                <table class="w-[40vh] h-0 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-300 dark:text-gray-900 ">
+                        <tr><th class="items-center px-6 py-3">Constructors</th></tr>
+                    </thead>
+                </table>
+                <div class="overflow-y-auto max-h-[40vh]">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-200 dark:text-gray-300">
+                        <tbody id = "fav_constructors"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                            <!-- Programmatically Generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class = "overflow-x-auto rounded">
+                <table class="w-[40vh] h-0 text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-300 dark:text-gray-900 ">
+                        <tr><th class="items-center px-6 py-3">Circuits</th></tr>
+                    </thead>
+                </table>
+                <div class="overflow-y-auto max-h-[40vh]">
+                    <table class="w-full text-sm text-left rtl:text-right text-gray-200 dark:text-gray-300">
+                        <tbody id = "fav_circuits"> <!-- table Tailwind guide used: https://flowbite.com/docs/components/tables/ -->
+                            <!-- Programmatically Generated -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <div class = "flex justify-between items-center mt-4">
             <button id="empty_favorites" class="bg-red-700 text-white px-4 py-2 rounded hover:bg-red-600">Empty Favorites</button>

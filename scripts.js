@@ -2,16 +2,13 @@
     ==== TO DO =====
     Fix the modal popups in small width views being offscreen
 
-    
     Improve the look of the images in results plus add the same image to the driver cards, probably will use a gradient for the
     background
 
     Make an is favorited function and then replace the code within the modal constructors to use it, we can also use it to 
     check if an item is in favorites and then if it is add some sort of styling to it when we add data
 
-    new bug discovered (2023 - Saudi Arabian Grand Prix - Guanyu Zhou & Nyck de Vries break for some reason?)
-
-    new bug - if you flip quickly between qualify and results tabs (before they finish loading) you can duplicate table info
+    I need to ask him tomorrow where to find the points for DRIVER POPUP
 
 */
 const storedFavorites = JSON.parse(localStorage.getItem("favorited"));
@@ -30,8 +27,6 @@ function init() {
     const home = document.querySelector("#home_button");
     const favorites_button = document.querySelector("#favorites_button");
 
-
-    const container = document.querySelector("#container");
     const homeView = document.querySelector("#home_view");
     const raceView = document.querySelector("#race_view")
     const roundTitle = document.querySelector("#round_title")
@@ -39,7 +34,6 @@ function init() {
     const raceButtonContainer = document.querySelector("#race_button_container")
     const roundContainer = document.querySelector("#round_container");
     const roundDataHeader = document.querySelector("#round_data_header");
-    const raceTable = document.querySelector("#races");
 
     const raceDataContainer = document.querySelector("#race_data_container");
 
@@ -300,6 +294,8 @@ function init() {
 
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
+                resultSubheader.innerHTML = '';
+                show_loader(resultSubheader, true, 2);
                 list_grandprix_results(race.id, race.name, race.year); 
                 generate_results_subheader(race.circuit.id, round.textContent, race.date, race.url);
             });
@@ -665,9 +661,10 @@ function init() {
     /*------------------------------------------------------------------------------------------------------*/
     function generate_results_subheader(circuitId, raceRound, raceDate, raceUrl) {
         fetch_circuit_name(circuitId).then(data => {
+            show_loader(resultSubheader, false);
+
             raceInfo1.textContent = `Round ${raceRound} - ${raceDate} - `;
             circuitName.textContent = data.name;
-            console.log(circuitId);
             add_type_and_id(circuitName, "circuit", circuitId);
             raceInfo2.textContent = " - Learn More";
 
@@ -696,7 +693,7 @@ function init() {
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
             
-            element.className = "px-6 py-6 font-medium text-gray-900 dark:text-white truncate";
+            element.className = "px-6 py-4 font-medium text-gray-900 dark:text-white truncate";
             element.textContent = `${driver.forename} ${driver.surname}`;
 
             const buttonContainer = document.createElement("td");
@@ -720,7 +717,7 @@ function init() {
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
             
-            element.className = "px-6 py-6 font-medium text-gray-900dark:text-white truncate";
+            element.className = "px-6 py-4 font-medium text-gray-900 dark:text-white truncate";
             element.textContent = constructor.name; 
             
             const buttonContainer = document.createElement("td");
@@ -744,7 +741,7 @@ function init() {
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
     
             const element = document.createElement("td");
-            element.className = "px-6 py-6 font-medium text-gray-900 dark:text-white truncate";
+            element.className = "px-6 py-4 font-medium text-gray-900 dark:text-white truncate";
             element.textContent = circuit.name;
 
             const buttonContainer = document.createElement("td");
@@ -966,6 +963,10 @@ function init() {
         driverMoreInfo.textContent = `Learn More`;
         driverMoreInfo.href = data.url;
 
+        const driverImage = document.querySelector('#driver_image');
+        driverImage.src = `data/images/drivers/${ref}.avif`;
+        driverImage.alt = `${data.forename} ${data.surname}`;
+
         const itemFavorited = favorited.drivers.some(driver => driver.forename === data.forename && driver.surname === data.surname)
         const newButton = addFavoriteDriver.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
         addFavoriteDriver.replaceWith(newButton);
@@ -974,7 +975,7 @@ function init() {
         add_fav_button_event(addFavoriteDriver, "drivers", itemFavorited, data, ref);
 
         fetch_driver_results(ref, season).then(data => { 
-            
+
             show_loader(driverTable, false);
 
             for (let driver of data) {
@@ -1018,6 +1019,7 @@ function init() {
         popupCircuitLocation.textContent = data.location;
         popupCircuitCountry.textContent = data.country;
         popupCircuitURL.href = data.url;
+        popupCircuitURL.textContent = "Learn More";
 
         const itemFavorited = favorited.circuits.some(circuit => circuit.name === data.name);
         const newButton = addFavoriteCirc.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
@@ -1029,18 +1031,18 @@ function init() {
 
     function show_loader(parentNode, visibility, size) {
         /* HTML for loader found here: https://uiverse.io/devAaus/funny-catfish-94 */
-        const loader = document.querySelector("#spinner");
-
+        const loader = document.querySelector(`#${parentNode.id} #spinner`);
+        console.log(parentNode.id + loader);
         if(visibility) {
             const spinner_container = document.createElement("div");
             spinner_container.id = "spinner";
             spinner_container.className = "flex w-full h-full left-1/2 top-1/2 items-center justify-center";
 
             const blue_spinner = document.createElement("div");
-            blue_spinner.className = `w-${(size * 4)} h-${(size * 4)} border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-blue-400 rounded-full`;
+            blue_spinner.className = `w-${(size * 4)} h-${(size * 4)} border-4 border-transparent text-gray-900 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full`;
 
             const red_spinner = document.createElement("div");
-            red_spinner.className = `w-${(size-1) * 4} h-${(size-1) * 4} border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-red-400 rounded-full`;
+            red_spinner.className = `w-${(size-1) * 4} h-${(size-1) * 4} border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-red-600 rounded-full`;
 
             blue_spinner.appendChild(red_spinner);
             spinner_container.appendChild(blue_spinner);
