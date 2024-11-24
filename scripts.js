@@ -2,7 +2,7 @@
     ==== TO DO =====
     Fix the modal popups in small width views being offscreen
 
-    Improve the look of the images in results plus add the same image to the driver cards, probably will use a gradient for the
+    Improve the look of the images in results, probably will use a gradient for the
     background
 
     Make an is favorited function and then replace the code within the modal constructors to use it, we can also use it to 
@@ -10,7 +10,9 @@
 
     I need to ask him tomorrow where to find the points for DRIVER POPUP
 
+    lastly documentation needs to be completed
 */
+
 const storedFavorites = JSON.parse(localStorage.getItem("favorited"));
 const favorited = storedFavorites || {drivers: [], constructors: [], circuits: []}; //Check if any favorites stored otherwise default to empty
 
