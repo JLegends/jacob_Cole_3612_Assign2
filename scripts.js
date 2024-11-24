@@ -256,8 +256,6 @@ function init() {
 
         fetch_race_season(season).then(data => {
             generate_rounds_table(data);
-            console.log("races");
-            console.log(data);
             roundDataHeader.addEventListener("click", (e) => sort_data(e, data));
         });
     }
@@ -804,12 +802,12 @@ function init() {
         generate_results_table(currentResults);
         generate_qualify_table(currentQualifyData);
     }
+
+
     /*--------------------------------------------------------------------------------------------------------
     // Name: remove_favorite(type)
     // Purpose: remove a single favorited item from the list.
     /*------------------------------------------------------------------------------------------------------*/
-
-
     function remove_favorite(e)
     {        
         const type = e.target.getAttribute("type");
@@ -841,6 +839,10 @@ function init() {
         }
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: add_fav_button_event
+    // Purpose: remove a single favorited item from the list.
+    /*------------------------------------------------------------------------------------------------------*/
     function add_fav_button_event(button, type, itemFavorited, data, ref)
     {                
         console.log("in add fav button");
@@ -896,11 +898,17 @@ function init() {
             button.textContent = "Remove from Favorites";
             button.addEventListener("click", (e) => {  
                 remove_favorite(e);
+                store_favorite_table();               
+
+                resultsContainer.innerHTML = ""; // Clear existing content
+                qualifyContainer.innerHTML = ""; // Clear existing content
+
+                generate_results_table(currentResults);
+                generate_qualify_table(currentQualifyData);
 
                 add_fav_button_event(button, type, false, data, ref);
             });
         }     
-
     }
 
     /*--------------------------------------------------------------------------------------------------------
