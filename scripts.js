@@ -3,7 +3,6 @@
     Fix the modal popups in small width views being offscreen
 
     
-
     Improve the look of the images in results plus add the same image to the driver cards, probably will use a gradient for the
     background
 
@@ -898,17 +897,11 @@ function init() {
             button.textContent = "Remove from Favorites";
             button.addEventListener("click", (e) => {  
                 remove_favorite(e);
-                store_favorite_table();               
-
-                resultsContainer.innerHTML = ""; // Clear existing content
-                qualifyContainer.innerHTML = ""; // Clear existing content
-
-                generate_results_table(currentResults);
-                generate_qualify_table(currentQualifyData);
 
                 add_fav_button_event(button, type, false, data, ref);
             });
         }     
+
     }
 
     /*--------------------------------------------------------------------------------------------------------
