@@ -1,20 +1,7 @@
 /* Known Issues 
     ==== TO DO =====
-    Fix the modal popups in small width views being offscreen
-
-    
-
-    Improve the look of the images in results plus add the same image to the driver cards, probably will use a gradient for the
-    background
-
-    Make an is favorited function and then replace the code within the modal constructors to use it, we can also use it to 
-    check if an item is in favorites and then if it is add some sort of styling to it when we add data
-
-    new bug discovered (2023 - Saudi Arabian Grand Prix - Guanyu Zhou & Nyck de Vries break for some reason?)
-
-    new bug - if you flip quickly between qualify and results tabs (before they finish loading) you can duplicate table info
-
 */
+
 const storedFavorites = JSON.parse(localStorage.getItem("favorited"));
 const favorited = storedFavorites || {drivers: [], constructors: [], circuits: []}; //Check if any favorites stored otherwise default to empty
 
@@ -26,13 +13,10 @@ let season = null; /* I need this globally accessible for the load_popup functio
 document.addEventListener('DOMContentLoaded', init);
 
 function init() { 
-
     const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
     const home = document.querySelector("#home_button");
     const favorites_button = document.querySelector("#favorites_button");
 
-
-    const container = document.querySelector("#container");
     const homeView = document.querySelector("#home_view");
     const raceView = document.querySelector("#race_view")
     const roundTitle = document.querySelector("#round_title")
@@ -40,7 +24,6 @@ function init() {
     const raceButtonContainer = document.querySelector("#race_button_container")
     const roundContainer = document.querySelector("#round_container");
     const roundDataHeader = document.querySelector("#round_data_header");
-    const raceTable = document.querySelector("#races");
 
     const raceDataContainer = document.querySelector("#race_data_container");
 
@@ -71,6 +54,12 @@ function init() {
     const pdImg2r = document.querySelector("#pd2r");
     const pdImg3r = document.querySelector("#pd3r");
 
+    const pdNameR1 = document.querySelector("#pdNameR1");
+    const pdNameR2 = document.querySelector("#pdNameR2");
+    const pdNameR3 = document.querySelector("#pdNameR3");
+    const pdNameQ1 = document.querySelector("#pdNameQ1");
+    const pdNameQ2 = document.querySelector("#pdNameQ2");
+    const pdNameQ3 = document.querySelector("#pdNameQ3");
 
     const seasonSelect = document.querySelector("#season-select");
 
@@ -108,51 +97,140 @@ function init() {
 
     load_view("home");
 
+    
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_race_season
+    // Purpose: Fetches all of the races for a particular season. These should be stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
     function fetch_race_season(season) {
-        let request = `${url}/races.php?season=${season}`;
+        let request = `${url}/races.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request); /*Returns a promise object*/
     }
 
-    function fetch_circuit_name(circuitId) {
-        let request = `${url}/circuits.php?id=${circuitId}`;
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_season_results
+    // Purpose: Fetches all of the race results for a particular season. These should be stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
+    function fetch_season_results(season) {
+        let request = `${url}/results.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request);
     }
 
-    function fetch_race_qualify(raceID) {
-        let request = `${url}/qualifying.php?race=${raceID}`;
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_season_qualifying
+    // Purpose: Fetches all of the qualifying results for a particular season. These should be stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
+
+    function fetch_season_qualifying(season) {
+        let request = `${url}/qualifying.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request);
     }
 
-    function fetch_race_results(raceID) {
-        let request = `${url}/results.php?race=${raceID}`;
-        return fetch_store_API_data(request);
-    }
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_race_qualify
+    // Purpose: Function that will fetch the qualifying for a particular race from local storage. This function
+    should only be called after fetch_season_qualifying has been called to ensure that results data for the season has already been stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
 
+    function fetch_race_qualify(raceID, season) {
+        const qualifyingJSON = localStorage.getItem(`${url}/qualifying.php?season=${season}`);
+        
+        if (!qualifyingJSON) {
+            console.error("Qualifying data not found in localStorage for season:", season);
+            return [];
+        }
+    
+        try {
+            const qualifyingData = JSON.parse(qualifyingJSON);
+    
+            // Filter the data to find results matching the given raceID
+            const matchingResults = qualifyingData.filter(entry => entry.race.id == raceID);
+            return matchingResults;
+        } catch (error) {
+            console.error("Error parsing qualifying data:", error);
+            return [];
+        }
+    }
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_race_results
+    // Purpose: Function that will fetch the results for a particular race from local storage. This function
+    should only be called after fetch_season_results has been called to ensure that results data for the season has already been stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
+    function fetch_race_results(raceID, season) {
+        const resultsJSON = localStorage.getItem(`${url}/results.php?season=${season}`);
+        
+        if (!resultsJSON) {
+            console.error("results data not found in localStorage for season:", season);
+            return [];
+        }
+    
+        try {
+            const resultsData = JSON.parse(resultsJSON);
+    
+            // Filter the data to find results matching the given raceID
+            const matchingResults = resultsData.filter(entry => entry.race.id == raceID);
+            return matchingResults;
+        } catch (error) {
+            console.error("Error parsing resulst data:", error);
+            return [];
+        }
+
+    }
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_driver
+    // Purpose: Fetch the data for a particular driver for display in the driver dialog.
+    /*------------------------------------------------------------------------------------------------------*/
     function fetch_driver(driverRef) {
         let request = `${url}/drivers.php?ref=${driverRef}`;
         return fetch_store_API_data(request);
     }
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_driver_results
+    // Purpose: Fetch the results for a given driverRef and season to display in the driver dialog.
+    /*------------------------------------------------------------------------------------------------------*/
 
     function fetch_driver_results(driverRef, season) {
         let request = `${url}/driverResults.php?driver=${driverRef}&season=${season}`;
         return fetch_store_API_data(request);
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_constructor_results
+    // Purpose: Fetch the data for a particular constructor for display in the constructor dialog.
+    /*------------------------------------------------------------------------------------------------------*/
+
     function fetch_constructor(constructorRef) {
         let request = `${url}/constructors.php?ref=${constructorRef}`;
         return fetch_store_API_data(request);
     }
+
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_constructor_results
+    // Purpose: Fetch the results for a given constructorRef and season to display in the constructor dialog.
+    /*------------------------------------------------------------------------------------------------------*/
 
     function fetch_constructor_results(constructorRef, season) {
         let request = `${url}/constructorResults.php?constructor=${constructorRef}&season=${season}`;
         return fetch_store_API_data(request);
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_circuit
+    // Purpose: Fetch a particular circuit to use for the circuit dialog. Also used to get the circuit name for 
+    the results subtitle.
+    /*------------------------------------------------------------------------------------------------------*/
+
     function fetch_circuit(circuitID) {
         let request = `${url}/circuits.php?id=${circuitID}`;
         return fetch_store_API_data(request);
     }
 
+    
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_store_API_data
+    // Purpose: General purpose function for fetching data from the API. Checks if the request is one of the ones
+    we would want to store in local storage and will store those with the key being the request for future access.
+    /*------------------------------------------------------------------------------------------------------*/
     async function fetch_store_API_data(request) {
         const storedData = localStorage.getItem(request);
 
@@ -164,7 +242,7 @@ function init() {
                 const response = await fetch(request);
                 const data = await response.json();
 
-                if (request.includes("/races.php?season=") || request.includes("results.php?season=") || request.includes("/qualifying.php?season=")) {
+                if (request.includes("/races.php?season=") || request.includes("/results.php?season=") || request.includes("/qualifying.php?season=")) {
                     localStorage.setItem(request, JSON.stringify(data)); // Save data to local storage as a JSON string
                     console.log("Data stored in local storage! request:" + request);
                 }
@@ -175,6 +253,10 @@ function init() {
         }
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: load_view
+    // Purpose:Function to swap between the home view and the race view based on the selected season.
+    /*------------------------------------------------------------------------------------------------------*/
     function load_view(view, season = null) {
 
         if (view === "home") {
@@ -191,7 +273,10 @@ function init() {
             list_season_races(season);
         }
     }
-
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: set_visibility
+    // Purpose: Utility function to set the an element to be hidden or visible. Used for swapping views.
+    /*------------------------------------------------------------------------------------------------------*/
     function set_visibility(node, value) {
         if (value) {
             node.classList.remove("hidden");
@@ -205,7 +290,7 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: add_event_handlers
-    // Purpose: 
+    // Purpose: Adds all event listeners that do not rely on data grabbed from the API. 
     /*------------------------------------------------------------------------------------------------------*/
     function add_event_handlers() {
         home.onclick = () => load_view("home");
@@ -242,10 +327,11 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: list_season_races
-    // Purpose: it creates the DOM elements for the season races block
+    // Purpose: Necessary setup to transition to the race view from the home view. Will fetch all required data for a particular 
+    season and store it in local storage if it isn't there already. Will then call the generate_rounds_table to create an entry
+    for each race in the season in the round table.
     /*------------------------------------------------------------------------------------------------------*/
     function list_season_races(season) {
-        /*container.style.border ="none";*/
         set_visibility(qualifying, false)
         set_visibility(raceDataContainer, false);
         set_visibility(preResultsMessage, true);
@@ -254,15 +340,21 @@ function init() {
 
         show_loader(roundContainer, true, 6);
 
-        fetch_race_season(season).then(data => {
-            generate_rounds_table(data);
-            roundDataHeader.addEventListener("click", (e) => sort_data(e, data));
-        });
+
+        fetch_season_qualifying(season)
+        .then(() => fetch_season_results(season))
+        .then(() => fetch_race_season(season))
+        .then(data => {
+        generate_rounds_table(data);
+        roundDataHeader.addEventListener("click", (e) => sort_data(e, data));
+    })
+
     }
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: generate_rounds_table
-    // Purpose: generates the table of rounds that took place in a season
+    // Purpose: generates the table of rounds that took place in a season. Adds event listener to the result button
+    so that results for a particular race may be displayed by the list_grandprix_results function
     /*------------------------------------------------------------------------------------------------------*/
     function generate_rounds_table(data) {
         let i = 0;
@@ -274,33 +366,36 @@ function init() {
             const row = document.createElement("tr");
             if(i % 2 == 0)
             {
-                row.className = "bg-stone-50 border-b-red-700 border-b-4";
+                row.className = "bg-stone-100 border-b-customRed border-b-4";
             }
             else
             {
-                row.className = "bg-stone-300 border-b-red-700 border-b-4";
+                row.className = "bg-stone-300 border-b-customRed border-b-4";
             }
             i++;
             const round = document.createElement("td");
+            round.className = "pl-4 font-bold";
             const name = document.createElement("td");
 
             const results = document.createElement("td");
             const resultsButton = document.createElement("button");
             const lineDiv = document.createElement("div");
-            lineDiv.className = "h-4 w-[100%] bg-red-700 clip-diagonal-right"
+            lineDiv.className = "h-4 w-[100%] bg-customRed clip-diagonal-right"
 
             results.className = "";
 
             round.textContent = race.round;
             name.textContent = race.name;
-            name.className = "hover:text-red-600 cursor-pointer";
+            name.className = "hover:text-customRedHover cursor-pointer";
             add_type_and_id(name, "circuit", race.circuit.id);
 
-            resultsButton.textContent = "Results";
-            resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
+            resultsButton.textContent = "RESULTS";
+            resultsButton.className = " bg-customRed text-white px-4 py-2 rounded-t-lg hover:bg-customRedHover";
 
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
+                resultSubheader.innerHTML = '';
+                show_loader(resultSubheader, true, 2);
                 list_grandprix_results(race.id, race.name, race.year); 
                 generate_results_subheader(race.circuit.id, round.textContent, race.date, race.url);
             });
@@ -318,7 +413,8 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: list_grandprix_results
-    // Purpose: creates the DOM content for the selection grand prix results
+    // Purpose: Generates all of the results and qualifying data for a clicked race result. Assigns images to the podium
+    and will also add event listeners to the table headers so that the corresponding data may be sorted.
     /*------------------------------------------------------------------------------------------------------*/
     function list_grandprix_results(raceID, raceName, season) {
 
@@ -343,25 +439,31 @@ function init() {
         qualifyDataHeader = newQualifyDataHeader;
     
         show_loader(resultsContainer, true, 4);
-        fetch_race_results(raceID).then(data => { //Generate results for the results page
-            currentResults = data;
-            resultsDataHeader.addEventListener("click",  (e) => sort_data(e, data));
+        
+        const resultsData = fetch_race_results(raceID, season); //Generate results for the results page
+        currentResults = resultsData;
+        resultsDataHeader.addEventListener("click",  (e) => sort_data(e, resultsData));
 
-            generate_results_table(data);
-            pdImg1r.src = `data/images/drivers/${data[0].driver.ref}.avif`;
-            pdImg2r.src = `data/images/drivers/${data[1].driver.ref}.avif`;
-            pdImg3r.src = `data/images/drivers/${data[2].driver.ref}.avif`;
-        });
+        generate_results_table(resultsData);
+        pdImg1r.src = `data/images/drivers/${resultsData[0].driver.ref}.avif`;
+        pdImg2r.src = `data/images/drivers/${resultsData[1].driver.ref}.avif`;
+        pdImg3r.src = `data/images/drivers/${resultsData[2].driver.ref}.avif`;
+        pdNameR1.textContent = resultsData[0].driver.surname;
+        pdNameR2.textContent = resultsData[1].driver.surname;
+        pdNameR3.textContent = resultsData[2].driver.surname;
     
-        fetch_race_qualify(raceID).then(data => { //Generate results for the qualifying page
-            currentQualifyData = data;
-            qualifyDataHeader.addEventListener("click",  (e) => sort_data(e, data));
-            
-            generate_qualify_table(data);
-            pdImg1q.src = `data/images/drivers/${data[0].driver.ref}.avif`;
-            pdImg2q.src = `data/images/drivers/${data[1].driver.ref}.avif`;
-            pdImg3q.src = `data/images/drivers/${data[2].driver.ref}.avif`;
-        });
+        const qualifyData = fetch_race_qualify(raceID, season) //Generate results for the qualifying page
+        currentQualifyData = qualifyData;
+        qualifyDataHeader.addEventListener("click",  (e) => sort_data(e, qualifyData));
+        
+        generate_qualify_table(qualifyData);
+        pdImg1q.src = `data/images/drivers/${qualifyData[0].driver.ref}.avif`;
+        pdImg2q.src = `data/images/drivers/${qualifyData[1].driver.ref}.avif`;
+        pdImg3q.src = `data/images/drivers/${qualifyData[2].driver.ref}.avif`;
+        pdNameQ1.textContent = qualifyData[0].driver.surname;
+        pdNameQ2.textContent = qualifyData[1].driver.surname;
+        pdNameQ3.textContent = qualifyData[2].driver.surname;
+
 
 
         resultsTab.addEventListener("click", ()=>{ //Add events to enable switching between the two pages
@@ -380,6 +482,13 @@ function init() {
 
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: sort_data
+    // Purpose: Sorts the given data array based on the clicked table header. Sort direction starts out ascending but
+    can then be switched to descending if you click again. Sorts are based on a value attribute that should be assigned to each table header, along
+    with a sortDirection attribute so that we can track what direction we are sorting by for succcessive clicks. This function should be added to the data 
+    header thead element that contains all of the th elements for the table.
+    /*------------------------------------------------------------------------------------------------------*/
     function sort_data(e, data)
     {        
         const targetHeader = e.target.closest("[value]"); // Find the closest element with the "value" attribute
@@ -442,8 +551,8 @@ function init() {
             if(sortArg == "Points") return isDescending ? b.points - a.points : a.points - b.points;
             if(sortArg.includes('q')) {
                 return isDescending
-                    ? timeToSeconds(b[sortArg]) - timeToSeconds(a[sortArg])
-                    : timeToSeconds(a[sortArg]) - timeToSeconds(b[sortArg]);
+                    ? time_to_seconds(b[sortArg]) - time_to_seconds(a[sortArg])
+                    : time_to_seconds(a[sortArg]) - time_to_seconds(b[sortArg]);
             }
             if(sortArg == "Round") return isDescending ? b.round - a.round : a.round - b.round;
             if(sortArg == "RaceName") return isDescending
@@ -461,6 +570,11 @@ function init() {
         generateFunction(data);
         add_sort_icon(targetHeader, isDescending);
     }
+        /*--------------------------------------------------------------------------------------------------------
+    // Name: add_sort_icon
+    // Purpose: Adds a sort indicator beside the table header to indicate we are sorting by this category and to indicate the sort direction.
+    /*------------------------------------------------------------------------------------------------------*/
+    
     function add_sort_icon(targetHeader, isDescending)
     {
         const headers = targetHeader.parentElement.children;
@@ -475,11 +589,11 @@ function init() {
     }
 
     /*--------------------------------------------------------------------------------------------------------
-    // Name: timeToSeconds
+    // Name: time_to_seconds
     // Purpose: Necessary to convert the strings from q1,q2,q3, to float numbers so that we can compare the values
     /*------------------------------------------------------------------------------------------------------*/
 
-    function timeToSeconds(time) {
+    function time_to_seconds(time) {
         if(time == null)
         {
             return 1000; //Return a large number so that times with no entries aren't considered in comparisons
@@ -498,17 +612,18 @@ function init() {
             row.className = "odd: bg-stone-50 even:bg-stone-300"
             const pos = document.createElement("td");
             pos.textContent = qualify.position;
+            pos.className = "font-bold pl-4";
             row.appendChild(pos);
 
             const name = document.createElement("td");
-            name.className = "hover:text-red-600 cursor-pointer";
+            name.className = "hover:text-customRedHover cursor-pointer";
             name.textContent = qualify.driver.forename + " " + qualify.driver.surname;
 
             const isDriverFavorited = favorited.drivers.some(driver => driver.ref === qualify.driver.ref);
 
             if (isDriverFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-customRedHover";
                 name.appendChild(heartIcon);
             }
 
@@ -516,14 +631,14 @@ function init() {
             row.appendChild(name);
 
             const constructor = document.createElement("td");
-            constructor.className = "hover:text-red-600 cursor-pointer";
+            constructor.className = "hover:text-customRedHover cursor-pointer";
             constructor.textContent = qualify.constructor.name;
 
             const isConstructorFavorited = favorited.constructors.some(constructor => constructor.ref === qualify.constructor.ref);
 
             if (isConstructorFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-customRedHover";
                 constructor.appendChild(heartIcon);
             }
 
@@ -557,18 +672,19 @@ function init() {
             const row = document.createElement("tr");
             row.className = "odd: bg-stone-150 even:bg-stone-300"
             const pos = document.createElement("td");
+            pos.className = "font-bold pl-4";
             pos.textContent = result.position;
             row.appendChild(pos);
 
             const name = document.createElement("td");
-            name.className = "hover:text-red-600 cursor-pointer";
+            name.className = "hover:text-customRedHover cursor-pointer";
             name.textContent = result.driver.forename + " " + result.driver.surname;
 
             const isDriverFavorited = favorited.drivers.some(driver => driver.ref === result.driver.ref);
 
             if (isDriverFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-customRedHover";
                 name.appendChild(heartIcon);
             }
             
@@ -576,14 +692,14 @@ function init() {
             row.appendChild(name);
 
             const constructor = document.createElement("td");
-            constructor.className = "hover:text-red-600 cursor-pointer"
+            constructor.className = "hover:text-customRedHover cursor-pointer"
             constructor.textContent = result.constructor.name;
 
             const isConstructorFavorited = favorited.constructors.some(constructor => constructor.ref === result.constructor.ref);
 
             if (isConstructorFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-500"
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-customRedHover";
                 constructor.appendChild(heartIcon);
             }
 
@@ -665,10 +781,11 @@ function init() {
     circuit name popup on circuit name click)
     /*------------------------------------------------------------------------------------------------------*/
     function generate_results_subheader(circuitId, raceRound, raceDate, raceUrl) {
-        fetch_circuit_name(circuitId).then(data => {
+        fetch_circuit(circuitId).then(data => {
+            show_loader(resultSubheader, false);
+
             raceInfo1.textContent = `Round ${raceRound} - ${raceDate} - `;
             circuitName.textContent = data.name;
-            console.log(circuitId);
             add_type_and_id(circuitName, "circuit", circuitId);
             raceInfo2.textContent = " - Learn More";
 
@@ -694,10 +811,10 @@ function init() {
 
         for (let driver of favorited.drivers) {
             const row = document.createElement("tr");
-            row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+            row.className = "bg-white border-b dark:bg-customBlackHover dark:border-gray-700";
             const element = document.createElement("td");
             
-            element.className = "px-6 py-6 font-medium text-gray-900 dark:text-white truncate";
+            element.className = "px-6 py-4 font-medium text-customBlack dark:text-white truncate";
             element.textContent = `${driver.forename} ${driver.surname}`;
 
             const buttonContainer = document.createElement("td");
@@ -706,7 +823,7 @@ function init() {
             
             add_type_and_id(deleteButton, "drivers", driver.ref);
   
-            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-customBlack font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
             buttonContainer.appendChild(deleteButton);
@@ -718,10 +835,10 @@ function init() {
 
         for (let constructor of favorited.constructors) {
             const row = document.createElement("tr");
-            row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+            row.className = "bg-white border-b dark:bg-customBlackHover dark:border-gray-700";
             const element = document.createElement("td");
             
-            element.className = "px-6 py-6 font-medium text-gray-900dark:text-white truncate";
+            element.className = "px-6 py-4 font-medium text-customBlack dark:text-white truncate";
             element.textContent = constructor.name; 
             
             const buttonContainer = document.createElement("td");
@@ -730,7 +847,7 @@ function init() {
             
 
             add_type_and_id(deleteButton, "constructors", constructor.ref);
-            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-customBlack font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
             buttonContainer.appendChild(deleteButton);
@@ -742,10 +859,10 @@ function init() {
 
         for (let circuit of favorited.circuits) {
             const row = document.createElement("tr");
-            row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+            row.className = "bg-white border-b dark:bg-customBlackHover dark:border-gray-700";
     
             const element = document.createElement("td");
-            element.className = "px-6 py-6 font-medium text-gray-900 dark:text-white truncate";
+            element.className = "px-6 py-4 font-medium text-customBlack dark:text-white truncate";
             element.textContent = circuit.name;
 
             const buttonContainer = document.createElement("td");
@@ -753,7 +870,7 @@ function init() {
             buttonContainer.className = "text-right";
 
             add_type_and_id(deleteButton, "circuits", circuit.ref);
-            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-customBlack font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
 
@@ -779,7 +896,7 @@ function init() {
 
     
     /*--------------------------------------------------------------------------------------------------------
-    // Name: assemble_constructor_popup
+    // Name: empty_favorite_table
     // Purpose: empty the favorites table, this function should only be called while the favorites modal is open 
     /*------------------------------------------------------------------------------------------------------*/
     function empty_favorite_table()
@@ -806,19 +923,24 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: remove_favorite(type)
-    // Purpose: remove a single favorited item from the list.
+    // Purpose: remove a single favorited item from the correct favorited list based on type and ref for that item.
     /*------------------------------------------------------------------------------------------------------*/
     function remove_favorite(e)
     {        
         const type = e.target.getAttribute("type");
         const ref = e.target.getAttribute("ref");
-
         const targetArray = favorited[type];
         const index = targetArray.findIndex(item => item.ref == ref); 
+        
+        console.log("In remove favorite")
+        console.log("Index: ", index);
+        console.log("array before splice, ", targetArray);
         if(index != -1)
         {
             targetArray.splice(index, 1);
         }
+        console.log("array after splice, ", targetArray);
+        
         store_favorite_table();                
         generate_favorite_tables();
 
@@ -841,16 +963,38 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: add_fav_button_event
-    // Purpose: remove a single favorited item from the list.
+    // Purpose: Called when any dialog is constructed. Will assign the ref and type to the button in the dialog
+    so that the item may be added to the corresponding favorites list when the button is clicked. Also will alternate
+    between adding the item and removing from favorites based on if the item is already favorited or not.
     /*------------------------------------------------------------------------------------------------------*/
-    function add_fav_button_event(button, type, itemFavorited, data, ref)
-    {                
+    function add_fav_button_event(type, itemFavorited, data, ref)
+    {                              
         console.log("in add fav button");
-        console.log("button: ", button, "type: ", type, "itemFavorited", itemFavorited, "data: ", data, "ref: ", ref);
-
+        console.log("type: ", type, "itemFavorited", itemFavorited, "data: ", data, "ref: ", ref);
+        let button; //Local button variable to generalize for each popup
+        if(type == "drivers")
+        {
+            const newButton = addFavoriteDriver.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button, we also need to do this within add_fav_button_event so that we can have our local button variable actually refer to the correct global DOM element
+            addFavoriteDriver.replaceWith(newButton);
+            addFavoriteDriver = newButton; 
+            button = addFavoriteDriver;
+        }
+        else if(type == "constructors")
+        {
+            const newButton = addFavoriteConst.cloneNode(true); 
+            addFavoriteConst.replaceWith(newButton);
+            addFavoriteConst = newButton; 
+            button = addFavoriteConst;
+        }
+        else if(type == "circuits")
+        {
+            const newButton = addFavoriteCirc.cloneNode(true); 
+            addFavoriteCirc.replaceWith(newButton);
+            addFavoriteCirc = newButton; 
+            button = addFavoriteCirc;
+        }
         add_type_and_id(button, type, ref);
         button.textContent = "";
-        
         if(!itemFavorited)
         {
             button.textContent = "Add to Favorites";
@@ -883,13 +1027,7 @@ function init() {
                     favorited.circuits.push(circuit);
                 }
                 store_favorite_table();               
-                
-                resultsContainer.innerHTML = ""; // Clear existing content
-                qualifyContainer.innerHTML = ""; // Clear existing content
-
-                generate_results_table(currentResults);
-                generate_qualify_table(currentQualifyData);
-                add_fav_button_event(button, type, true, data, ref);
+                add_fav_button_event(type, true, data, ref);
             });
     
         }
@@ -898,22 +1036,22 @@ function init() {
             button.textContent = "Remove from Favorites";
             button.addEventListener("click", (e) => {  
                 remove_favorite(e);
-                store_favorite_table();               
 
-                resultsContainer.innerHTML = ""; // Clear existing content
-                qualifyContainer.innerHTML = ""; // Clear existing content
-
-                generate_results_table(currentResults);
-                generate_qualify_table(currentQualifyData);
-
-                add_fav_button_event(button, type, false, data, ref);
+                add_fav_button_event(type, false, data, ref);
             });
         }     
+
+        resultsContainer.innerHTML = ""; // Clear existing content
+        qualifyContainer.innerHTML = ""; // Clear existing content
+
+        generate_results_table(currentResults);
+        generate_qualify_table(currentQualifyData);
     }
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: assemble_constructor_popup
-    // Purpose: 
+    // Purpose: Fills out the constructor dialog with data based on the clicked constructor. Grabs season and 
+    construcor results in order to fill out all of the fields in the table for that specific season.
     /*------------------------------------------------------------------------------------------------------*/
     function assemble_constructor_popup(ref, data, season) {
         constName.textContent = `${data.name}`;
@@ -921,51 +1059,54 @@ function init() {
         constMoreInfo.textContent = `Learn More`;
         constMoreInfo.href = data.url;
 
-        const itemFavorited = favorited.constructors.some(constructor => constructor.name === data.name);
-        const newButton = addFavoriteConst.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
-        addFavoriteConst.replaceWith(newButton);
-        addFavoriteConst = newButton;
-        
-        add_fav_button_event(addFavoriteConst, "constructors", itemFavorited, data, ref);
+        const itemFavorited = favorited.constructors.some(constructor => constructor.name === data.name);        
+        add_fav_button_event("constructors", itemFavorited, data, ref);
 
         fetch_constructor_results(ref, season).then(data => { 
-
-            show_loader(constructorTable, false);
-            constructorTable.innerHTML = "";
-
-
-            for (let constructor of data) {
-                const row = document.createElement("tr");
-                row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+                fetch_season_results(season).then(seasonResults => {
+                    const constructorResults = seasonResults.filter(entry => entry.constructor.ref == ref);
+                    show_loader(constructorTable, false);
+                    constructorTable.innerHTML = "";
+                    console.log("constructorResults", constructorResults);
+                    console.log("data: ", data);
+                    for (let constructor of data) {
+                        const row = document.createElement("tr");
+                        row.className = "bg-white border-b dark:bg-customBlackHover dark:border-gray-700";
+                        
+                        const round = document.createElement("td");
+                        round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
+                        round.textContent = constructor.round;
+                        row.appendChild(round);
                 
-                const round = document.createElement("td");
-                round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
-                round.textContent = constructor.round;
-                row.appendChild(round);
-        
-                const raceName = document.createElement("td");
-                raceName.className = "px-6 py-4";
-                raceName.textContent = constructor.name;
-                row.appendChild(raceName);
+                        const raceName = document.createElement("td");
+                        raceName.className = "px-6 py-4";
+                        raceName.textContent = constructor.name;
+                        row.appendChild(raceName);
 
-                const driverName = document.createElement("td");
-                driverName.className = "px-6 py-4";
-                driverName.textContent = constructor.forename + " " + constructor.surname;
-                row.appendChild(driverName);
-        
-                const position = document.createElement("td");
-                position.className = "px-6 py-4";
-                position.textContent = constructor.positionOrder;
-                row.appendChild(position);
-        
-                constructorTable.appendChild(row);
-            }
+                        const driverName = document.createElement("td");
+                        driverName.className = "px-6 py-4";
+                        driverName.textContent = constructor.forename + " " + constructor.surname;
+                        row.appendChild(driverName);
+                
+                        const position = document.createElement("td");
+                        position.className = "px-6 py-4";
+                        position.textContent = constructor.positionOrder;
+                        row.appendChild(position);
+
+                        const points = document.createElement("td");
+                        points.className = "px-6 py-4";
+                        points.textContent = constructorResults.find(result => result.id == constructor.resultId).points;
+                        row.appendChild(points);
+                        constructorTable.appendChild(row);
+                    }        
+            });
         });
     }
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: assemble_driver_popup
-    // Purpose: 
+    // Purpose: Assembles the driver dialog with the correct information based on the clicked driver. Builds
+    the driver table to represent data for the currently selcetd season.
     /*------------------------------------------------------------------------------------------------------*/
     function assemble_driver_popup(ref, data, season) {
         driverInfo.textContent = `${data.forename + " " + data.surname + " - " + data.dob}`;
@@ -973,49 +1114,53 @@ function init() {
         driverMoreInfo.textContent = `Learn More`;
         driverMoreInfo.href = data.url;
 
-        const itemFavorited = favorited.drivers.some(driver => driver.forename === data.forename && driver.surname === data.surname)
-        const newButton = addFavoriteDriver.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
-        addFavoriteDriver.replaceWith(newButton);
-        addFavoriteDriver = newButton;
+        const driverImage = document.querySelector('#driver_image');
+        driverImage.src = `data/images/drivers/${ref}.avif`;
+        driverImage.alt = `${data.forename} ${data.surname}`;
 
-        add_fav_button_event(addFavoriteDriver, "drivers", itemFavorited, data, ref);
+        const itemFavorited = favorited.drivers.some(driver => driver.forename === data.forename && driver.surname === data.surname)
+        add_fav_button_event("drivers", itemFavorited, data, ref);
 
         fetch_driver_results(ref, season).then(data => { 
+            fetch_season_results(season).then(seasonResults => {
+                const driverResults = seasonResults.filter(entry => entry.driver.ref == ref);
+                console.log("driver results", data);
+                show_loader(driverTable, false);
+                console.log("seasonResults: ", driverResults);
+                for (let driver of data) {
+                    const row = document.createElement("tr");
+                    row.className = "bg-white border-b dark:bg-customBlackHover dark:border-gray-700";
+                    
+                    const round = document.createElement("td");
+                    round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
+                    round.textContent = driver.round;
+                    row.appendChild(round);
             
-            show_loader(driverTable, false);
+                    const raceName = document.createElement("td");
+                    raceName.className = "px-6 py-4";
+                    raceName.textContent = driver.name;
+                    row.appendChild(raceName);
+            
+                    const position = document.createElement("td");
+                    position.className = "px-6 py-4";
+                    position.textContent = driver.positionOrder;
+                    row.appendChild(position);
 
-            for (let driver of data) {
-                const row = document.createElement("tr");
-                row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
-                
-                const round = document.createElement("td");
-                round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
-                round.textContent = driver.round;
-                row.appendChild(round);
+                    const points = document.createElement("td");
+                    points.className = "px-6 py-4";
+                    points.textContent = driverResults.find(result => result.id == driver.resultId).points;
+                    row.appendChild(points);
+            
+                    driverTable.appendChild(row);
+                }
         
-                const raceName = document.createElement("td");
-                raceName.className = "px-6 py-4";
-                raceName.textContent = driver.name;
-                row.appendChild(raceName);
-        
-                const position = document.createElement("td");
-                position.className = "px-6 py-4";
-                position.textContent = driver.positionOrder;
-                row.appendChild(position);
-
-                const points = document.createElement("td");
-                points.className = "px-6 py-4";
-                points.textContent = "ask randy for this";
-                row.appendChild(points);
-        
-                driverTable.appendChild(row);
-            }
+            });
+    
         });
     }
-
     /*--------------------------------------------------------------------------------------------------------
     // Name: assemble_circuit_popup
-    // Purpose: 
+    // Purpose: Assembles the circuit popup dialog to reflect the clicked circuit's data.
     /*------------------------------------------------------------------------------------------------------*/
     function assemble_circuit_popup(ref, data)
     {
@@ -1025,29 +1170,26 @@ function init() {
         popupCircuitLocation.textContent = data.location;
         popupCircuitCountry.textContent = data.country;
         popupCircuitURL.href = data.url;
+        popupCircuitURL.textContent = "Learn More";
 
-        const itemFavorited = favorited.circuits.some(circuit => circuit.name === data.name);
-        const newButton = addFavoriteCirc.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
-        addFavoriteCirc.replaceWith(newButton);
-        addFavoriteCirc = newButton;
-        
-        add_fav_button_event(addFavoriteCirc, "circuits", itemFavorited, data, ref);
+        const itemFavorited = favorited.circuits.some(circuit => circuit.name === data.name);        
+        add_fav_button_event("circuits", itemFavorited, data, ref);
     } 
 
     function show_loader(parentNode, visibility, size) {
         /* HTML for loader found here: https://uiverse.io/devAaus/funny-catfish-94 */
-        const loader = document.querySelector("#spinner");
-
+        const loader = document.querySelector(`#${parentNode.id} #spinner`);
+        console.log(parentNode.id + loader);
         if(visibility) {
             const spinner_container = document.createElement("div");
             spinner_container.id = "spinner";
             spinner_container.className = "flex w-full h-full left-1/2 top-1/2 items-center justify-center";
 
             const blue_spinner = document.createElement("div");
-            blue_spinner.className = `w-${(size * 4)} h-${(size * 4)} border-4 border-transparent text-blue-400 text-4xl animate-spin flex items-center justify-center border-t-blue-400 rounded-full`;
+            blue_spinner.className = `w-${(size * 4)} h-${(size * 4)} border-4 border-transparent text-customBlack text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full`;
 
             const red_spinner = document.createElement("div");
-            red_spinner.className = `w-${(size-1) * 4} h-${(size-1) * 4} border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-red-400 rounded-full`;
+            red_spinner.className = `w-${(size-1) * 4} h-${(size-1) * 4} border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-customRedHover rounded-full`;
 
             blue_spinner.appendChild(red_spinner);
             spinner_container.appendChild(blue_spinner);
@@ -1058,12 +1200,6 @@ function init() {
             parentNode.removeChild(loader);
         }
     }
-
-    function replaceNode()
-    {
-        
-    }
-
 }
 
 
