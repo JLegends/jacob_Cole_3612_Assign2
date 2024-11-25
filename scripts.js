@@ -114,19 +114,60 @@ function init() {
         return fetch_store_API_data(request); /*Returns a promise object*/
     }
 
+    function fetch_season_results(season) {
+        let request = `${url}/results.php?season=${season}`;
+        fetch_store_API_data(request);
+    }
+
+    function fetch_season_qualifying(season) {
+        let request = `${url}/qualifying.php?season=${season}`;
+        fetch_store_API_data(request);
+    }
+
     function fetch_circuit_name(circuitId) {
         let request = `${url}/circuits.php?id=${circuitId}`;
         return fetch_store_API_data(request);
     }
 
-    function fetch_race_qualify(raceID) {
-        let request = `${url}/qualifying.php?race=${raceID}`;
-        return fetch_store_API_data(request);
+    function fetch_race_qualify(raceID, season) {
+        const qualifyingJSON = localStorage.getItem(`${url}/qualifying.php?season=${season}`);
+        
+        if (!qualifyingJSON) {
+            console.error("Qualifying data not found in localStorage for season:", season);
+            return [];
+        }
+    
+        try {
+            const qualifyingData = JSON.parse(qualifyingJSON);
+    
+            // Filter the data to find results matching the given raceID
+            const matchingResults = qualifyingData.filter(entry => entry.race.id === raceID);
+            return matchingResults;
+        } catch (error) {
+            console.error("Error parsing qualifying data:", error);
+            return [];
+        }
     }
 
-    function fetch_race_results(raceID) {
-        let request = `${url}/results.php?race=${raceID}`;
-        return fetch_store_API_data(request);
+    function fetch_race_results(raceID, season) {
+        const resultsJSON = localStorage.getItem(`${url}/results.php?season=${season}`);
+        
+        if (!resultsJSON) {
+            console.error("results data not found in localStorage for season:", season);
+            return [];
+        }
+    
+        try {
+            const resultsData = JSON.parse(resultsJSON);
+    
+            // Filter the data to find results matching the given raceID
+            const matchingResults = resultsData.filter(entry => entry.race.id === raceID);
+            return matchingResults;
+        } catch (error) {
+            console.error("Error parsing resulst data:", error);
+            return [];
+        }
+
     }
 
     function fetch_driver(driverRef) {
@@ -165,7 +206,7 @@ function init() {
                 const response = await fetch(request);
                 const data = await response.json();
 
-                if (request.includes("/races.php?season=") || request.includes("results.php?season=") || request.includes("/qualifying.php?season=")) {
+                if (request.includes("/races.php?season=") || request.includes("/results.php?season=") || request.includes("/qualifying.php?season=")) {
                     localStorage.setItem(request, JSON.stringify(data)); // Save data to local storage as a JSON string
                     console.log("Data stored in local storage! request:" + request);
                 }
@@ -259,6 +300,9 @@ function init() {
             generate_rounds_table(data);
             roundDataHeader.addEventListener("click", (e) => sort_data(e, data));
         });
+    
+        fetch_season_qualifying(season);
+        fetch_season_results(season);
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -346,31 +390,31 @@ function init() {
         qualifyDataHeader = newQualifyDataHeader;
     
         show_loader(resultsContainer, true, 4);
-        fetch_race_results(raceID).then(data => { //Generate results for the results page
-            currentResults = data;
-            resultsDataHeader.addEventListener("click",  (e) => sort_data(e, data));
+        
+        const resultsData = fetch_race_results(raceID, season); //Generate results for the results page
+        currentResults = resultsData;
+        resultsDataHeader.addEventListener("click",  (e) => sort_data(e, resultsData));
 
-            generate_results_table(data);
-            pdImg1r.src = `data/images/drivers/${data[0].driver.ref}.avif`;
-            pdImg2r.src = `data/images/drivers/${data[1].driver.ref}.avif`;
-            pdImg3r.src = `data/images/drivers/${data[2].driver.ref}.avif`;
-            pdNameR1.textContent = data[0].driver.surname;
-            pdNameR2.textContent = data[1].driver.surname;
-            pdNameR3.textContent = data[2].driver.surname;
-        });
+        generate_results_table(resultsData);
+        pdImg1r.src = `data/images/drivers/${resultsData[0].driver.ref}.avif`;
+        pdImg2r.src = `data/images/drivers/${resultsData[1].driver.ref}.avif`;
+        pdImg3r.src = `data/images/drivers/${resultsData[2].driver.ref}.avif`;
+        pdNameR1.textContent = resultsData[0].driver.surname;
+        pdNameR2.textContent = resultsData[1].driver.surname;
+        pdNameR3.textContent = resultsData[2].driver.surname;
     
-        fetch_race_qualify(raceID).then(data => { //Generate results for the qualifying page
-            currentQualifyData = data;
-            qualifyDataHeader.addEventListener("click",  (e) => sort_data(e, data));
-            
-            generate_qualify_table(data);
-            pdImg1q.src = `data/images/drivers/${data[0].driver.ref}.avif`;
-            pdImg2q.src = `data/images/drivers/${data[1].driver.ref}.avif`;
-            pdImg3q.src = `data/images/drivers/${data[2].driver.ref}.avif`;
-            pdNameQ1.textContent = data[0].driver.surname;
-            pdNameQ2.textContent = data[1].driver.surname;
-            pdNameQ3.textContent = data[2].driver.surname;
-        });
+        const qualifyData = fetch_race_qualify(raceID, season) //Generate results for the qualifying page
+        currentQualifyData = qualifyData;
+        qualifyDataHeader.addEventListener("click",  (e) => sort_data(e, qualifyData));
+        
+        generate_qualify_table(qualifyData);
+        pdImg1q.src = `data/images/drivers/${qualifyData[0].driver.ref}.avif`;
+        pdImg2q.src = `data/images/drivers/${qualifyData[1].driver.ref}.avif`;
+        pdImg3q.src = `data/images/drivers/${qualifyData[2].driver.ref}.avif`;
+        pdNameQ1.textContent = qualifyData[0].driver.surname;
+        pdNameQ2.textContent = qualifyData[1].driver.surname;
+        pdNameQ3.textContent = qualifyData[2].driver.surname;
+
 
 
         resultsTab.addEventListener("click", ()=>{ //Add events to enable switching between the two pages
@@ -862,7 +906,7 @@ function init() {
     {                              
         console.log("in add fav button");
         console.log("type: ", type, "itemFavorited", itemFavorited, "data: ", data, "ref: ", ref);
-        let button;
+        let button; //Local button variable to generalize for each popup
         if(type == "drivers")
         {
             const newButton = addFavoriteDriver.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button, we also need to do this within add_fav_button_event so that we can have our local button variable actually refer to the correct global DOM element
