@@ -2,11 +2,7 @@
     ==== TO DO =====
     Fix the modal popups in small width views being offscreen
 
-    Improve the look of the images in results, probably will use a gradient for the
-    background
 
-    Make an is favorited function and then replace the code within the modal constructors to use it, we can also use it to 
-    check if an item is in favorites and then if it is add some sort of styling to it when we add data
 
     I need to ask him tomorrow where to find the points for DRIVER POPUP
 
@@ -110,17 +106,17 @@ function init() {
     load_view("home");
 
     function fetch_race_season(season) {
-        let request = `${url}/races.php?season=${season}`;
+        let request = `${url}/races.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request); /*Returns a promise object*/
     }
 
     function fetch_season_results(season) {
-        let request = `${url}/results.php?season=${season}`;
+        let request = `${url}/results.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request);
     }
 
     function fetch_season_qualifying(season) {
-        let request = `${url}/qualifying.php?season=${season}`;
+        let request = `${url}/qualifying.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request);
     }
 
@@ -141,7 +137,7 @@ function init() {
             const qualifyingData = JSON.parse(qualifyingJSON);
     
             // Filter the data to find results matching the given raceID
-            const matchingResults = qualifyingData.filter(entry => entry.race.id === raceID);
+            const matchingResults = qualifyingData.filter(entry => entry.race.id == raceID);
             return matchingResults;
         } catch (error) {
             console.error("Error parsing qualifying data:", error);
@@ -161,7 +157,7 @@ function init() {
             const resultsData = JSON.parse(resultsJSON);
     
             // Filter the data to find results matching the given raceID
-            const matchingResults = resultsData.filter(entry => entry.race.id === raceID);
+            const matchingResults = resultsData.filter(entry => entry.race.id == raceID);
             return matchingResults;
         } catch (error) {
             console.error("Error parsing resulst data:", error);
@@ -999,37 +995,43 @@ function init() {
         add_fav_button_event("constructors", itemFavorited, data, ref);
 
         fetch_constructor_results(ref, season).then(data => { 
-
-            show_loader(constructorTable, false);
-            constructorTable.innerHTML = "";
-
-
-            for (let constructor of data) {
-                const row = document.createElement("tr");
-                row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+                fetch_season_results(season).then(seasonResults => {
+                    const constructorResults = seasonResults.filter(entry => entry.constructor.ref == ref);
+                    show_loader(constructorTable, false);
+                    constructorTable.innerHTML = "";
+                    console.log("constructorResults", constructorResults);
+                    console.log("data: ", data);
+                    for (let constructor of data) {
+                        const row = document.createElement("tr");
+                        row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+                        
+                        const round = document.createElement("td");
+                        round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
+                        round.textContent = constructor.round;
+                        row.appendChild(round);
                 
-                const round = document.createElement("td");
-                round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
-                round.textContent = constructor.round;
-                row.appendChild(round);
-        
-                const raceName = document.createElement("td");
-                raceName.className = "px-6 py-4";
-                raceName.textContent = constructor.name;
-                row.appendChild(raceName);
+                        const raceName = document.createElement("td");
+                        raceName.className = "px-6 py-4";
+                        raceName.textContent = constructor.name;
+                        row.appendChild(raceName);
 
-                const driverName = document.createElement("td");
-                driverName.className = "px-6 py-4";
-                driverName.textContent = constructor.forename + " " + constructor.surname;
-                row.appendChild(driverName);
-        
-                const position = document.createElement("td");
-                position.className = "px-6 py-4";
-                position.textContent = constructor.positionOrder;
-                row.appendChild(position);
-        
-                constructorTable.appendChild(row);
-            }
+                        const driverName = document.createElement("td");
+                        driverName.className = "px-6 py-4";
+                        driverName.textContent = constructor.forename + " " + constructor.surname;
+                        row.appendChild(driverName);
+                
+                        const position = document.createElement("td");
+                        position.className = "px-6 py-4";
+                        position.textContent = constructor.positionOrder;
+                        row.appendChild(position);
+
+                        const points = document.createElement("td");
+                        points.className = "px-6 py-4";
+                        points.textContent = constructorResults.find(result => result.id == constructor.resultId).points;
+                        row.appendChild(points);
+                        constructorTable.appendChild(row);
+                    }        
+            });
         });
     }
 
@@ -1051,38 +1053,42 @@ function init() {
         add_fav_button_event("drivers", itemFavorited, data, ref);
 
         fetch_driver_results(ref, season).then(data => { 
-            console.log("driver results", data);
-            show_loader(driverTable, false);
+            fetch_season_results(season).then(seasonResults => {
+                const driverResults = seasonResults.filter(entry => entry.driver.ref == ref);
+                console.log("driver results", data);
+                show_loader(driverTable, false);
+                console.log("seasonResults: ", driverResults);
+                for (let driver of data) {
+                    const row = document.createElement("tr");
+                    row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+                    
+                    const round = document.createElement("td");
+                    round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
+                    round.textContent = driver.round;
+                    row.appendChild(round);
+            
+                    const raceName = document.createElement("td");
+                    raceName.className = "px-6 py-4";
+                    raceName.textContent = driver.name;
+                    row.appendChild(raceName);
+            
+                    const position = document.createElement("td");
+                    position.className = "px-6 py-4";
+                    position.textContent = driver.positionOrder;
+                    row.appendChild(position);
 
-            for (let driver of data) {
-                const row = document.createElement("tr");
-                row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
-                
-                const round = document.createElement("td");
-                round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
-                round.textContent = driver.round;
-                row.appendChild(round);
+                    const points = document.createElement("td");
+                    points.className = "px-6 py-4";
+                    points.textContent = driverResults.find(result => result.id == driver.resultId).points;
+                    row.appendChild(points);
+            
+                    driverTable.appendChild(row);
+                }
         
-                const raceName = document.createElement("td");
-                raceName.className = "px-6 py-4";
-                raceName.textContent = driver.name;
-                row.appendChild(raceName);
-        
-                const position = document.createElement("td");
-                position.className = "px-6 py-4";
-                position.textContent = driver.positionOrder;
-                row.appendChild(position);
-
-                const points = document.createElement("td");
-                points.className = "px-6 py-4";
-                points.textContent = "ask randy for this";
-                row.appendChild(points);
-        
-                driverTable.appendChild(row);
-            }
+            });
+    
         });
     }
-
     /*--------------------------------------------------------------------------------------------------------
     // Name: assemble_circuit_popup
     // Purpose: 
