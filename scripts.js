@@ -1,12 +1,5 @@
 /* Known Issues 
     ==== TO DO =====
-    Fix the modal popups in small width views being offscreen
-
-
-
-    I need to ask him tomorrow where to find the points for DRIVER POPUP
-
-    lastly documentation needs to be completed
 */
 
 const storedFavorites = JSON.parse(localStorage.getItem("favorited"));
@@ -20,7 +13,6 @@ let season = null; /* I need this globally accessible for the load_popup functio
 document.addEventListener('DOMContentLoaded', init);
 
 function init() { 
-
     const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
     const home = document.querySelector("#home_button");
     const favorites_button = document.querySelector("#favorites_button");
@@ -105,25 +97,40 @@ function init() {
 
     load_view("home");
 
+    
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_race_season
+    // Purpose: Fetches all of the racesfor a particular season. These should be stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
     function fetch_race_season(season) {
         let request = `${url}/races.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request); /*Returns a promise object*/
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_season_results
+    // Purpose: Fetches all of the race results for a particular season. These should be stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
     function fetch_season_results(season) {
         let request = `${url}/results.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request);
     }
+
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_season_qualifying
+    // Purpose: Fetches all of the qualifying results for a particular season. These should be stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
 
     function fetch_season_qualifying(season) {
         let request = `${url}/qualifying.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request);
     }
 
-    function fetch_circuit_name(circuitId) {
-        let request = `${url}/circuits.php?id=${circuitId}`;
-        return fetch_store_API_data(request);
-    }
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_race_qualify
+    // Purpose: Function that will fetch the qualifying for a particular race from local storage. This function
+    should only be called after fetch_season_qualifying has been called to ensure that results data for the season has already been stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
 
     function fetch_race_qualify(raceID, season) {
         const qualifyingJSON = localStorage.getItem(`${url}/qualifying.php?season=${season}`);
@@ -144,7 +151,11 @@ function init() {
             return [];
         }
     }
-
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_race_results
+    // Purpose: Function that will fetch the results for a particular race from local storage. This function
+    should only be called after fetch_season_results has been called to ensure that results data for the season has already been stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
     function fetch_race_results(raceID, season) {
         const resultsJSON = localStorage.getItem(`${url}/results.php?season=${season}`);
         
@@ -165,32 +176,61 @@ function init() {
         }
 
     }
-
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_driver
+    // Purpose: Fetch the data for a particular driver for display in the driver dialog.
+    /*------------------------------------------------------------------------------------------------------*/
     function fetch_driver(driverRef) {
         let request = `${url}/drivers.php?ref=${driverRef}`;
         return fetch_store_API_data(request);
     }
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_driver_results
+    // Purpose: Fetch the results for a given driverRef and season to display in the driver dialog.
+    /*------------------------------------------------------------------------------------------------------*/
 
     function fetch_driver_results(driverRef, season) {
         let request = `${url}/driverResults.php?driver=${driverRef}&season=${season}`;
         return fetch_store_API_data(request);
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_constructor_results
+    // Purpose: Fetch the data for a particular constructor for display in the constructor dialog.
+    /*------------------------------------------------------------------------------------------------------*/
+
     function fetch_constructor(constructorRef) {
         let request = `${url}/constructors.php?ref=${constructorRef}`;
         return fetch_store_API_data(request);
     }
+
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_constructor_results
+    // Purpose: Fetch the results for a given constructorRef and season to display in the constructor dialog.
+    /*------------------------------------------------------------------------------------------------------*/
 
     function fetch_constructor_results(constructorRef, season) {
         let request = `${url}/constructorResults.php?constructor=${constructorRef}&season=${season}`;
         return fetch_store_API_data(request);
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_circuit
+    // Purpose: Fetch a particular circuit to use for the circuit dialog. Also used to get the circuit name for 
+    the results subtitle.
+    /*------------------------------------------------------------------------------------------------------*/
+
     function fetch_circuit(circuitID) {
         let request = `${url}/circuits.php?id=${circuitID}`;
         return fetch_store_API_data(request);
     }
 
+    
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_store_API_data
+    // Purpose: General purpose function for fetching data from the API. Checks if the request is one of the ones
+    we would want to store in local storage and will store those with the key being the request for future access.
+    /*------------------------------------------------------------------------------------------------------*/
     async function fetch_store_API_data(request) {
         const storedData = localStorage.getItem(request);
 
@@ -213,6 +253,10 @@ function init() {
         }
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: load_view
+    // Purpose:Function to swap between the home view and the race view based on the selected season.
+    /*------------------------------------------------------------------------------------------------------*/
     function load_view(view, season = null) {
 
         if (view === "home") {
@@ -229,7 +273,10 @@ function init() {
             list_season_races(season);
         }
     }
-
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: set_visibility
+    // Purpose: Utility function to set the an element to be hidden or visible. Used for swapping views.
+    /*------------------------------------------------------------------------------------------------------*/
     function set_visibility(node, value) {
         if (value) {
             node.classList.remove("hidden");
@@ -243,7 +290,7 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: add_event_handlers
-    // Purpose: 
+    // Purpose: Adds all event listeners that do not rely on data grabbed from the API. 
     /*------------------------------------------------------------------------------------------------------*/
     function add_event_handlers() {
         home.onclick = () => load_view("home");
@@ -280,10 +327,11 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: list_season_races
-    // Purpose: it creates the DOM elements for the season races block
+    // Purpose: Necessary setup to transition to the race view from the home view. Will fetch all required data for a particular 
+    season and store it in local storage if it isn't there already. Will then call the generate_rounds_table to create an entry
+    for each race in the season in the round table.
     /*------------------------------------------------------------------------------------------------------*/
     function list_season_races(season) {
-        /*container.style.border ="none";*/
         set_visibility(qualifying, false)
         set_visibility(raceDataContainer, false);
         set_visibility(preResultsMessage, true);
@@ -305,7 +353,8 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: generate_rounds_table
-    // Purpose: generates the table of rounds that took place in a season
+    // Purpose: generates the table of rounds that took place in a season. Adds event listener to the result button
+    so that results for a particular race may be displayed by the list_grandprix_results function
     /*------------------------------------------------------------------------------------------------------*/
     function generate_rounds_table(data) {
         let i = 0;
@@ -364,7 +413,8 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: list_grandprix_results
-    // Purpose: creates the DOM content for the selection grand prix results
+    // Purpose: Generates all of the results and qualifying data for a clicked race result. Assigns images to the podium
+    and will also add event listeners to the table headers so that the corresponding data may be sorted.
     /*------------------------------------------------------------------------------------------------------*/
     function list_grandprix_results(raceID, raceName, season) {
 
@@ -432,6 +482,13 @@ function init() {
 
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: sort_data
+    // Purpose: Sorts the given data array based on the clicked table header. Sort direction starts out ascending but
+    can then be switched to descending if you click again. Sorts are based on a value attribute that should be assigned to each table header, along
+    with a sortDirection attribute so that we can track what direction we are sorting by for succcessive clicks. This function should be added to the data 
+    header thead element that contains all of the th elements for the table.
+    /*------------------------------------------------------------------------------------------------------*/
     function sort_data(e, data)
     {        
         const targetHeader = e.target.closest("[value]"); // Find the closest element with the "value" attribute
@@ -494,8 +551,8 @@ function init() {
             if(sortArg == "Points") return isDescending ? b.points - a.points : a.points - b.points;
             if(sortArg.includes('q')) {
                 return isDescending
-                    ? timeToSeconds(b[sortArg]) - timeToSeconds(a[sortArg])
-                    : timeToSeconds(a[sortArg]) - timeToSeconds(b[sortArg]);
+                    ? time_to_seconds(b[sortArg]) - time_to_seconds(a[sortArg])
+                    : time_to_seconds(a[sortArg]) - time_to_seconds(b[sortArg]);
             }
             if(sortArg == "Round") return isDescending ? b.round - a.round : a.round - b.round;
             if(sortArg == "RaceName") return isDescending
@@ -513,6 +570,11 @@ function init() {
         generateFunction(data);
         add_sort_icon(targetHeader, isDescending);
     }
+        /*--------------------------------------------------------------------------------------------------------
+    // Name: add_sort_icon
+    // Purpose: Adds a sort indicator beside the table header to indicate we are sorting by this category and to indicate the sort direction.
+    /*------------------------------------------------------------------------------------------------------*/
+    
     function add_sort_icon(targetHeader, isDescending)
     {
         const headers = targetHeader.parentElement.children;
@@ -527,11 +589,11 @@ function init() {
     }
 
     /*--------------------------------------------------------------------------------------------------------
-    // Name: timeToSeconds
+    // Name: time_to_seconds
     // Purpose: Necessary to convert the strings from q1,q2,q3, to float numbers so that we can compare the values
     /*------------------------------------------------------------------------------------------------------*/
 
-    function timeToSeconds(time) {
+    function time_to_seconds(time) {
         if(time == null)
         {
             return 1000; //Return a large number so that times with no entries aren't considered in comparisons
@@ -719,7 +781,7 @@ function init() {
     circuit name popup on circuit name click)
     /*------------------------------------------------------------------------------------------------------*/
     function generate_results_subheader(circuitId, raceRound, raceDate, raceUrl) {
-        fetch_circuit_name(circuitId).then(data => {
+        fetch_circuit(circuitId).then(data => {
             show_loader(resultSubheader, false);
 
             raceInfo1.textContent = `Round ${raceRound} - ${raceDate} - `;
@@ -834,7 +896,7 @@ function init() {
 
     
     /*--------------------------------------------------------------------------------------------------------
-    // Name: assemble_constructor_popup
+    // Name: empty_favorite_table
     // Purpose: empty the favorites table, this function should only be called while the favorites modal is open 
     /*------------------------------------------------------------------------------------------------------*/
     function empty_favorite_table()
@@ -861,7 +923,7 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: remove_favorite(type)
-    // Purpose: remove a single favorited item from the list.
+    // Purpose: remove a single favorited item from the correct favorited list based on type and ref for that item.
     /*------------------------------------------------------------------------------------------------------*/
     function remove_favorite(e)
     {        
@@ -901,7 +963,9 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: add_fav_button_event
-    // Purpose: remove a single favorited item from the list.
+    // Purpose: Called when any dialog is constructed. Will assign the ref and type to the button in the dialog
+    so that the item may be added to the corresponding favorites list when the button is clicked. Also will alternate
+    between adding the item and removing from favorites based on if the item is already favorited or not.
     /*------------------------------------------------------------------------------------------------------*/
     function add_fav_button_event(type, itemFavorited, data, ref)
     {                              
@@ -986,7 +1050,8 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: assemble_constructor_popup
-    // Purpose: 
+    // Purpose: Fills out the constructor dialog with data based on the clicked constructor. Grabs season and 
+    construcor results in order to fill out all of the fields in the table for that specific season.
     /*------------------------------------------------------------------------------------------------------*/
     function assemble_constructor_popup(ref, data, season) {
         constName.textContent = `${data.name}`;
@@ -1040,7 +1105,8 @@ function init() {
 
     /*--------------------------------------------------------------------------------------------------------
     // Name: assemble_driver_popup
-    // Purpose: 
+    // Purpose: Assembles the driver dialog with the correct information based on the clicked driver. Builds
+    the driver table to represent data for the currently selcetd season.
     /*------------------------------------------------------------------------------------------------------*/
     function assemble_driver_popup(ref, data, season) {
         driverInfo.textContent = `${data.forename + " " + data.surname + " - " + data.dob}`;
@@ -1094,7 +1160,7 @@ function init() {
     }
     /*--------------------------------------------------------------------------------------------------------
     // Name: assemble_circuit_popup
-    // Purpose: 
+    // Purpose: Assembles the circuit popup dialog to reflect the clicked circuit's data.
     /*------------------------------------------------------------------------------------------------------*/
     function assemble_circuit_popup(ref, data)
     {
