@@ -374,7 +374,7 @@ function init() {
             }
             i++;
             const round = document.createElement("td");
-            round.className = "pl-4";
+            round.className = "pl-4 font-bold";
             const name = document.createElement("td");
 
             const results = document.createElement("td");
