@@ -1,6 +1,13 @@
 /*
+Sources:
     Driver images obtained from: https://www.formula1.com/en/drivers
-    
+    Giovinazzi Image: https://www.google.com/imgres?q=giovinazzi%20f1%20.avif&imgurl=https%3A%2F%2Fcdn.racingnews365.com%2FRiders%2FGiovinazzi%2F_570x570_crop_center-center_none%2Ff1_2021_ag_alf_lg.png%3Fv%3D1650634606&imgrefurl=https%3A%2F%2Fracingnews365.com%2Fformula-1-drivers%2Fantonio-giovinazzi&docid=9vOb9HA4g12fYM&tbnid=dV6AWDas7dMveM&vet=12ahUKEwjwxNDuqfiJAxXfHzQIHaiSKlwQM3oECBMQAA..i&w=570&h=570&hcb=2&ved=2ahUKEwjwxNDuqfiJAxXfHzQIHaiSKlwQM3oECBMQAA
+    Vettel Image: https://racingnews365.com/formula-1-drivers/sebastian-vettel
+    Latifi Image: https://f1-unione-career-by-tirowee.fandom.com/wiki/Nicholas_Latifi
+    Kvyat Image: https://racingnews365.com/formula-1-drivers/daniil-kvyat
+    Grosjean Image: https://racingnews365.com/formula-1-drivers/romain-grosjean
+    Ricciardo Image: https://racingnews365.com/formula-1-drivers/daniel-ricciardo
+    Mazepin Image: https://racingnews365.com/formula-1-drivers/nikita-mazepin
 
 */
 
@@ -10,7 +17,7 @@ const favorited = storedFavorites || {drivers: [], constructors: [], circuits: [
 let currentResults = [];
 let currentQualifyData = [];
 
-let season = null; /* I need this globally accessible for the load_popup function */
+let globalSeason = null; /* I need this globally accessible for the load_popup function */
 
 document.addEventListener('DOMContentLoaded', init);
 
@@ -196,6 +203,7 @@ function init() {
 
     function fetch_driver_results(driverRef, season) {
         let request = `${url}/driverResults.php?driver=${driverRef}&season=${season}`;
+        console.log("Attempting to fetch driver results, request:", request);
         return fetch_store_API_data(request);
     }
 
@@ -304,13 +312,14 @@ function init() {
             const selectedSeason = e.target.value;
             if (selectedSeason && selectedSeason != "SELECT A SEASON") {
                 load_view("races", selectedSeason);
-                season = selectedSeason;
+                globalSeason = selectedSeason;
             }
         });
         raceButtonContainer.addEventListener("click", (e) => {
             const selectedSeason = e.target.value;
             if (selectedSeason) {
                 load_view("races", selectedSeason);
+                globalSeason = selectedSeason;
             }
         })
 
@@ -765,8 +774,8 @@ function init() {
             driver.showModal();
             driverTable.innerHTML = "";
             show_loader(driverTable, true, 4);
-            fetch_driver(ref, season).then(data => {
-                assemble_driver_popup(ref, data, season);
+            fetch_driver(ref, globalSeason).then(data => {
+                assemble_driver_popup(ref, data, globalSeason);
             });
         }
         else if(type == "circuit")
@@ -786,8 +795,8 @@ function init() {
             constructor.showModal();
             constructorTable.innerHTML = "";
             show_loader(constructorTable, true, 4);
-            fetch_constructor(ref, season).then(data => {
-                assemble_constructor_popup(ref, data, season);
+            fetch_constructor(ref, globalSeason).then(data => {
+                assemble_constructor_popup(ref, data, globalSeason);
             });
         }
     }
