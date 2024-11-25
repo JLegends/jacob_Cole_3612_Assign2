@@ -321,11 +321,11 @@ function init() {
             const row = document.createElement("tr");
             if(i % 2 == 0)
             {
-                row.className = "bg-stone-50 border-b-red-700 border-b-4";
+                row.className = "bg-stone-50 border-b-customRed border-b-4";
             }
             else
             {
-                row.className = "bg-stone-300 border-b-red-700 border-b-4";
+                row.className = "bg-stone-300 border-b-customRed border-b-4";
             }
             i++;
             const round = document.createElement("td");
@@ -334,7 +334,7 @@ function init() {
             const results = document.createElement("td");
             const resultsButton = document.createElement("button");
             const lineDiv = document.createElement("div");
-            lineDiv.className = "h-4 w-[100%] bg-red-700 clip-diagonal-right"
+            lineDiv.className = "h-4 w-[100%] bg-customRed clip-diagonal-right"
 
             results.className = "";
 
@@ -343,8 +343,8 @@ function init() {
             name.className = "hover:text-red-600 cursor-pointer";
             add_type_and_id(name, "circuit", race.circuit.id);
 
-            resultsButton.textContent = "Results";
-            resultsButton.className = " bg-red-700 text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
+            resultsButton.textContent = "RESULTS";
+            resultsButton.className = " bg-customRed text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
 
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
@@ -754,7 +754,7 @@ function init() {
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
             
-            element.className = "px-6 py-4 font-medium text-gray-900 dark:text-white truncate";
+            element.className = "px-6 py-4 font-medium text-customBlack dark:text-white truncate";
             element.textContent = `${driver.forename} ${driver.surname}`;
 
             const buttonContainer = document.createElement("td");
@@ -763,7 +763,7 @@ function init() {
             
             add_type_and_id(deleteButton, "drivers", driver.ref);
   
-            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-customBlack font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
             buttonContainer.appendChild(deleteButton);
@@ -778,7 +778,7 @@ function init() {
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
             const element = document.createElement("td");
             
-            element.className = "px-6 py-4 font-medium text-gray-900 dark:text-white truncate";
+            element.className = "px-6 py-4 font-medium text-customBlack dark:text-white truncate";
             element.textContent = constructor.name; 
             
             const buttonContainer = document.createElement("td");
@@ -787,7 +787,7 @@ function init() {
             
 
             add_type_and_id(deleteButton, "constructors", constructor.ref);
-            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-customBlack font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
             buttonContainer.appendChild(deleteButton);
@@ -802,7 +802,7 @@ function init() {
             row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
     
             const element = document.createElement("td");
-            element.className = "px-6 py-4 font-medium text-gray-900 dark:text-white truncate";
+            element.className = "px-6 py-4 font-medium text-customBlack dark:text-white truncate";
             element.textContent = circuit.name;
 
             const buttonContainer = document.createElement("td");
@@ -810,7 +810,7 @@ function init() {
             buttonContainer.className = "text-right";
 
             add_type_and_id(deleteButton, "circuits", circuit.ref);
-            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-customBlack font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
 
@@ -1010,7 +1010,7 @@ function init() {
                 row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
                 
                 const round = document.createElement("td");
-                round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white font-bold";
+                round.className = "px-6 py-4 font-medium text-customBlack whitespace-nowrap dark:text-white font-bold";
                 round.textContent = constructor.round;
                 row.appendChild(round);
         
@@ -1060,7 +1060,7 @@ function init() {
                 row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
                 
                 const round = document.createElement("td");
-                round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white font-bold";
+                round.className = "px-6 py-4 font-medium text-customBlack whitespace-nowrap dark:text-white font-bold";
                 round.textContent = driver.round;
                 row.appendChild(round);
         
@@ -1112,7 +1112,7 @@ function init() {
             spinner_container.className = "flex w-full h-full left-1/2 top-1/2 items-center justify-center";
 
             const blue_spinner = document.createElement("div");
-            blue_spinner.className = `w-${(size * 4)} h-${(size * 4)} border-4 border-transparent text-gray-900 text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full`;
+            blue_spinner.className = `w-${(size * 4)} h-${(size * 4)} border-4 border-transparent text-customBlack text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full`;
 
             const red_spinner = document.createElement("div");
             red_spinner.className = `w-${(size-1) * 4} h-${(size-1) * 4} border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-red-600 rounded-full`;
