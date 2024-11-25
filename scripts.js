@@ -549,6 +549,7 @@ function init() {
             row.className = "odd: bg-stone-50 even:bg-stone-300"
             const pos = document.createElement("td");
             pos.textContent = qualify.position;
+            pos.className = "font-bold";
             row.appendChild(pos);
 
             const name = document.createElement("td");
@@ -758,7 +759,7 @@ function init() {
             
             add_type_and_id(deleteButton, "drivers", driver.ref);
   
-            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
             buttonContainer.appendChild(deleteButton);
@@ -782,7 +783,7 @@ function init() {
             
 
             add_type_and_id(deleteButton, "constructors", constructor.ref);
-            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
             buttonContainer.appendChild(deleteButton);
@@ -805,7 +806,7 @@ function init() {
             buttonContainer.className = "text-right";
 
             add_type_and_id(deleteButton, "circuits", circuit.ref);
-            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out";
+            deleteButton.className = "px-3 py-2 mr-2 rounded-full bg-gray-900 font-thin hover:bg-red-500 hover:font-bold hover:text-white focus:ring-4 ring-red-400 transition-all ease-in-out uppercase";
             deleteButton.textContent = "X";
             deleteButton.addEventListener("click", remove_favorite);
 
