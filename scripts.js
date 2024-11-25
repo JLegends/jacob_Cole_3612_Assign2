@@ -13,7 +13,6 @@ let season = null; /* I need this globally accessible for the load_popup functio
 document.addEventListener('DOMContentLoaded', init);
 
 function init() { 
-
     const url = "https://www.randyconnolly.com/funwebdev/3rd/api/f1";
     const home = document.querySelector("#home_button");
     const favorites_button = document.querySelector("#favorites_button");
@@ -98,25 +97,35 @@ function init() {
 
     load_view("home");
 
+    
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_race_season
+    // Purpose: Fetches all of the racesfor a particular season. These should be stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
     function fetch_race_season(season) {
         let request = `${url}/races.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request); /*Returns a promise object*/
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_season_results
+    // Purpose: Fetches all of the race results for a particular season. These should be stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
     function fetch_season_results(season) {
         let request = `${url}/results.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request);
     }
+
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_season_qualifying
+    // Purpose: Fetches all of the qualifying results for a particular season. These should be stored in localStorage.
+    /*------------------------------------------------------------------------------------------------------*/
 
     function fetch_season_qualifying(season) {
         let request = `${url}/qualifying.php?season=${season}`; //Stored in localStorage
         return fetch_store_API_data(request);
     }
 
-    function fetch_circuit_name(circuitId) {
-        let request = `${url}/circuits.php?id=${circuitId}`;
-        return fetch_store_API_data(request);
-    }
     /*--------------------------------------------------------------------------------------------------------
     // Name: fetch_race_qualify
     // Purpose: Function that will fetch the qualifying for a particular race from local storage. This function
@@ -167,26 +176,49 @@ function init() {
         }
 
     }
-
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_driver
+    // Purpose: Fetch the data for a particular driver for display in the driver dialog.
+    /*------------------------------------------------------------------------------------------------------*/
     function fetch_driver(driverRef) {
         let request = `${url}/drivers.php?ref=${driverRef}`;
         return fetch_store_API_data(request);
     }
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_driver_results
+    // Purpose: Fetch the results for a given driverRef and season to display in the driver dialog.
+    /*------------------------------------------------------------------------------------------------------*/
 
     function fetch_driver_results(driverRef, season) {
         let request = `${url}/driverResults.php?driver=${driverRef}&season=${season}`;
         return fetch_store_API_data(request);
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_constructor_results
+    // Purpose: Fetch the data for a particular constructor for display in the constructor dialog.
+    /*------------------------------------------------------------------------------------------------------*/
+
     function fetch_constructor(constructorRef) {
         let request = `${url}/constructors.php?ref=${constructorRef}`;
         return fetch_store_API_data(request);
     }
 
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_constructor_results
+    // Purpose: Fetch the results for a given constructorRef and season to display in the constructor dialog.
+    /*------------------------------------------------------------------------------------------------------*/
+
     function fetch_constructor_results(constructorRef, season) {
         let request = `${url}/constructorResults.php?constructor=${constructorRef}&season=${season}`;
         return fetch_store_API_data(request);
     }
+
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: fetch_circuit
+    // Purpose: Fetch a particular circuit to use for the circuit dialog. Also used to get the circuit name for 
+    the results subtitle.
+    /*------------------------------------------------------------------------------------------------------*/
 
     function fetch_circuit(circuitID) {
         let request = `${url}/circuits.php?id=${circuitID}`;
@@ -747,7 +779,7 @@ function init() {
     circuit name popup on circuit name click)
     /*------------------------------------------------------------------------------------------------------*/
     function generate_results_subheader(circuitId, raceRound, raceDate, raceUrl) {
-        fetch_circuit_name(circuitId).then(data => {
+        fetch_circuit(circuitId).then(data => {
             show_loader(resultSubheader, false);
 
             raceInfo1.textContent = `Round ${raceRound} - ${raceDate} - `;
