@@ -1,5 +1,7 @@
-/* Known Issues 
-    ==== TO DO =====
+/*
+    Driver images obtained from: https://www.formula1.com/en/drivers
+    
+
 */
 
 const storedFavorites = JSON.parse(localStorage.getItem("favorited"));
@@ -46,6 +48,9 @@ function init() {
     const qualifyTab = document.querySelector("#qualifying_button");
     const preResultsMessage = document.querySelector("#pre_results_message");
     const resultsContainer = document.querySelector("#results_container");
+
+    const podiumR = document.querySelector("#podiumR");
+    const podiumQ = document.querySelector("#podiumQ");
 
     const pdImg1q = document.querySelector("#pd1q");
     const pdImg2q = document.querySelector("#pd2q");
@@ -319,6 +324,8 @@ function init() {
         roundContainer.addEventListener("click", load_popup);
         qualifyContainer.addEventListener("click", load_popup);
         circuitName.addEventListener("click", load_popup);
+        podiumQ.addEventListener("click", load_popup);
+        podiumR.addEventListener("click", load_popup);
 
         emptyFavorites.addEventListener("click", empty_favorite_table);
         
@@ -451,7 +458,13 @@ function init() {
         pdNameR1.textContent = resultsData[0].driver.surname;
         pdNameR2.textContent = resultsData[1].driver.surname;
         pdNameR3.textContent = resultsData[2].driver.surname;
-    
+        add_type_and_id(pdImg1r, "driver", resultsData[0].driver.ref);
+        add_type_and_id(pdNameR1, "driver", resultsData[0].driver.ref);
+        add_type_and_id(pdImg2r, "driver", resultsData[1].driver.ref);
+        add_type_and_id(pdNameR2, "driver", resultsData[1].driver.ref);
+        add_type_and_id(pdImg3r, "driver", resultsData[2].driver.ref);
+        add_type_and_id(pdNameR3, "driver", resultsData[2].driver.ref);
+
         const qualifyData = fetch_race_qualify(raceID, season) //Generate results for the qualifying page
         currentQualifyData = qualifyData;
         qualifyDataHeader.addEventListener("click",  (e) => sort_data(e, qualifyData));
@@ -463,7 +476,12 @@ function init() {
         pdNameQ1.textContent = qualifyData[0].driver.surname;
         pdNameQ2.textContent = qualifyData[1].driver.surname;
         pdNameQ3.textContent = qualifyData[2].driver.surname;
-
+        add_type_and_id(pdImg1q, "driver", qualifyData[0].driver.ref);
+        add_type_and_id(pdNameQ1, "driver", qualifyData[0].driver.ref);
+        add_type_and_id(pdImg2q, "driver", qualifyData[1].driver.ref);
+        add_type_and_id(pdNameQ2, "driver", qualifyData[1].driver.ref);
+        add_type_and_id(pdImg3q, "driver", qualifyData[2].driver.ref);
+        add_type_and_id(pdNameQ3, "driver", qualifyData[2].driver.ref);
 
 
         resultsTab.addEventListener("click", ()=>{ //Add events to enable switching between the two pages
