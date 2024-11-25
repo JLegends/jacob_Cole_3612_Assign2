@@ -317,7 +317,7 @@ function init() {
             const row = document.createElement("tr");
             if(i % 2 == 0)
             {
-                row.className = "bg-stone-50 border-b-customRed border-b-4";
+                row.className = "bg-stone-100 border-b-customRed border-b-4";
             }
             else
             {
@@ -325,6 +325,7 @@ function init() {
             }
             i++;
             const round = document.createElement("td");
+            round.className = "pl-4";
             const name = document.createElement("td");
 
             const results = document.createElement("td");
@@ -549,7 +550,7 @@ function init() {
             row.className = "odd: bg-stone-50 even:bg-stone-300"
             const pos = document.createElement("td");
             pos.textContent = qualify.position;
-            pos.className = "font-bold";
+            pos.className = "font-bold pl-4";
             row.appendChild(pos);
 
             const name = document.createElement("td");
@@ -609,6 +610,7 @@ function init() {
             const row = document.createElement("tr");
             row.className = "odd: bg-stone-150 even:bg-stone-300"
             const pos = document.createElement("td");
+            pos.className = "font-bold pl-4";
             pos.textContent = result.position;
             row.appendChild(pos);
 

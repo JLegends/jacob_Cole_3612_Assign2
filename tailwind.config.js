@@ -5,9 +5,9 @@ module.exports = {
     extend: {
       colors: {
         customRed: `#FF1E00`,
-        customRedHover: `#FE1E00`,
+        customRedHover: `#CC1800`,
         customBlack: `#15151E`,
-        customBlackHover: `#14141D`,
+        customBlackHover: `#2A2A3A`,
 
       },
       fontFamily: {
