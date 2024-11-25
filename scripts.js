@@ -1203,6 +1203,13 @@ function init() {
         add_fav_button_event("circuits", itemFavorited, data, ref);
     } 
 
+
+    /*--------------------------------------------------------------------------------------------------------
+    // Name: show_loader
+    // Purpose: Creates a temporary loader element to be displayed while fetch requests are gathering data. The 
+    loader can be removed by setting visibility to false or if the loader already exists in parent node and the function
+    is called again the previous loader will also be removed
+    /*------------------------------------------------------------------------------------------------------*/
     function show_loader(parentNode, visibility, size) {
         /* HTML for loader found here: https://uiverse.io/devAaus/funny-catfish-94 */
         const loader = document.querySelector(`#${parentNode.id} #spinner`);
