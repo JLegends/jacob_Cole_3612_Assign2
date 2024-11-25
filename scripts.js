@@ -66,6 +66,12 @@ function init() {
     const pdImg2r = document.querySelector("#pd2r");
     const pdImg3r = document.querySelector("#pd3r");
 
+    const pdNameR1 = document.querySelector("#pdNameR1");
+    const pdNameR2 = document.querySelector("#pdNameR2");
+    const pdNameR3 = document.querySelector("#pdNameR3");
+    const pdNameQ1 = document.querySelector("#pdNameQ1");
+    const pdNameQ2 = document.querySelector("#pdNameQ2");
+    const pdNameQ3 = document.querySelector("#pdNameQ3");
 
     const seasonSelect = document.querySelector("#season-select");
 
@@ -348,6 +354,9 @@ function init() {
             pdImg1r.src = `data/images/drivers/${data[0].driver.ref}.avif`;
             pdImg2r.src = `data/images/drivers/${data[1].driver.ref}.avif`;
             pdImg3r.src = `data/images/drivers/${data[2].driver.ref}.avif`;
+            pdNameR1.textContent = data[0].driver.surname;
+            pdNameR2.textContent = data[1].driver.surname;
+            pdNameR3.textContent = data[2].driver.surname;
         });
     
         fetch_race_qualify(raceID).then(data => { //Generate results for the qualifying page
@@ -358,6 +367,9 @@ function init() {
             pdImg1q.src = `data/images/drivers/${data[0].driver.ref}.avif`;
             pdImg2q.src = `data/images/drivers/${data[1].driver.ref}.avif`;
             pdImg3q.src = `data/images/drivers/${data[2].driver.ref}.avif`;
+            pdNameQ1.textContent = data[0].driver.surname;
+            pdNameQ2.textContent = data[1].driver.surname;
+            pdNameQ3.textContent = data[2].driver.surname;
         });
 
 
@@ -1055,12 +1067,6 @@ function init() {
             parentNode.removeChild(loader);
         }
     }
-
-    function replaceNode()
-    {
-        
-    }
-
 }
 
 
