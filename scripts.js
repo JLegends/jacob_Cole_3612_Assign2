@@ -336,11 +336,11 @@ function init() {
 
             round.textContent = race.round;
             name.textContent = race.name;
-            name.className = "hover:text-red-600 cursor-pointer";
+            name.className = "hover:text-customRedHover cursor-pointer";
             add_type_and_id(name, "circuit", race.circuit.id);
 
             resultsButton.textContent = "RESULTS";
-            resultsButton.className = " bg-customRed text-white px-4 py-2 rounded-t-lg hover:bg-red-600";
+            resultsButton.className = " bg-customRed text-white px-4 py-2 rounded-t-lg hover:bg-customRedHover";
 
             resultsButton.setAttribute("raceId", race.id); /*Stores the raceID as a attribute in the button so we know what race to get results for*/
             resultsButton.addEventListener("click", () => { 
@@ -553,14 +553,14 @@ function init() {
             row.appendChild(pos);
 
             const name = document.createElement("td");
-            name.className = "hover:text-red-600 cursor-pointer";
+            name.className = "hover:text-customRedHover cursor-pointer";
             name.textContent = qualify.driver.forename + " " + qualify.driver.surname;
 
             const isDriverFavorited = favorited.drivers.some(driver => driver.ref === qualify.driver.ref);
 
             if (isDriverFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-600";
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-customRedHover";
                 name.appendChild(heartIcon);
             }
 
@@ -568,14 +568,14 @@ function init() {
             row.appendChild(name);
 
             const constructor = document.createElement("td");
-            constructor.className = "hover:text-red-600 cursor-pointer";
+            constructor.className = "hover:text-customRedHover cursor-pointer";
             constructor.textContent = qualify.constructor.name;
 
             const isConstructorFavorited = favorited.constructors.some(constructor => constructor.ref === qualify.constructor.ref);
 
             if (isConstructorFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-600";
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-customRedHover";
                 constructor.appendChild(heartIcon);
             }
 
@@ -613,14 +613,14 @@ function init() {
             row.appendChild(pos);
 
             const name = document.createElement("td");
-            name.className = "hover:text-red-600 cursor-pointer";
+            name.className = "hover:text-customRedHover cursor-pointer";
             name.textContent = result.driver.forename + " " + result.driver.surname;
 
             const isDriverFavorited = favorited.drivers.some(driver => driver.ref === result.driver.ref);
 
             if (isDriverFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-600";
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-customRedHover";
                 name.appendChild(heartIcon);
             }
             
@@ -628,14 +628,14 @@ function init() {
             row.appendChild(name);
 
             const constructor = document.createElement("td");
-            constructor.className = "hover:text-red-600 cursor-pointer"
+            constructor.className = "hover:text-customRedHover cursor-pointer"
             constructor.textContent = result.constructor.name;
 
             const isConstructorFavorited = favorited.constructors.some(constructor => constructor.ref === result.constructor.ref);
 
             if (isConstructorFavorited) {
                 const heartIcon = document.createElement("span");
-                heartIcon.className = "fa fa-heart fa-lg ml-2 text-red-600";
+                heartIcon.className = "fa fa-heart fa-lg ml-2 text-customRedHover";
                 constructor.appendChild(heartIcon);
             }
 
@@ -747,7 +747,7 @@ function init() {
 
         for (let driver of favorited.drivers) {
             const row = document.createElement("tr");
-            row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+            row.className = "bg-white border-b dark:bg-customBlackHover dark:border-gray-700";
             const element = document.createElement("td");
             
             element.className = "px-6 py-4 font-medium text-customBlack dark:text-white truncate";
@@ -771,7 +771,7 @@ function init() {
 
         for (let constructor of favorited.constructors) {
             const row = document.createElement("tr");
-            row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+            row.className = "bg-white border-b dark:bg-customBlackHover dark:border-gray-700";
             const element = document.createElement("td");
             
             element.className = "px-6 py-4 font-medium text-customBlack dark:text-white truncate";
@@ -795,7 +795,7 @@ function init() {
 
         for (let circuit of favorited.circuits) {
             const row = document.createElement("tr");
-            row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+            row.className = "bg-white border-b dark:bg-customBlackHover dark:border-gray-700";
     
             const element = document.createElement("td");
             element.className = "px-6 py-4 font-medium text-customBlack dark:text-white truncate";
@@ -1004,7 +1004,7 @@ function init() {
                     console.log("data: ", data);
                     for (let constructor of data) {
                         const row = document.createElement("tr");
-                        row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+                        row.className = "bg-white border-b dark:bg-customBlackHover dark:border-gray-700";
                         
                         const round = document.createElement("td");
                         round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
@@ -1061,7 +1061,7 @@ function init() {
                 console.log("seasonResults: ", driverResults);
                 for (let driver of data) {
                     const row = document.createElement("tr");
-                    row.className = "bg-white border-b dark:bg-gray-800 dark:border-gray-700";
+                    row.className = "bg-white border-b dark:bg-customBlackHover dark:border-gray-700";
                     
                     const round = document.createElement("td");
                     round.className = "px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white";
@@ -1121,7 +1121,7 @@ function init() {
             blue_spinner.className = `w-${(size * 4)} h-${(size * 4)} border-4 border-transparent text-customBlack text-4xl animate-spin flex items-center justify-center border-t-gray-700 rounded-full`;
 
             const red_spinner = document.createElement("div");
-            red_spinner.className = `w-${(size-1) * 4} h-${(size-1) * 4} border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-red-600 rounded-full`;
+            red_spinner.className = `w-${(size-1) * 4} h-${(size-1) * 4} border-4 border-transparent text-red-400 text-2xl animate-spin flex items-center justify-center border-t-customRedHover rounded-full`;
 
             blue_spinner.appendChild(red_spinner);
             spinner_container.appendChild(blue_spinner);
