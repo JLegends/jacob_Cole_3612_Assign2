@@ -116,12 +116,12 @@ function init() {
 
     function fetch_season_results(season) {
         let request = `${url}/results.php?season=${season}`;
-        fetch_store_API_data(request);
+        return fetch_store_API_data(request);
     }
 
     function fetch_season_qualifying(season) {
         let request = `${url}/qualifying.php?season=${season}`;
-        fetch_store_API_data(request);
+        return fetch_store_API_data(request);
     }
 
     function fetch_circuit_name(circuitId) {
@@ -296,13 +296,15 @@ function init() {
 
         show_loader(roundContainer, true, 6);
 
-        fetch_race_season(season).then(data => {
-            generate_rounds_table(data);
-            roundDataHeader.addEventListener("click", (e) => sort_data(e, data));
-        });
-    
-        fetch_season_qualifying(season);
-        fetch_season_results(season);
+
+        fetch_season_qualifying(season)
+        .then(() => fetch_season_results(season))
+        .then(() => fetch_race_season(season))
+        .then(data => {
+        generate_rounds_table(data);
+        roundDataHeader.addEventListener("click", (e) => sort_data(e, data));
+    })
+
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -1049,7 +1051,7 @@ function init() {
         add_fav_button_event("drivers", itemFavorited, data, ref);
 
         fetch_driver_results(ref, season).then(data => { 
-
+            console.log("driver results", data);
             show_loader(driverTable, false);
 
             for (let driver of data) {
