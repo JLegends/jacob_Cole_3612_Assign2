@@ -822,13 +822,18 @@ function init() {
     {        
         const type = e.target.getAttribute("type");
         const ref = e.target.getAttribute("ref");
-
         const targetArray = favorited[type];
         const index = targetArray.findIndex(item => item.ref == ref); 
+        
+        console.log("In remove favorite")
+        console.log("Index: ", index);
+        console.log("array before splice, ", targetArray);
         if(index != -1)
         {
             targetArray.splice(index, 1);
         }
+        console.log("array after splice, ", targetArray);
+        
         store_favorite_table();                
         generate_favorite_tables();
 
@@ -853,14 +858,34 @@ function init() {
     // Name: add_fav_button_event
     // Purpose: remove a single favorited item from the list.
     /*------------------------------------------------------------------------------------------------------*/
-    function add_fav_button_event(button, type, itemFavorited, data, ref)
-    {                
+    function add_fav_button_event(type, itemFavorited, data, ref)
+    {                              
         console.log("in add fav button");
-        console.log("button: ", button, "type: ", type, "itemFavorited", itemFavorited, "data: ", data, "ref: ", ref);
-
+        console.log("type: ", type, "itemFavorited", itemFavorited, "data: ", data, "ref: ", ref);
+        let button;
+        if(type == "drivers")
+        {
+            const newButton = addFavoriteDriver.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button, we also need to do this within add_fav_button_event so that we can have our local button variable actually refer to the correct global DOM element
+            addFavoriteDriver.replaceWith(newButton);
+            addFavoriteDriver = newButton; 
+            button = addFavoriteDriver;
+        }
+        else if(type == "constructors")
+        {
+            const newButton = addFavoriteConst.cloneNode(true); 
+            addFavoriteConst.replaceWith(newButton);
+            addFavoriteConst = newButton; 
+            button = addFavoriteConst;
+        }
+        else if(type == "circuits")
+        {
+            const newButton = addFavoriteCirc.cloneNode(true); 
+            addFavoriteCirc.replaceWith(newButton);
+            addFavoriteCirc = newButton; 
+            button = addFavoriteCirc;
+        }
         add_type_and_id(button, type, ref);
         button.textContent = "";
-        
         if(!itemFavorited)
         {
             button.textContent = "Add to Favorites";
@@ -893,13 +918,7 @@ function init() {
                     favorited.circuits.push(circuit);
                 }
                 store_favorite_table();               
-                
-                resultsContainer.innerHTML = ""; // Clear existing content
-                qualifyContainer.innerHTML = ""; // Clear existing content
-
-                generate_results_table(currentResults);
-                generate_qualify_table(currentQualifyData);
-                add_fav_button_event(button, type, true, data, ref);
+                add_fav_button_event(type, true, data, ref);
             });
     
         }
@@ -909,10 +928,15 @@ function init() {
             button.addEventListener("click", (e) => {  
                 remove_favorite(e);
 
-                add_fav_button_event(button, type, false, data, ref);
+                add_fav_button_event(type, false, data, ref);
             });
         }     
 
+        resultsContainer.innerHTML = ""; // Clear existing content
+        qualifyContainer.innerHTML = ""; // Clear existing content
+
+        generate_results_table(currentResults);
+        generate_qualify_table(currentQualifyData);
     }
 
     /*--------------------------------------------------------------------------------------------------------
@@ -925,12 +949,8 @@ function init() {
         constMoreInfo.textContent = `Learn More`;
         constMoreInfo.href = data.url;
 
-        const itemFavorited = favorited.constructors.some(constructor => constructor.name === data.name);
-        const newButton = addFavoriteConst.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
-        addFavoriteConst.replaceWith(newButton);
-        addFavoriteConst = newButton;
-        
-        add_fav_button_event(addFavoriteConst, "constructors", itemFavorited, data, ref);
+        const itemFavorited = favorited.constructors.some(constructor => constructor.name === data.name);        
+        add_fav_button_event("constructors", itemFavorited, data, ref);
 
         fetch_constructor_results(ref, season).then(data => { 
 
@@ -982,11 +1002,7 @@ function init() {
         driverImage.alt = `${data.forename} ${data.surname}`;
 
         const itemFavorited = favorited.drivers.some(driver => driver.forename === data.forename && driver.surname === data.surname)
-        const newButton = addFavoriteDriver.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
-        addFavoriteDriver.replaceWith(newButton);
-        addFavoriteDriver = newButton;
-
-        add_fav_button_event(addFavoriteDriver, "drivers", itemFavorited, data, ref);
+        add_fav_button_event("drivers", itemFavorited, data, ref);
 
         fetch_driver_results(ref, season).then(data => { 
 
@@ -1035,12 +1051,8 @@ function init() {
         popupCircuitURL.href = data.url;
         popupCircuitURL.textContent = "Learn More";
 
-        const itemFavorited = favorited.circuits.some(circuit => circuit.name === data.name);
-        const newButton = addFavoriteCirc.cloneNode(true); //This is necessary to remove the previous event handlers associated with the button
-        addFavoriteCirc.replaceWith(newButton);
-        addFavoriteCirc = newButton;
-        
-        add_fav_button_event(addFavoriteCirc, "circuits", itemFavorited, data, ref);
+        const itemFavorited = favorited.circuits.some(circuit => circuit.name === data.name);        
+        add_fav_button_event("circuits", itemFavorited, data, ref);
     } 
 
     function show_loader(parentNode, visibility, size) {
