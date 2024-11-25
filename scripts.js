@@ -100,7 +100,7 @@ function init() {
     
     /*--------------------------------------------------------------------------------------------------------
     // Name: fetch_race_season
-    // Purpose: Fetches all of the racesfor a particular season. These should be stored in localStorage.
+    // Purpose: Fetches all of the races for a particular season. These should be stored in localStorage.
     /*------------------------------------------------------------------------------------------------------*/
     function fetch_race_season(season) {
         let request = `${url}/races.php?season=${season}`; //Stored in localStorage
