@@ -634,6 +634,8 @@ function init() {
     // Purpose: generates the table of qualifying drivers in a grand prix
     /*------------------------------------------------------------------------------------------------------*/
     function generate_qualify_table(qualifying) {
+        console.log("Attempting to generate qualifying table with data: ", qualifying);
+        
         for (let qualify of qualifying) {
             const row = document.createElement("tr");
             row.className = "odd: bg-stone-50 even:bg-stone-300"
